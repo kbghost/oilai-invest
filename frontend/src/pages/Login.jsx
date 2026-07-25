@@ -33,11 +33,11 @@ export default function Login() {
         <div style={{ position: 'relative', zIndex: 1, padding: '2.5rem', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
           <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: 9, textDecoration: 'none' }}>
             <div style={{ width: 36, height: 36, borderRadius: 11, background: 'linear-gradient(135deg,var(--accent),var(--accent-dark))', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Zap size={17} color="#fff" /></div>
-            <span style={{ fontFamily: '"Clash Display",sans-serif', fontWeight: 700, fontSize: '1.15rem', color: 'var(--text-primary)' }}>OilAI <span style={{ color: 'var(--accent)' }}>Invest</span></span>
+            <span style={{ fontFamily: '"Poppins",sans-serif', fontWeight: 700, fontSize: '1.15rem', color: 'var(--text-primary)' }}>OilAI <span style={{ color: 'var(--accent)' }}>Invest</span></span>
           </Link>
           <div>
             <p style={{ fontSize: 10, fontWeight: 700, color: 'var(--accent)', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: 10 }}>🌍 Plateforme #1 Afrique de l'Ouest</p>
-            <h2 style={{ fontFamily: '"Clash Display",sans-serif', fontSize: '2rem', fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1.25, marginBottom: '1rem' }}>Votre argent travaille,<br />même quand vous dormez.</h2>
+            <h2 style={{ fontFamily: '"Poppins",sans-serif', fontSize: '2rem', fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1.25, marginBottom: '1rem' }}>Votre argent travaille,<br />même quand vous dormez.</h2>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
               {['ROI jusqu\'à 20%/jour', 'Dépôts 100% crypto', 'Sécurité AES-256', 'Support 24/7 en français'].map(f => (
                 <div key={f} style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, color: 'var(--text-secondary)' }}>
@@ -55,11 +55,11 @@ export default function Login() {
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '2rem' }}>
           <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: 8, textDecoration: 'none' }}>
             <div style={{ width: 30, height: 30, borderRadius: 9, background: 'linear-gradient(135deg,var(--accent),var(--accent-dark))', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Zap size={14} color="#fff" /></div>
-            <span style={{ fontFamily: '"Clash Display",sans-serif', fontWeight: 700, color: 'var(--text-primary)' }}>OilAI</span>
+            <span style={{ fontFamily: '"Poppins",sans-serif', fontWeight: 700, color: 'var(--text-primary)' }}>OilAI</span>
           </Link>
           <ThemeToggle compact />
         </div>
-        <h1 style={{ fontFamily: '"Clash Display",sans-serif', fontSize: '1.75rem', fontWeight: 700, color: 'var(--text-primary)', marginBottom: 5 }}>Connexion</h1>
+        <h1 style={{ fontFamily: '"Poppins",sans-serif', fontSize: '1.75rem', fontWeight: 700, color: 'var(--text-primary)', marginBottom: 5 }}>Connexion</h1>
         <p style={{ color: 'var(--text-secondary)', fontSize: 13, marginBottom: '1.75rem' }}>Accédez à votre compte investisseur</p>
         <form onSubmit={submit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           <div><label className="label">Email</label><input name="email" type="email" required value={form.email} onChange={handle} className="input" placeholder="votre@email.com" /></div>

@@ -65,7 +65,7 @@ export default function Invest() {
 
       {/* En-tête */}
       <div>
-        <h1 style={{ fontFamily:'"Clash Display",sans-serif', fontSize:'1.5rem', fontWeight:700, color:'var(--text-primary)', marginBottom:3 }}>Investir</h1>
+        <h1 style={{ fontFamily:'"Poppins",sans-serif', fontSize:'1.5rem', fontWeight:700, color:'var(--text-primary)', marginBottom:3 }}>Investir</h1>
         <p style={{ color:'var(--text-secondary)', fontSize:13 }}>
           Solde disponible : <span style={{ fontWeight:700, color:'var(--accent)' }}>${(user?.balance || 0).toFixed(2)}</span>
         </p>
@@ -176,10 +176,10 @@ export default function Invest() {
                 <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between' }}>
                   <div>
                     <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:4 }}>
-                      <p style={{ fontFamily:'"Clash Display",sans-serif', fontWeight:700, fontSize:'1rem', color:'var(--text-primary)', textTransform:'capitalize' }}>{plan.name}</p>
+                      <p style={{ fontFamily:'"Poppins",sans-serif', fontWeight:700, fontSize:'1rem', color:'var(--text-primary)', textTransform:'capitalize' }}>{plan.name}</p>
                       {key === 'pro' && <span style={{ fontSize:9, fontWeight:700, padding:'2px 7px', background:'var(--accent)', color:'#fff', borderRadius:999 }}>POPULAIRE</span>}
                     </div>
-                    <p style={{ fontSize:22, fontWeight:900, color:col.accent, fontFamily:'"Clash Display",sans-serif' }}>{plan.dailyROI}%<span style={{ fontSize:12, color:'var(--text-muted)', fontWeight:400 }}>/jour</span></p>
+                    <p style={{ fontSize:22, fontWeight:900, color:col.accent, fontFamily:'"Poppins",sans-serif' }}>{plan.dailyROI}%<span style={{ fontSize:12, color:'var(--text-muted)', fontWeight:400 }}>/jour</span></p>
                     <p style={{ fontSize:11, color:'var(--text-muted)', marginTop:2 }}>
                       {plan.durationDays}j · Tarif : ${plan.price.toLocaleString()}
                     </p>

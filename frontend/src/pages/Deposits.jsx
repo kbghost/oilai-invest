@@ -50,7 +50,7 @@ export default function Deposits() {
   return (
     <div className="dash-enter" style={{ maxWidth:600,margin:'0 auto' }}>
       <div style={{ marginBottom:'1rem' }}>
-        <h1 style={{ fontFamily:'"Clash Display",sans-serif',fontSize:'1.5rem',fontWeight:700,color:'var(--text-primary)',marginBottom:3 }}>Dépôts</h1>
+        <h1 style={{ fontFamily:'"Poppins",sans-serif',fontSize:'1.5rem',fontWeight:700,color:'var(--text-primary)',marginBottom:3 }}>Dépôts</h1>
         <p style={{ color:'var(--text-secondary)',fontSize:13 }}>Rechargez votre compte en cryptomonnaie</p>
       </div>
 
@@ -130,7 +130,7 @@ export default function Deposits() {
 
       {tab === 'history' && (
         <div className="card">
-          <p style={{ fontFamily:'"Clash Display",sans-serif',fontWeight:700,color:'var(--text-primary)',marginBottom:'1rem',fontSize:'0.95rem' }}>Historique</p>
+          <p style={{ fontFamily:'"Poppins",sans-serif',fontWeight:700,color:'var(--text-primary)',marginBottom:'1rem',fontSize:'0.95rem' }}>Historique</p>
           {deposits.length === 0 ? (
             <div style={{ textAlign:'center',padding:'2.5rem 0',color:'var(--text-muted)' }}><ArrowDownCircle size={32} style={{ margin:'0 auto 10px',opacity:0.3 }} /><p style={{ fontSize:13 }}>Aucun dépôt</p></div>
           ) : (

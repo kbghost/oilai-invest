@@ -59,7 +59,7 @@ export default function Landing() {
             <Zap size={16} color="#fff" />
           </div>
           <div>
-            <span style={{ fontFamily:'"Clash Display",sans-serif',fontWeight:700,fontSize:'1rem',color:'var(--text-primary)' }}>OilAI <span style={{ color:'var(--accent)' }}>Invest</span></span>
+            <span style={{ fontFamily:'"Poppins",sans-serif',fontWeight:700,fontSize:'1rem',color:'var(--text-primary)' }}>OilAI <span style={{ color:'var(--accent)' }}>Invest</span></span>
             <div style={{ fontSize:9,color:'var(--text-muted)',letterSpacing:'0.08em',textTransform:'uppercase',lineHeight:1 }}>Investissement IA</div>
           </div>
         </div>
@@ -89,7 +89,7 @@ export default function Landing() {
         <div style={{ maxWidth:800,margin:'0 auto',display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:'0.5rem',textAlign:'center' }} id="stats-row">
 {STATS.map(({ val, suffix, label, decimals=0 }) => (
             <div key={label} className="reveal">
-              <p style={{ fontFamily:'"Clash Display",sans-serif',fontSize:'clamp(1.1rem,3vw,1.6rem)',fontWeight:700,color:'var(--accent)',lineHeight:1 }}>
+              <p style={{ fontFamily:'"Poppins",sans-serif',fontSize:'clamp(1.1rem,3vw,1.6rem)',fontWeight:700,color:'var(--accent)',lineHeight:1 }}>
                 <AnimatedCounter value={val} suffix={suffix} decimals={decimals} duration={2000} />
               </p>
               <p style={{ fontSize:10,color:'var(--text-muted)',marginTop:4,fontWeight:600 }}>{label}</p>
@@ -111,7 +111,7 @@ export default function Landing() {
         <div style={{ maxWidth:1100,margin:'0 auto' }}>
           <div style={{ textAlign:'center',marginBottom:'2rem' }} className="reveal">
             <p style={{ fontSize:11,fontWeight:700,color:'var(--accent)',textTransform:'uppercase',letterSpacing:'0.12em',marginBottom:8 }}>💎 Nos Plans</p>
-            <h2 style={{ fontFamily:'"Clash Display",sans-serif',fontSize:'clamp(1.5rem,4vw,2.5rem)',fontWeight:700,color:'var(--text-primary)' }}>
+            <h2 style={{ fontFamily:'"Poppins",sans-serif',fontSize:'clamp(1.5rem,4vw,2.5rem)',fontWeight:700,color:'var(--text-primary)' }}>
               Choisissez votre <span className="gradient-text">croissance</span>
             </h2>
           </div>
@@ -124,10 +124,10 @@ export default function Landing() {
                 onMouseLeave={e=>{e.currentTarget.style.borderColor='var(--border)';e.currentTarget.style.transform='';}}>
                 <div style={{ position:'absolute',top:0,left:0,right:0,height:3,background:plan.color }} />
                 <div style={{ display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:'0.75rem' }}>
-                  <h3 style={{ fontFamily:'"Clash Display",sans-serif',fontSize:'1.3rem',fontWeight:700,color:'var(--text-primary)' }}>{plan.name}</h3>
+                  <h3 style={{ fontFamily:'"Poppins",sans-serif',fontSize:'1.3rem',fontWeight:700,color:'var(--text-primary)' }}>{plan.name}</h3>
                   <span style={{ padding:'0.15rem 0.6rem',borderRadius:999,fontSize:10,fontWeight:700,background:plan.color+'18',color:plan.color,border:`1px solid ${plan.color}35`,whiteSpace:'nowrap' }}>{plan.badge}</span>
                 </div>
-                <p style={{ fontFamily:'"Clash Display",sans-serif',fontSize:'2.5rem',fontWeight:700,color:plan.color,lineHeight:1,marginBottom:4 }}>{plan.roi}</p>
+                <p style={{ fontFamily:'"Poppins",sans-serif',fontSize:'2.5rem',fontWeight:700,color:plan.color,lineHeight:1,marginBottom:4 }}>{plan.roi}</p>
                 <p style={{ fontSize:12,color:'var(--text-muted)',marginBottom:'1rem' }}>par jour · {plan.duration} jours · Tarif {plan.min}</p>
                 <SpeakButton
                   text={`Le plan ${plan.name} rapporte ${plan.roi} par jour pendant ${plan.duration} jours. Tarif fixe de ${plan.min}. Rejoignez OilAI Invest !`}
@@ -155,7 +155,7 @@ export default function Landing() {
         <div style={{ maxWidth:820,margin:'0 auto' }}>
           <div style={{ textAlign:'center',marginBottom:'1.5rem' }} className="reveal">
             <p style={{ fontSize:11,fontWeight:700,color:'var(--accent)',textTransform:'uppercase',letterSpacing:'0.12em',marginBottom:8 }}>💹 Simulateur</p>
-            <h2 style={{ fontFamily:'"Clash Display",sans-serif',fontSize:'clamp(1.3rem,3.5vw,2.2rem)',fontWeight:700,color:'var(--text-primary)' }}>
+            <h2 style={{ fontFamily:'"Poppins",sans-serif',fontSize:'clamp(1.3rem,3.5vw,2.2rem)',fontWeight:700,color:'var(--text-primary)' }}>
               Calculez vos <span className="gradient-text">gains</span>
             </h2>
           </div>
@@ -168,7 +168,7 @@ export default function Landing() {
         <div style={{ maxWidth:800,margin:'0 auto',textAlign:'center' }}>
           <div className="reveal" style={{ marginBottom:'1.5rem' }}>
             <p style={{ fontSize:11,fontWeight:700,color:'var(--accent)',textTransform:'uppercase',letterSpacing:'0.12em',marginBottom:8 }}>🔒 Paiements Crypto</p>
-            <h2 style={{ fontFamily:'"Clash Display",sans-serif',fontSize:'clamp(1.3rem,3.5vw,2.2rem)',fontWeight:700,color:'var(--text-primary)',marginBottom:10 }}>
+            <h2 style={{ fontFamily:'"Poppins",sans-serif',fontSize:'clamp(1.3rem,3.5vw,2.2rem)',fontWeight:700,color:'var(--text-primary)',marginBottom:10 }}>
               100% <span className="gradient-text">Cryptomonnaies</span>
             </h2>
             <p style={{ color:'var(--text-secondary)',fontSize:13,lineHeight:1.65,maxWidth:440,margin:'0 auto' }}>
@@ -199,7 +199,7 @@ export default function Landing() {
       <section style={{ background:'var(--bg-card)',borderTop:'1px solid var(--border)',borderBottom:'1px solid var(--border)' }} className="section-pad">
         <div style={{ maxWidth:860,margin:'0 auto' }}>
           <div style={{ textAlign:'center',marginBottom:'2rem' }} className="reveal">
-            <h2 style={{ fontFamily:'"Clash Display",sans-serif',fontSize:'clamp(1.3rem,3.5vw,2.2rem)',fontWeight:700,color:'var(--text-primary)' }}>
+            <h2 style={{ fontFamily:'"Poppins",sans-serif',fontSize:'clamp(1.3rem,3.5vw,2.2rem)',fontWeight:700,color:'var(--text-primary)' }}>
               Démarrez en <span className="gradient-text">4 étapes</span>
             </h2>
           </div>
@@ -227,7 +227,7 @@ export default function Landing() {
         <div style={{ position:'absolute',inset:0,background:'linear-gradient(135deg,var(--bg-base),rgba(5,10,20,0.85))' }} />
         <FloatingParticles count={10} />
         <div style={{ position:'relative',textAlign:'center',padding:'3rem 1.5rem',zIndex:1 }}>
-          <h2 style={{ fontFamily:'"Clash Display",sans-serif',fontSize:'clamp(1.4rem,4vw,2.4rem)',fontWeight:700,color:'var(--text-primary)',marginBottom:'0.75rem',lineHeight:1.2 }} className="reveal">
+          <h2 style={{ fontFamily:'"Poppins",sans-serif',fontSize:'clamp(1.4rem,4vw,2.4rem)',fontWeight:700,color:'var(--text-primary)',marginBottom:'0.75rem',lineHeight:1.2 }} className="reveal">
             Votre avenir financier<br /><span className="gradient-text">commence aujourd'hui</span>
           </h2>
           <p style={{ color:'var(--text-secondary)',marginBottom:'1.5rem',fontSize:13,lineHeight:1.65,maxWidth:440,margin:'0 auto 1.5rem' }} className="reveal">
@@ -254,7 +254,7 @@ export default function Landing() {
           <div style={{ width:26,height:26,borderRadius:8,background:'linear-gradient(135deg,var(--accent),var(--accent-dark))',display:'flex',alignItems:'center',justifyContent:'center' }}>
             <Zap size={13} color="#fff" />
           </div>
-          <span style={{ fontFamily:'"Clash Display",sans-serif',fontWeight:700,fontSize:'0.95rem',color:'var(--text-primary)' }}>OilAI Invest</span>
+          <span style={{ fontFamily:'"Poppins",sans-serif',fontWeight:700,fontSize:'0.95rem',color:'var(--text-primary)' }}>OilAI Invest</span>
         </div>
         <p style={{ fontSize:11,color:'var(--text-muted)',lineHeight:1.6 }}>
           © 2025 OilAI Invest · Plateforme panafricaine<br />
@@ -265,7 +265,7 @@ export default function Landing() {
         <div style={{ maxWidth:1100, margin:"0 auto" }}>
           <div style={{ textAlign:"center", marginBottom:"3rem" }}>
             <p style={{ fontSize:11, fontWeight:700, color:"var(--accent)", textTransform:"uppercase", letterSpacing:"0.12em", marginBottom:10 }}>🌍 Notre Vision</p>
-            <h2 style={{ fontFamily:"'Clash Display',sans-serif", fontSize:"clamp(1.6rem,4vw,2.5rem)", fontWeight:700, color:"var(--text-primary)", marginBottom:14 }}>
+            <h2 style={{ fontFamily:"'Poppins',sans-serif", fontSize:"clamp(1.6rem,4vw,2.5rem)", fontWeight:700, color:"var(--text-primary)", marginBottom:14 }}>
               OilAI Invest — <span className="gradient-text">Construire l&apos;avenir</span><br/>financier de l&apos;Afrique
             </h2>
             <p style={{ color:"var(--text-secondary)", fontSize:14, lineHeight:1.7, maxWidth:620, margin:"0 auto" }}>
@@ -279,7 +279,7 @@ export default function Landing() {
               style={{ width:"100%", height:"100%", objectFit:"cover" }}/>
             <div style={{ position:"absolute", inset:0, background:"linear-gradient(to right,rgba(6,11,15,0.85) 40%,transparent 100%)" }}/>
             <div style={{ position:"absolute", top:"50%", left:"2rem", transform:"translateY(-50%)", maxWidth:360 }}>
-              <p style={{ fontFamily:"'Clash Display',sans-serif", fontSize:"clamp(1.2rem,3vw,1.8rem)", fontWeight:700, color:"#fff", lineHeight:1.3, marginBottom:10 }}>
+              <p style={{ fontFamily:"'Poppins',sans-serif", fontSize:"clamp(1.2rem,3vw,1.8rem)", fontWeight:700, color:"#fff", lineHeight:1.3, marginBottom:10 }}>
                 Fondée pour servir<br/>18 000+ investisseurs
               </p>
               <p style={{ fontSize:13, color:"rgba(255,255,255,0.8)", lineHeight:1.6 }}>
@@ -302,7 +302,7 @@ export default function Landing() {
                   </div>
                 </div>
                 <div style={{ padding:"1.25rem" }}>
-                  <p style={{ fontFamily:"'Clash Display',sans-serif", fontWeight:700, color:"var(--text-primary)", fontSize:"1rem", marginBottom:8 }}>{title}</p>
+                  <p style={{ fontFamily:"'Poppins',sans-serif", fontWeight:700, color:"var(--text-primary)", fontSize:"1rem", marginBottom:8 }}>{title}</p>
                   <p style={{ fontSize:12, color:"var(--text-secondary)", lineHeight:1.65 }}>{text}</p>
                 </div>
               </div>
@@ -319,7 +319,7 @@ export default function Landing() {
               { val:"24/7",  label:"Support IA" },
             ].map(({ val, label }) => (
               <div key={label} style={{ textAlign:"center", padding:"0.75rem 0.5rem" }}>
-                <p style={{ fontFamily:"'Clash Display',sans-serif", fontWeight:800, fontSize:"1.6rem", color:"var(--accent)", marginBottom:4 }}>{val}</p>
+                <p style={{ fontFamily:"'Poppins',sans-serif", fontWeight:800, fontSize:"1.6rem", color:"var(--accent)", marginBottom:4 }}>{val}</p>
                 <p style={{ fontSize:11, color:"var(--text-muted)", fontWeight:600 }}>{label}</p>
               </div>
             ))}

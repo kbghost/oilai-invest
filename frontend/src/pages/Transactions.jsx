@@ -39,7 +39,7 @@ export default function Transactions() {
   return (
     <div className="dash-enter" style={{ maxWidth:720,margin:'0 auto',display:'flex',flexDirection:'column',gap:'1rem' }}>
       <div>
-        <h1 style={{ fontFamily:'"Clash Display",sans-serif',fontSize:'1.5rem',fontWeight:700,color:'var(--text-primary)',marginBottom:3 }}>Historique</h1>
+        <h1 style={{ fontFamily:'"Poppins",sans-serif',fontSize:'1.5rem',fontWeight:700,color:'var(--text-primary)',marginBottom:3 }}>Historique</h1>
         <p style={{ color:'var(--text-secondary)',fontSize:13 }}>Toutes vos transactions</p>
       </div>
 

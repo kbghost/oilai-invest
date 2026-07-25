@@ -20,7 +20,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
               border: '1px solid var(--border-strong)',
               borderRadius: '14px',
               fontSize: '0.875rem',
-              fontFamily: '"Plus Jakarta Sans", sans-serif',
+              fontFamily: '"Poppins", sans-serif',
             },
             success: { iconTheme: { primary: '#22C55E', secondary: '#060B0F' } },
             error:   { iconTheme: { primary: '#FF5C7A', secondary: '#060B0F' } }

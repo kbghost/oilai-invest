@@ -44,17 +44,17 @@ export default function Profile() {
 
       {/* En-tête */}
       <div>
-        <h1 style={{ fontFamily:'"Clash Display",sans-serif', fontSize:'1.5rem', fontWeight:700, color:'var(--text-primary)', marginBottom:3 }}>Mon Profil</h1>
+        <h1 style={{ fontFamily:'"Poppins",sans-serif', fontSize:'1.5rem', fontWeight:700, color:'var(--text-primary)', marginBottom:3 }}>Mon Profil</h1>
         <p style={{ color:'var(--text-secondary)', fontSize:13 }}>Gérez vos informations</p>
       </div>
 
       {/* Avatar + infos */}
       <div className="float-card shine-card" style={{ display:'flex', alignItems:'center', gap:'1rem' }}>
-        <div style={{ width:56, height:56, borderRadius:16, background:'linear-gradient(135deg,var(--accent),var(--accent-dark))', display:'flex', alignItems:'center', justifyContent:'center', fontFamily:'"Clash Display",sans-serif', fontWeight:700, fontSize:'1.3rem', color:'#fff', flexShrink:0, boxShadow:'0 6px 20px var(--accent-glow)' }}>
+        <div style={{ width:56, height:56, borderRadius:16, background:'linear-gradient(135deg,var(--accent),var(--accent-dark))', display:'flex', alignItems:'center', justifyContent:'center', fontFamily:'"Poppins",sans-serif', fontWeight:700, fontSize:'1.3rem', color:'#fff', flexShrink:0, boxShadow:'0 6px 20px var(--accent-glow)' }}>
           {user?.firstName?.[0]}{user?.lastName?.[0]}
         </div>
         <div style={{ flex:1, minWidth:0 }}>
-          <p style={{ fontFamily:'"Clash Display",sans-serif', fontSize:'1.05rem', fontWeight:700, color:'var(--text-primary)', marginBottom:2 }}>{user?.firstName} {user?.lastName}</p>
+          <p style={{ fontFamily:'"Poppins",sans-serif', fontSize:'1.05rem', fontWeight:700, color:'var(--text-primary)', marginBottom:2 }}>{user?.firstName} {user?.lastName}</p>
           <p style={{ fontSize:12, color:'var(--text-secondary)', marginBottom:6, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{user?.email}</p>
           <div style={{ display:'flex', gap:6, flexWrap:'wrap' }}>
             <span className="badge-active" style={{ textTransform:'capitalize' }}>{user?.role === 'admin' ? 'Admin' : 'Investisseur'}</span>

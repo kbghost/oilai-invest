@@ -41,7 +41,7 @@ export default function AdminUsers() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
       <div>
-        <h1 style={{ fontFamily: '"Clash Display", sans-serif', fontSize: '1.8rem', fontWeight: 700, color: 'var(--text-primary)', marginBottom: 4 }}>Utilisateurs</h1>
+        <h1 style={{ fontFamily: '"Poppins", sans-serif', fontSize: '1.8rem', fontWeight: 700, color: 'var(--text-primary)', marginBottom: 4 }}>Utilisateurs</h1>
         <p style={{ color: 'var(--text-secondary)', fontSize: 14 }}>{total} utilisateurs enregistrés</p>
       </div>
 
@@ -106,7 +106,7 @@ export default function AdminUsers() {
           <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(4px)' }} onClick={() => setModal(null)} />
           <div className="card" style={{ position: 'relative', width: '100%', maxWidth: 380, zIndex: 1 }}>
             <button onClick={() => setModal(null)} style={{ position: 'absolute', top: 12, right: 12, background: 'var(--bg-card2)', border: '1px solid var(--border)', borderRadius: 8, padding: 5, cursor: 'pointer', color: 'var(--text-muted)', display: 'flex' }}><X size={16} /></button>
-            <h3 style={{ fontFamily: '"Clash Display", sans-serif', fontWeight: 700, color: 'var(--text-primary)', marginBottom: 6 }}>Ajuster le solde</h3>
+            <h3 style={{ fontFamily: '"Poppins", sans-serif', fontWeight: 700, color: 'var(--text-primary)', marginBottom: 6 }}>Ajuster le solde</h3>
             <p style={{ fontSize: 13, color: 'var(--text-secondary)', marginBottom: '1.25rem' }}>
               {modal.firstName} {modal.lastName} — Solde actuel : <span style={{ color: 'var(--accent)', fontWeight: 700 }}>${(modal.balance||0).toFixed(2)}</span>
             </p>

@@ -116,7 +116,7 @@ export default function ImageSlider({ height = '520px', showText = true }) {
             {slide.badge}
           </div>
 
-          <h2 style={{ fontFamily: '"Clash Display", sans-serif', fontSize: 'clamp(1.4rem, 3vw, 2.2rem)', fontWeight: 700, color: '#fff', lineHeight: 1.25, marginBottom: '1rem', whiteSpace: 'pre-line' }}>
+          <h2 style={{ fontFamily: '"Poppins", sans-serif', fontSize: 'clamp(1.4rem, 3vw, 2.2rem)', fontWeight: 700, color: '#fff', lineHeight: 1.25, marginBottom: '1rem', whiteSpace: 'pre-line' }}>
             {slide.title}
           </h2>
 

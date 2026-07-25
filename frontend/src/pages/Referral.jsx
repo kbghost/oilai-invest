@@ -48,7 +48,7 @@ export default function Referral() {
 
       {/* Header */}
       <div>
-        <h1 style={{ fontFamily:'"Clash Display",sans-serif',fontSize:'1.5rem',fontWeight:700,color:'var(--text-primary)',marginBottom:3 }}>Parrainage</h1>
+        <h1 style={{ fontFamily:'"Poppins",sans-serif',fontSize:'1.5rem',fontWeight:700,color:'var(--text-primary)',marginBottom:3 }}>Parrainage</h1>
         <p style={{ color:'var(--text-secondary)',fontSize:13 }}>Invitez des amis et gagnez {BONUS_PERCENT}% de leur premier dépôt</p>
       </div>
 
@@ -58,7 +58,7 @@ export default function Referral() {
         <div style={{ position:'absolute',bottom:-30,left:'30%',width:120,height:120,background:'rgba(255,255,255,0.06)',borderRadius:'50%' }} />
         <div style={{ position:'relative',zIndex:1 }}>
           <Gift size={22} color="#fff" style={{ marginBottom:8 }} />
-          <p style={{ fontSize:16,fontWeight:800,fontFamily:'"Clash Display",sans-serif',marginBottom:4 }}>
+          <p style={{ fontSize:16,fontWeight:800,fontFamily:'"Poppins",sans-serif',marginBottom:4 }}>
             Chaque filleul = {BONUS_PERCENT}% pour vous
           </p>
           <p style={{ fontSize:12,opacity:0.85,lineHeight:1.55 }}>
@@ -91,7 +91,7 @@ export default function Referral() {
 
       {/* Code + Lien */}
       <div className="float-card">
-        <p style={{ fontFamily:'"Clash Display",sans-serif',fontWeight:700,color:'var(--text-primary)',marginBottom:'1rem',fontSize:'0.95rem' }}>
+        <p style={{ fontFamily:'"Poppins",sans-serif',fontWeight:700,color:'var(--text-primary)',marginBottom:'1rem',fontSize:'0.95rem' }}>
           Mon code de parrainage
         </p>
 
@@ -128,7 +128,7 @@ export default function Referral() {
 
       {/* Liste des filleuls */}
       <div className="float-card">
-        <p style={{ fontFamily:'"Clash Display",sans-serif',fontWeight:700,color:'var(--text-primary)',marginBottom:'1rem',fontSize:'0.95rem' }}>
+        <p style={{ fontFamily:'"Poppins",sans-serif',fontWeight:700,color:'var(--text-primary)',marginBottom:'1rem',fontSize:'0.95rem' }}>
           Mes filleuls ({stats?.referralCount || 0})
         </p>
 
@@ -161,7 +161,7 @@ export default function Referral() {
 
       {/* Comment ça marche */}
       <div className="float-card">
-        <p style={{ fontFamily:'"Clash Display",sans-serif',fontWeight:700,color:'var(--text-primary)',marginBottom:'1rem',fontSize:'0.95rem' }}>Comment ça marche ?</p>
+        <p style={{ fontFamily:'"Poppins",sans-serif',fontWeight:700,color:'var(--text-primary)',marginBottom:'1rem',fontSize:'0.95rem' }}>Comment ça marche ?</p>
         <div style={{ display:'flex',flexDirection:'column',gap:10 }}>
           {[
             { n:'1', t:'Partagez votre code', d:`Envoyez votre code ${user?.referralCode||'OILAI-XXXXXX'} à vos amis ou le lien d'invitation.` },

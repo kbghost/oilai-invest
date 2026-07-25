@@ -40,7 +40,7 @@ export default function AdminDeposits() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
       <div>
-        <h1 style={{ fontFamily: '"Clash Display", sans-serif', fontSize: '1.8rem', fontWeight: 700, color: 'var(--text-primary)', marginBottom: 4 }}>Dépôts</h1>
+        <h1 style={{ fontFamily: '"Poppins", sans-serif', fontSize: '1.8rem', fontWeight: 700, color: 'var(--text-primary)', marginBottom: 4 }}>Dépôts</h1>
         <p style={{ color: 'var(--text-secondary)', fontSize: 14 }}>Valider et gérer les demandes de dépôt</p>
       </div>
 
@@ -113,12 +113,12 @@ export default function AdminDeposits() {
         <div style={{ position: 'fixed', inset: 0, zIndex: 60, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem' }}>
           <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(4px)' }} onClick={() => setModal(null)} />
           <div className="card" style={{ position: 'relative', width: '100%', maxWidth: 380, zIndex: 1 }}>
-            <h3 style={{ fontFamily: '"Clash Display", sans-serif', fontWeight: 700, color: 'var(--text-primary)', marginBottom: 6 }}>
+            <h3 style={{ fontFamily: '"Poppins", sans-serif', fontWeight: 700, color: 'var(--text-primary)', marginBottom: 6 }}>
               {action === 'approve' ? '✅ Approuver' : '❌ Rejeter'} le dépôt
             </h3>
             <div style={{ padding: '0.875rem', background: 'var(--bg-card2)', borderRadius: 12, marginBottom: '1rem' }}>
               <p style={{ fontSize: 13, color: 'var(--text-secondary)' }}>{modal.user?.firstName} {modal.user?.lastName}</p>
-              <p style={{ fontFamily: '"Clash Display", sans-serif', fontWeight: 700, color: 'var(--accent)', fontSize: '1.2rem' }}>${modal.amount?.toLocaleString()}</p>
+              <p style={{ fontFamily: '"Poppins", sans-serif', fontWeight: 700, color: 'var(--accent)', fontSize: '1.2rem' }}>${modal.amount?.toLocaleString()}</p>
             </div>
             <div>
               <label className="label">Note admin (optionnel)</label>

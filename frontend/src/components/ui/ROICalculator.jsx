@@ -39,7 +39,7 @@ export default function ROICalculator() {
           <Calculator size={20} color="#fff" />
         </div>
         <div>
-          <h3 style={{ fontFamily: '"Clash Display", sans-serif', fontWeight: 700, color: 'var(--text-primary)', fontSize: '1.15rem', marginBottom: 2 }}>
+          <h3 style={{ fontFamily: '"Poppins", sans-serif', fontWeight: 700, color: 'var(--text-primary)', fontSize: '1.15rem', marginBottom: 2 }}>
             Calculateur de Gains IA
           </h3>
           <p style={{ fontSize: 12, color: 'var(--text-muted)' }}>Simulez vos profits en temps réel</p>
@@ -66,11 +66,11 @@ export default function ROICalculator() {
       <div style={{ marginBottom: '1.25rem', padding:'1rem', background:'var(--bg-card2)', borderRadius:12 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
           <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Montant investi</span>
-          <span style={{ fontFamily: '"Clash Display", sans-serif', fontWeight: 700, color: 'var(--text-primary)', fontSize: '1.1rem' }}>${planData.price.toLocaleString()}</span>
+          <span style={{ fontFamily: '"Poppins", sans-serif', fontWeight: 700, color: 'var(--text-primary)', fontSize: '1.1rem' }}>${planData.price.toLocaleString()}</span>
         </div>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Durée du plan</span>
-          <span style={{ fontFamily: '"Clash Display", sans-serif', fontWeight: 700, color: 'var(--text-primary)', fontSize: '1.1rem' }}>{planData.days} jours</span>
+          <span style={{ fontFamily: '"Poppins", sans-serif', fontWeight: 700, color: 'var(--text-primary)', fontSize: '1.1rem' }}>{planData.days} jours</span>
         </div>
       </div>
 
@@ -84,7 +84,7 @@ export default function ROICalculator() {
           ].map(({ label, value, color }) => (
             <div key={label} style={{ padding: '0.875rem', background: 'var(--bg-card2)', borderRadius: 12, textAlign: 'center' }}>
               <p style={{ fontSize: 10, color: 'var(--text-muted)', marginBottom: 4, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{label}</p>
-              <p style={{ fontFamily: '"Clash Display", sans-serif', fontWeight: 700, color, fontSize: '1rem' }}>{value}</p>
+              <p style={{ fontFamily: '"Poppins", sans-serif', fontWeight: 700, color, fontSize: '1rem' }}>{value}</p>
             </div>
           ))}
         </div>

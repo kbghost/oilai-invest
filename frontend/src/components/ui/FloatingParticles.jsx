@@ -41,7 +41,7 @@ export default function FloatingParticles({ count = 18 }) {
       const color = isDark ? '245, 166, 35' : '212, 136, 26'
 
       particles.forEach(p => {
-        ctx.font = `${p.size}px "Clash Display", sans-serif`
+        ctx.font = `${p.size}px "Poppins", sans-serif`
         ctx.fillStyle = `rgba(${color}, ${p.opacity})`
         ctx.fillText(p.symbol, p.x, p.y)
 

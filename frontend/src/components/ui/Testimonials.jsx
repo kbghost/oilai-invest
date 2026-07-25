@@ -51,7 +51,7 @@ export default function Testimonials() {
         <p style={{ fontSize: 12, fontWeight: 700, color: 'var(--accent)', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: 10 }}>
           ⭐ Témoignages Vérifiés
         </p>
-        <h2 style={{ fontFamily: '"Clash Display", sans-serif', fontSize: 'clamp(1.6rem, 4vw, 2.5rem)', fontWeight: 700, color: 'var(--text-primary)', marginBottom: 10 }}>
+        <h2 style={{ fontFamily: '"Poppins", sans-serif', fontSize: 'clamp(1.6rem, 4vw, 2.5rem)', fontWeight: 700, color: 'var(--text-primary)', marginBottom: 10 }}>
           Ce que disent nos{' '}
           <span className="gradient-text">investisseurs africains</span>
         </h2>
@@ -89,7 +89,7 @@ export default function Testimonials() {
 
             {/* Author */}
             <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-              <div style={{ width: 40, height: 40, borderRadius: 12, background: t.color + '25', border: '1.5px solid ' + t.color + '50', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: '"Clash Display", sans-serif', fontWeight: 700, fontSize: 13, color: t.color, flexShrink: 0 }}>
+              <div style={{ width: 40, height: 40, borderRadius: 12, background: t.color + '25', border: '1.5px solid ' + t.color + '50', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: '"Poppins", sans-serif', fontWeight: 700, fontSize: 13, color: t.color, flexShrink: 0 }}>
                 {t.avatar}
               </div>
               <div>

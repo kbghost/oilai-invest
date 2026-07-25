@@ -43,7 +43,7 @@ export default function Withdrawals() {
   return (
     <div className="dash-enter" style={{ maxWidth:560,margin:'0 auto' }}>
       <div style={{ marginBottom:'1rem' }}>
-        <h1 style={{ fontFamily:'"Clash Display",sans-serif',fontSize:'1.5rem',fontWeight:700,color:'var(--text-primary)',marginBottom:3 }}>Retraits</h1>
+        <h1 style={{ fontFamily:'"Poppins",sans-serif',fontSize:'1.5rem',fontWeight:700,color:'var(--text-primary)',marginBottom:3 }}>Retraits</h1>
         <p style={{ color:'var(--text-secondary)',fontSize:13 }}>Retirez vos gains en cryptomonnaie</p>
       </div>
 
@@ -123,7 +123,7 @@ export default function Withdrawals() {
 
       {tab === 'history' && (
         <div className="card">
-          <p style={{ fontFamily:'"Clash Display",sans-serif',fontWeight:700,color:'var(--text-primary)',marginBottom:'1rem',fontSize:'0.95rem' }}>Historique</p>
+          <p style={{ fontFamily:'"Poppins",sans-serif',fontWeight:700,color:'var(--text-primary)',marginBottom:'1rem',fontSize:'0.95rem' }}>Historique</p>
           {withdrawals.length === 0 ? (
             <div style={{ textAlign:'center',padding:'2.5rem 0',color:'var(--text-muted)' }}><ArrowUpCircle size={32} style={{ margin:'0 auto 10px',opacity:0.3 }} /><p style={{ fontSize:13 }}>Aucun retrait</p></div>
           ) : (

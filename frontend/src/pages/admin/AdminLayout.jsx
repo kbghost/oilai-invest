@@ -19,7 +19,7 @@ function SidebarContent({ mobile, setOpen }) {
     <div style={{ display:'flex',flexDirection:'column',height:'100%' }}>
       <div style={{ padding:'1.25rem 1.1rem',borderBottom:'1px solid var(--border)',display:'flex',alignItems:'center',gap:9 }}>
         <div style={{ width:34,height:34,borderRadius:10,background:'linear-gradient(135deg,#a78bfa,#7c3aed)',display:'flex',alignItems:'center',justifyContent:'center' }}><Shield size={16} color="#fff" /></div>
-        <div><p style={{ fontFamily:'"Clash Display",sans-serif',fontWeight:700,color:'var(--text-primary)',fontSize:'0.95rem',lineHeight:1 }}>Admin</p><p style={{ fontSize:10,color:'var(--text-muted)' }}>OilAI Invest</p></div>
+        <div><p style={{ fontFamily:'"Poppins",sans-serif',fontWeight:700,color:'var(--text-primary)',fontSize:'0.95rem',lineHeight:1 }}>Admin</p><p style={{ fontSize:10,color:'var(--text-muted)' }}>OilAI Invest</p></div>
       </div>
       <nav style={{ flex:1,padding:'0.7rem',display:'flex',flexDirection:'column',gap:2 }}>
         {navItems.map(({ to, label, icon:Icon }) => (
@@ -55,7 +55,7 @@ export default function AdminLayout() {
       )}
       <main id="admin-main" style={{ flex:1,minWidth:0,display:'flex',flexDirection:'column' }}>
         <div className="mobile-topbar-compact" id="admin-top">
-          <div style={{ display:'flex',alignItems:'center',gap:8 }}><Shield size={15} color="#a78bfa" /><span style={{ fontFamily:'"Clash Display",sans-serif',fontWeight:700,color:'var(--text-primary)',fontSize:'0.95rem' }}>Admin</span></div>
+          <div style={{ display:'flex',alignItems:'center',gap:8 }}><Shield size={15} color="#a78bfa" /><span style={{ fontFamily:'"Poppins",sans-serif',fontWeight:700,color:'var(--text-primary)',fontSize:'0.95rem' }}>Admin</span></div>
           <div style={{ display:'flex',gap:6 }}>
             <ThemeToggle compact />
             <button onClick={()=>setOpen(true)} style={{ width:34,height:34,borderRadius:9,background:'var(--bg-card2)',border:'1px solid var(--border)',display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer',color:'var(--text-secondary)' }}><Menu size={16}/></button>

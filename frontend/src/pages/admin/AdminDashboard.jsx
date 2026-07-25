@@ -45,7 +45,7 @@ export default function AdminDashboard() {
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
         <div>
-          <h1 style={{ fontFamily: '"Clash Display", sans-serif', fontSize: '1.8rem', fontWeight: 700, color: 'var(--text-primary)', marginBottom: 4 }}>Admin Dashboard</h1>
+          <h1 style={{ fontFamily: '"Poppins", sans-serif', fontSize: '1.8rem', fontWeight: 700, color: 'var(--text-primary)', marginBottom: 4 }}>Admin Dashboard</h1>
           <p style={{ color: 'var(--text-secondary)', fontSize: 14 }}>Vue globale de la plateforme</p>
         </div>
         <button onClick={processProfit} disabled={processing} className="btn-primary" style={{ fontSize: 13 }}>
@@ -62,14 +62,14 @@ export default function AdminDashboard() {
               <Icon size={20} color={color} />
             </div>
             <p style={{ fontSize: 11, color: 'var(--text-muted)', marginBottom: 4, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{label}</p>
-            <p style={{ fontFamily: '"Clash Display", sans-serif', fontSize: '1.5rem', fontWeight: 700, color: 'var(--text-primary)' }}>{value}</p>
+            <p style={{ fontFamily: '"Poppins", sans-serif', fontSize: '1.5rem', fontWeight: 700, color: 'var(--text-primary)' }}>{value}</p>
           </div>
         ))}
       </div>
 
       {/* Recent users */}
       <div className="card">
-        <h3 style={{ fontFamily: '"Clash Display", sans-serif', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '1.25rem' }}>Inscriptions récentes</h3>
+        <h3 style={{ fontFamily: '"Poppins", sans-serif', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '1.25rem' }}>Inscriptions récentes</h3>
         {recent.length === 0 ? (
           <p style={{ color: 'var(--text-muted)', fontSize: 13, textAlign: 'center', padding: '2rem 0' }}>Aucun utilisateur</p>
         ) : (

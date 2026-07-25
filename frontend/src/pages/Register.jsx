@@ -67,18 +67,18 @@ export default function Register() {
             <div style={{ width: 36, height: 36, borderRadius: 11, background: 'linear-gradient(135deg,var(--accent),var(--accent-dark))', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <Zap size={17} color="#fff" />
             </div>
-            <span style={{ fontFamily: '"Clash Display",sans-serif', fontWeight: 700, fontSize: '1.15rem', color: 'var(--text-primary)' }}>
+            <span style={{ fontFamily: '"Poppins",sans-serif', fontWeight: 700, fontSize: '1.15rem', color: 'var(--text-primary)' }}>
               OilAI <span style={{ color: 'var(--accent)' }}>Invest</span>
             </span>
           </Link>
           <div>
-            <h2 style={{ fontFamily: '"Clash Display",sans-serif', fontSize: '1.9rem', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '1.25rem', lineHeight: 1.25 }}>
+            <h2 style={{ fontFamily: '"Poppins",sans-serif', fontSize: '1.9rem', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '1.25rem', lineHeight: 1.25 }}>
               Rejoignez<br /><span className="gradient-text">18 000+ investisseurs</span><br />africains
             </h2>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', maxWidth: 300 }}>
               {[['124M$+', 'Actifs gérés'], ['20%/j', 'ROI max'], ['70+', 'Pays'], ['24/7', 'Support IA']].map(([v, l]) => (
                 <div key={l} style={{ padding: '0.75rem', background: 'rgba(34,197,94,0.07)', border: '1px solid rgba(34,197,94,0.14)', borderRadius: 12, textAlign: 'center' }}>
-                  <p style={{ fontFamily: '"Clash Display",sans-serif', fontWeight: 700, color: 'var(--accent)', fontSize: '1rem' }}>{v}</p>
+                  <p style={{ fontFamily: '"Poppins",sans-serif', fontWeight: 700, color: 'var(--accent)', fontSize: '1rem' }}>{v}</p>
                   <p style={{ fontSize: 10, color: 'var(--text-muted)' }}>{l}</p>
                 </div>
               ))}
@@ -95,12 +95,12 @@ export default function Register() {
             <div style={{ width: 30, height: 30, borderRadius: 9, background: 'linear-gradient(135deg,var(--accent),var(--accent-dark))', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <Zap size={14} color="#fff" />
             </div>
-            <span style={{ fontFamily: '"Clash Display",sans-serif', fontWeight: 700, color: 'var(--text-primary)' }}>OilAI</span>
+            <span style={{ fontFamily: '"Poppins",sans-serif', fontWeight: 700, color: 'var(--text-primary)' }}>OilAI</span>
           </Link>
           <ThemeToggle compact />
         </div>
 
-        <h1 style={{ fontFamily: '"Clash Display",sans-serif', fontSize: '1.6rem', fontWeight: 700, color: 'var(--text-primary)', marginBottom: 5 }}>Créer un compte</h1>
+        <h1 style={{ fontFamily: '"Poppins",sans-serif', fontSize: '1.6rem', fontWeight: 700, color: 'var(--text-primary)', marginBottom: 5 }}>Créer un compte</h1>
         <p style={{ color: 'var(--text-secondary)', fontSize: 13, marginBottom: '1.5rem' }}>Inscription gratuite — prêt en 2 minutes</p>
 
         <form onSubmit={submit} style={{ display: 'flex', flexDirection: 'column', gap: '0.875rem' }}>

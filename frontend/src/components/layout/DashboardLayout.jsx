@@ -32,7 +32,7 @@ function SidebarContent({ mobile, setOpen }) {
             <Zap size={17} color="#fff" />
           </div>
           <div>
-            <p style={{ fontFamily:'"Clash Display",sans-serif',fontWeight:700,fontSize:'1rem',color:'var(--text-primary)',lineHeight:1 }}>OilAI Invest</p>
+            <p style={{ fontFamily:'"Poppins",sans-serif',fontWeight:700,fontSize:'1rem',color:'var(--text-primary)',lineHeight:1 }}>OilAI Invest</p>
             <p style={{ fontSize:10,color:'var(--text-muted)',marginTop:2 }}>Investissement IA · Afrique</p>
           </div>
         </div>
@@ -41,7 +41,7 @@ function SidebarContent({ mobile, setOpen }) {
       {/* Balance pill */}
       <div style={{ margin:'0.875rem',padding:'1rem',background:'linear-gradient(135deg,rgba(245,166,35,0.18),rgba(245,166,35,0.06))',border:'1px solid rgba(245,166,35,0.25)',borderRadius:16 }}>
         <p style={{ fontSize:10,color:'rgba(245,166,35,0.7)',marginBottom:3,textTransform:'uppercase',letterSpacing:'0.06em',fontWeight:700 }}>Solde disponible</p>
-        <p style={{ fontFamily:'"Plus Jakarta Sans",sans-serif',fontSize:'1.35rem',fontWeight:800,color:'var(--accent)' }}>
+        <p style={{ fontFamily:'"Poppins",sans-serif',fontSize:'1.35rem',fontWeight:800,color:'var(--accent)' }}>
           {(user?.balance||0).toLocaleString('fr-FR',{minimumFractionDigits:2})} $
         </p>
       </div>
@@ -125,8 +125,8 @@ export default function DashboardLayout() {
               <Zap size={14} color="#fff" />
             </div>
             <div>
-              <span style={{ fontFamily:'"Clash Display",sans-serif',fontWeight:700,fontSize:'0.95rem',color:'var(--text-primary)' }}>OilAI</span>
-              <span style={{ color:'var(--accent)',fontFamily:'"Clash Display",sans-serif',fontWeight:700,fontSize:'0.95rem' }}> Invest</span>
+              <span style={{ fontFamily:'"Poppins",sans-serif',fontWeight:700,fontSize:'0.95rem',color:'var(--text-primary)' }}>OilAI</span>
+              <span style={{ color:'var(--accent)',fontFamily:'"Poppins",sans-serif',fontWeight:700,fontSize:'0.95rem' }}> Invest</span>
             </div>
           </div>
           <div style={{ display:'flex',gap:6 }}>
