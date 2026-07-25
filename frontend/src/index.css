@@ -916,3 +916,31 @@ html, body, #root {
 @media (min-width: 500px) {
   .auth-grid { grid-template-columns: 1fr 1fr; }
 }
+
+/* ─── NAV BUTTONS RESPONSIVENESS ─── */
+.nav-buttons-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.nav-btn-connexion {
+  padding: 0.45rem 0.75rem;
+  border-radius: 9px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-decoration: none;
+  border: 1px solid var(--border);
+  background: var(--bg-card2);
+}
+.nav-btn-commencer {
+  padding: 0.45rem 0.875rem;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+@media (max-width: 480px) {
+  .nav-buttons-wrap { gap: 4px; }
+  .nav-btn-connexion { padding: 0.35rem 0.5rem; font-size: 10.5px; }
+  .nav-btn-commencer { padding: 0.35rem 0.5rem; font-size: 10.5px; }
+}
