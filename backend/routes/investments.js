@@ -14,8 +14,7 @@ router.get('/plans', getPlans);
 // Investissements utilisateur
 router.get('/',           protect, getUserInvestments);
 router.post('/',          protect, [
-  body('plan').isIn(['starter','pro','premium']),
-  body('amount').isNumeric().isFloat({ min: 1 }),
+  body('plan').isIn(['bronze','argent','or','platine','vip_exec','king']),
 ], createInvestment);
 
 // ── CLAIM : réclamer les gains du jour ────────────────────────────────────────
