@@ -14,9 +14,12 @@ import { useScrollReveal } from '../hooks/index.js'
 import { Zap, ArrowRight, Play, Clock } from 'lucide-react'
 
 const PLANS = [
-  { key:'starter', name:'Starter', min:'100$', roi:'1.5%', color:'var(--blue)',   badge:'Débutant' },
-  { key:'pro',     name:'Pro',     min:'1 000$', roi:'2.5%', color:'var(--accent)', badge:'⭐ Populaire' },
-  { key:'premium', name:'Premium', min:'5 000$', roi:'3.5%', color:'var(--green)', badge:'VIP' },
+  { key:'bronze',   name:'Bronze',   min:'15$',   roi:'5%',   duration:30, color:'#cd7f32', badge:'Débutant' },
+  { key:'argent',   name:'Argent',   min:'30$',   roi:'8%',   duration:45, color:'var(--blue)', badge:'Populaire' },
+  { key:'or',       name:'Or',       min:'50$',   roi:'10%',  duration:60, color:'#eab308', badge:'Standard' },
+  { key:'platine',  name:'Platine',  min:'100$',  roi:'12%',  duration:90, color:'#94a3b8', badge:'Premium' },
+  { key:'vip_exec', name:'VIP Exec', min:'500$',  roi:'15%',  duration:120, color:'var(--accent)', badge:'VIP' },
+  { key:'king',     name:'King',     min:'1 000$',roi:'20%',  duration:180, color:'var(--green)', badge:'Royal' },
 ]
 
 const PAYMENTS = [
@@ -29,7 +32,7 @@ const PAYMENTS = [
 const STATS = [
   { val:124, suffix:'M$+', label:'Actifs gérés' },
   { val:18432, suffix:'+', label:'Investisseurs' },
-  { val:3.5, suffix:'%/j', label:'ROI maximum', decimals:1 },
+  { val:20, suffix:'%/j', label:'ROI maximum', decimals:0 },
   { val:70, suffix:'+', label:'Pays' },
 ]
 
@@ -125,9 +128,9 @@ export default function Landing() {
                   <span style={{ padding:'0.15rem 0.6rem',borderRadius:999,fontSize:10,fontWeight:700,background:plan.color+'18',color:plan.color,border:`1px solid ${plan.color}35`,whiteSpace:'nowrap' }}>{plan.badge}</span>
                 </div>
                 <p style={{ fontFamily:'"Clash Display",sans-serif',fontSize:'2.5rem',fontWeight:700,color:plan.color,lineHeight:1,marginBottom:4 }}>{plan.roi}</p>
-                <p style={{ fontSize:12,color:'var(--text-muted)',marginBottom:'1rem' }}>par jour · 30 jours · Min. {plan.min}</p>
+                <p style={{ fontSize:12,color:'var(--text-muted)',marginBottom:'1rem' }}>par jour · {plan.duration} jours · Tarif {plan.min}</p>
                 <SpeakButton
-                  text={`Le plan ${plan.name} rapporte ${plan.roi} par jour. Minimum ${plan.min}. Rejoignez OilAI Invest !`}
+                  text={`Le plan ${plan.name} rapporte ${plan.roi} par jour pendant ${plan.duration} jours. Tarif fixe de ${plan.min}. Rejoignez OilAI Invest !`}
                   variant="primary"
                   style={{ width:'100%',justifyContent:'center',fontSize:12,padding:'0.7rem 1rem',background:`linear-gradient(135deg,${plan.color}cc,${plan.color}88)` }}>
                   Commencer — {plan.name}
@@ -138,7 +141,7 @@ export default function Landing() {
 
           <div style={{ textAlign:'center',marginTop:'2rem' }} className="reveal">
             <SpeakButton
-              text="Rejoignez OilAI Invest et gagnez jusqu'à 3,5 pourcent par jour grâce à l'IA pétrolière. Inscription gratuite !"
+              text="Rejoignez OilAI Invest et gagnez jusqu'à 20 pourcent par jour grâce à l'IA pétrolière. Inscription gratuite !"
               onClick={() => window.location.href='/register'}
               style={{ fontSize:'0.95rem',padding:'0.875rem 2rem',animation:'glowPulse 2.5s ease-in-out infinite' }}>
               🚀 Créer mon compte — C'est gratuit
@@ -204,7 +207,7 @@ export default function Landing() {
             {[
               { n:'01', t:'Inscription', d:'Gratuite en 2 min', icon:'👤' },
               { n:'02', t:'Dépôt Crypto', d:'BTC · ETH · USDT · BNB', icon:'💎' },
-              { n:'03', t:'Choisir un plan', d:'Starter / Pro / Premium', icon:'🎯' },
+              { n:'03', t:'Choisir un plan', d:'Bronze à King', icon:'🎯' },
               { n:'04', t:'Gagner chaque jour', d:'IA active 24h/24', icon:'💰' },
             ].map(({ n, t, d, icon }, i) => (
               <div key={n} className={`reveal stagger-${i+1}`} style={{ textAlign:'center',padding:'1.25rem 0.875rem',background:'var(--bg-card2)',border:'1px solid var(--border)',borderRadius:16 }}>
@@ -232,7 +235,7 @@ export default function Landing() {
           </p>
           <div style={{ display:'flex',gap:'0.75rem',justifyContent:'center',flexWrap:'wrap' }} className="reveal">
             <SpeakButton
-              text="Créez votre compte OilAI Invest gratuit et gagnez jusqu'à 3,5 pourcent par jour. Rejoignez 18 000 investisseurs africains maintenant !"
+              text="Créez votre compte OilAI Invest gratuit et gagnez jusqu'à 20 pourcent par jour. Rejoignez 18 000 investisseurs africains maintenant !"
               onClick={() => window.location.href='/register'}
               style={{ fontSize:'0.9rem',padding:'0.875rem 1.75rem',animation:'glowPulse 2.5s ease-in-out infinite' }}>
               🚀 Créer mon compte
