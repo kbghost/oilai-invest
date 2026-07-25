@@ -77,11 +77,7 @@ export default function Login() {
           </button>
         </form>
         <p style={{ textAlign: 'center', color: 'var(--text-muted)', fontSize: 12, marginTop: '1.25rem' }}>
-          Pas de compte ? <Link to="/register" style={{ color: 'var(--accent)', fontWeight: 700, textDecoration: 'none' }}>Créer un compte</Link>
         </p>
-        <div style={{ marginTop: '1.25rem', padding: '0.75rem', background: 'var(--bg-card2)', border: '1px solid var(--border)', borderRadius: 12, fontSize: 11, color: 'var(--text-muted)', textAlign: 'center' }}>
-          Démo : <span style={{ color: 'var(--text-primary)' }}>demo@oilai.com</span> / <span style={{ color: 'var(--text-primary)' }}>Demo@1234</span>
-        </div>
       </div>
     </div>
   )
