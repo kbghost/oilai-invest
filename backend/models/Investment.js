@@ -46,6 +46,7 @@ const investmentSchema = new mongoose.Schema({
 
   // ── Système de claim ─────────────────────────────────────────────────────
   lastClaimDate:     { type: Date, default: null },    // dernière réclamation
+  nextClaimAt:       { type: Date, default: null },    // date de la prochaine réclamation possible
   pendingProfit:     { type: Number, default: 0 },     // gains en attente (non réclamés)
   lastProfitDate:    { type: Date, default: null },    // dernière génération (cron)
   lastProfitGenDate: { type: Date, default: null },    // alias pour le cron

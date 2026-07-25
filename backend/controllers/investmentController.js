@@ -176,6 +176,7 @@ const createInvestment = async (req, res) => {
       dailyROI:       planConfig.dailyROI,
       durationDays:   planConfig.durationDays,
       pendingProfit:  firstProfit,   // disponible immédiatement pour le 1er claim
+      nextClaimAt:    new Date(),    // Disponible immédiatement
       lastProfitDate: new Date(),
       status:         'active',
     });
@@ -215,27 +216,22 @@ const claimProfit = async (req, res) => {
     }
 
     // ── Vérification du cooldown ─────────────────────────────────────────
-    if (investment.lastClaimDate) {
-      const msSinceClaim   = Date.now() - new Date(investment.lastClaimDate).getTime();
-      const hoursSinceClaim = msSinceClaim / (1000 * 60 * 60);
+    if (investment.nextClaimAt && new Date(investment.nextClaimAt).getTime() > Date.now()) {
+      const msLeft      = new Date(investment.nextClaimAt).getTime() - Date.now();
+      const minsLeft    = Math.ceil(msLeft / 60000);
+      const hoursLeft   = Math.floor(msLeft / 3600000);
+      const minutesLeft = Math.ceil((msLeft % 3600000) / 60000);
 
-      if (hoursSinceClaim < CLAIM_COOLDOWN_HOURS) {
-        const msLeft      = (CLAIM_COOLDOWN_HOURS * 3600000) - msSinceClaim;
-        const minsLeft    = Math.ceil(msLeft / 60000);
-        const hoursLeft   = Math.floor(msLeft / 3600000);
-        const minutesLeft = Math.ceil((msLeft % 3600000) / 60000);
-
-        return res.status(429).json({
-          success:     false,
-          message:     hoursLeft > 0
-            ? `Prochain claim dans ${hoursLeft}h ${minutesLeft}min.`
-            : `Prochain claim dans ${minsLeft} min.`,
-          nextClaimAt: new Date(new Date(investment.lastClaimDate).getTime() + CLAIM_COOLDOWN_HOURS * 3600000),
-          hoursLeft,
-          minutesLeft,
-          msLeft,
-        });
-      }
+      return res.status(429).json({
+        success:     false,
+        message:     hoursLeft > 0
+          ? `Prochain claim dans ${hoursLeft}h ${minutesLeft}min.`
+          : `Prochain claim dans ${minsLeft} min.`,
+        nextClaimAt: investment.nextClaimAt,
+        hoursLeft,
+        minutesLeft,
+        msLeft,
+      });
     }
 
     // ── Vérification que des gains sont disponibles ──────────────────────
@@ -268,6 +264,7 @@ const claimProfit = async (req, res) => {
     investment.lastProfitDate = now;
 
     const nextClaimAt = new Date(now.getTime() + CLAIM_COOLDOWN_HOURS * 3600000);
+    investment.nextClaimAt = nextClaimAt;
 
     // ── Vérifier si le plan est terminé ──────────────────────────────────
     const isComplete = investment.daysCompleted >= investment.durationDays;

@@ -41,6 +41,11 @@ export default function ClaimButton({ investment, onClaimed }) {
   const [loading, setLoading]       = useState(false)
   const [claimed, setClaimed]       = useState(false)
   const [nextClaimAt, setNextClaimAt] = useState(() => {
+    if (investment.nextClaimAt) {
+      const next = new Date(investment.nextClaimAt).getTime()
+      return next > Date.now() ? new Date(next) : null
+    }
+    // Backward compatibility if nextClaimAt is missing
     if (!investment.lastClaimDate) return null
     const next = new Date(investment.lastClaimDate).getTime() + 24 * 60 * 60 * 1000
     return next > Date.now() ? new Date(next) : null

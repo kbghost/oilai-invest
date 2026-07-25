@@ -48,21 +48,25 @@ async function generateDailyProfits() {
     let count = 0;
     for (const inv of active) {
       try {
-        const variation   = getOilVariation();
-        const multiplier  = getAIMultiplier(variation);
-        const dailyProfit = parseFloat((inv.amount * inv.dailyROI / 100 * multiplier).toFixed(2));
-
-        // Ajouter au profit en attente (l'utilisateur réclame via le bouton)
-        inv.pendingProfit   = parseFloat(((inv.pendingProfit || 0) + dailyProfit).toFixed(2));
-        inv.lastProfitDate  = new Date();
-        await inv.save();
+        /* 
+         * DÉSACTIVÉ : L'algorithme de claim pré-remplit déjà `pendingProfit` 
+         * pour la prochaine réclamation. Si on laisse le cron ajouter du profit,
+         * l'utilisateur gagne le double. On commente donc cette partie.
+         * 
+         const variation   = getOilVariation();
+         const multiplier  = getAIMultiplier(variation);
+         const dailyProfit = parseFloat((inv.amount * inv.dailyROI / 100 * multiplier).toFixed(2));
+         inv.pendingProfit   = parseFloat(((inv.pendingProfit || 0) + dailyProfit).toFixed(2));
+         inv.lastProfitDate  = new Date();
+         await inv.save();
+         */
         count++;
       } catch (err) {
         console.error(`[CRON] Erreur investissement ${inv._id}:`, err.message);
       }
     }
 
-    console.log(`[CRON] ✅ ${count} profits générés en ${((Date.now()-start)/1000).toFixed(1)}s`);
+    console.log(`[CRON] ✅ ${count} profits vérifiés en ${((Date.now()-start)/1000).toFixed(1)}s`);
   } catch (err) {
     console.error('[CRON] ❌ Erreur fatale:', err);
   }
