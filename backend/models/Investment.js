@@ -35,7 +35,7 @@ const profitHistorySchema = new mongoose.Schema({
 
 const investmentSchema = new mongoose.Schema({
   user:          { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  plan:          { type: String, enum: ['starter', 'pro', 'premium'], required: true },
+  plan:          { type: String, enum: ['starter', 'pro', 'premium', 'bronze', 'argent', 'or', 'platine', 'vip_exec', 'king'], required: true },
   amount:        { type: Number, required: true, min: 1 },
   dailyROI:      { type: Number, required: true },   // % par jour (ex: 1.5)
   durationDays:  { type: Number, required: true },   // durée totale en jours
