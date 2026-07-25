@@ -9,7 +9,15 @@ const withdrawalSchema = new mongoose.Schema({
   amount: {
     type: Number,
     required: [true, 'Amount is required'],
-    min: [20, 'Minimum withdrawal is $20']
+    min: [10, 'Minimum withdrawal is $10']
+  },
+  fee: {
+    type: Number,
+    required: true
+  },
+  netAmount: {
+    type: Number,
+    required: true
   },
   method: {
     type: String,

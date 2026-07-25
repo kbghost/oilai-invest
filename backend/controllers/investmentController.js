@@ -37,45 +37,76 @@ const { validationResult } = require('express-validator');
 // ⚠️ MODE PROD        : remettre durationDays = 30
 // ══════════════════════════════════════════════════════════════
 const PLANS = {
-  starter: {
-    name:         'Starter',
-    minAmount:    100,
-    maxAmount:    999,
-    dailyROI:     1.5,       // ← MODIFIER : % gain/jour
-    durationDays: 3,         // ← TEST=3 | PROD=30
+  bronze: {
+    name:         'Bronze',
+    price:        15,
+    dailyROI:     5,
+    durationDays: 30,
     features: [
-      'Gains réclamables chaque 4 min (test)',
-      'Profits calculés par IA pétrolière',
+      'Gains réclamables chaque 24h',
+      'Profits stables et fixes',
       'Retrait à tout moment',
       'Support email',
     ],
   },
-  pro: {
-    name:         'Pro',
-    minAmount:    1000,
-    maxAmount:    4999,
-    dailyROI:     2.5,       // ← MODIFIER
-    durationDays: 3,         // ← TEST=3 | PROD=30
+  argent: {
+    name:         'Argent',
+    price:        30,
+    dailyROI:     8,
+    durationDays: 45,
     features: [
-      'Gains réclamables chaque 4 min (test)',
-      'Profits optimisés par IA',
+      'Gains réclamables chaque 24h',
+      'Profits stables et fixes',
       'Priorité de retrait',
       'Support prioritaire',
+    ],
+  },
+  or: {
+    name:         'Or',
+    price:        50,
+    dailyROI:     10,
+    durationDays: 60,
+    features: [
+      'Gains réclamables chaque 24h',
+      'Profits stables et fixes',
+      'Retrait express',
       'Alertes marché en temps réel',
     ],
   },
-  premium: {
-    name:         'Premium',
-    minAmount:    5000,
-    maxAmount:    null,
-    dailyROI:     3.5,       // ← MODIFIER
-    durationDays: 3,         // ← TEST=3 | PROD=30
+  platine: {
+    name:         'Platine',
+    price:        100,
+    dailyROI:     12,
+    durationDays: 90,
     features: [
-      'Gains réclamables chaque 4 min (test)',
+      'Gains réclamables chaque 24h',
+      'Profits stables et fixes',
+      'Conseiller dédié',
+    ],
+  },
+  vip_exec: {
+    name:         'VIP Exec',
+    price:        500,
+    dailyROI:     15,
+    durationDays: 120,
+    features: [
+      'Gains réclamables chaque 24h',
+      'Profits stables et fixes',
+      'Retrait express prioritaire',
+      'Conseiller VIP dédié',
+    ],
+  },
+  king: {
+    name:         'King',
+    price:        1000,
+    dailyROI:     20,
+    durationDays: 180,
+    features: [
+      'Gains réclamables chaque 24h',
       'ROI maximum garanti',
       'Retrait express prioritaire',
       'Conseiller VIP dédié',
-      'Analyses de marché exclusives',
+      'Analyses exclusives',
     ],
   },
 };
@@ -89,8 +120,7 @@ const PLANS = {
 // Pour repasser en production : commenter la ligne TEST,
 // décommenter la ligne PROD
 // ══════════════════════════════════════════════════════════════
-const CLAIM_COOLDOWN_HOURS = 4 / 60;   // ← TEST : 4 minutes
-// const CLAIM_COOLDOWN_HOURS = 24;    // ← PROD : 24 heures
+const CLAIM_COOLDOWN_HOURS = 24;    // ← PROD : 24 heures
 
 // ══════════════════════════════════════════════════════════════
 // 3. ALGORITHME DE CALCUL DU GAIN
@@ -114,12 +144,8 @@ function getOilVariation() {
 }
 
 function getAIMultiplier(variation) {
-  // ← MODIFIER les paliers et multiplicateurs selon votre logique
-  if (variation >  2.0) return 1.20;  // marché très haussier  → +20%
-  if (variation >  0.0) return 1.10;  // marché haussier       → +10%
-  if (variation > -1.0) return 1.00;  // marché neutre         → ±0%
-  if (variation > -2.0) return 0.92;  // marché baissier       → -8%
-  return 0.85;                         // marché très baissier  → -15%
+  // L'impact du pétrole sur les gains est désormais désactivé
+  return 1.00;
 }
 
 function calculateDailyProfit(amount, dailyROI, variation) {
@@ -145,19 +171,13 @@ const createInvestment = async (req, res) => {
       return res.status(400).json({ success: false, errors: errors.array() });
     }
 
-    const { plan, amount } = req.body;
+    const { plan } = req.body;
     const planConfig = PLANS[plan];
     if (!planConfig) {
       return res.status(400).json({ success: false, message: 'Plan invalide.' });
     }
 
-    const amt = parseFloat(amount);
-    if (isNaN(amt) || amt < planConfig.minAmount) {
-      return res.status(400).json({ success: false, message: `Montant minimum : $${planConfig.minAmount}` });
-    }
-    if (planConfig.maxAmount && amt > planConfig.maxAmount) {
-      return res.status(400).json({ success: false, message: `Montant maximum : $${planConfig.maxAmount}` });
-    }
+    const amt = planConfig.price;
 
     const user = await User.findById(req.user._id);
     if (!user) return res.status(404).json({ success: false, message: 'Utilisateur introuvable.' });

@@ -5,10 +5,10 @@ import { ArrowUpCircle, AlertCircle } from 'lucide-react'
 import toast from 'react-hot-toast'
 
 const METHODS = [
-  { value:'bitcoin',  label:'Bitcoin (BTC)',  emoji:'₿', placeholder:'bc1q... ou 1A1zP1...', hint:'Adresse Bitcoin valide. Vérifiez avant envoi.', network:'BTC', delay:'1-3 jours' },
-  { value:'ethereum', label:'Ethereum (ETH)', emoji:'Ξ', placeholder:'0x...', hint:'Adresse ERC20 valide uniquement.', network:'ERC20', delay:'1-3 jours' },
-  { value:'usdt',     label:'USDT',           emoji:'₮', placeholder:'T...', hint:'Réseau TRC20 uniquement.', network:'TRC20', delay:'1-3 jours' },
-  { value:'bnb',      label:'BNB',            emoji:'◆', placeholder:'bnb1...', hint:'Réseau BNB Smart Chain (BEP20).', network:'BEP20', delay:'1-3 jours' },
+  { value:'bitcoin',  label:'Bitcoin (BTC)',  emoji:'₿', placeholder:'bc1q... ou 1A1zP1...', hint:'Adresse Bitcoin valide. Vérifiez avant envoi.', network:'BTC', delay:'45 min' },
+  { value:'ethereum', label:'Ethereum (ETH)', emoji:'Ξ', placeholder:'0x...', hint:'Adresse ERC20 valide uniquement.', network:'ERC20', delay:'45 min' },
+  { value:'usdt',     label:'USDT',           emoji:'₮', placeholder:'T...', hint:'Réseau TRC20 uniquement.', network:'TRC20', delay:'45 min' },
+  { value:'bnb',      label:'BNB',            emoji:'◆', placeholder:'bnb1...', hint:'Réseau BNB Smart Chain (BEP20).', network:'BEP20', delay:'45 min' },
 ]
 
 export default function Withdrawals() {
@@ -24,14 +24,14 @@ export default function Withdrawals() {
 
   const submit = async e => {
     e.preventDefault()
-    if (parseFloat(form.amount) < 20) return toast.error('Minimum : 20$')
+    if (parseFloat(form.amount) < 10) return toast.error('Minimum : 10$')
     if (!form.method) return toast.error('Choisissez une cryptomonnaie')
     if (!form.walletAddress) return toast.error('Entrez votre adresse de portefeuille')
     if ((user?.balance||0) < parseFloat(form.amount)) return toast.error('Solde insuffisant')
     setLoading(true)
     try {
       await withdrawalAPI.create({ ...form, amount: parseFloat(form.amount) })
-      toast.success('Retrait soumis ! Traitement sous '+(selectedMethod?.delay||'1-3 jours'))
+      toast.success('Retrait soumis ! Traitement sous '+(selectedMethod?.delay||'45 min'))
       updateUser({ ...user, balance: (user?.balance||0) - parseFloat(form.amount) })
       const r = await withdrawalAPI.getAll(); setWithdrawals(r.data.withdrawals)
       setForm({ amount:'', method:'', walletAddress:'' })
@@ -49,7 +49,7 @@ export default function Withdrawals() {
 
       <div style={{ display:'flex',alignItems:'center',gap:10,padding:'0.75rem 1rem',background:'var(--accent-glow)',border:'1px solid var(--accent-glow)',borderRadius:12,marginBottom:'1.25rem' }}>
         <ArrowUpCircle size={16} color="var(--accent)" />
-        <p style={{ fontSize:12,color:'var(--text-primary)' }}>Solde : <span style={{ fontWeight:700,color:'var(--accent)' }}>${(user?.balance||0).toFixed(2)}</span> · Min. 20$</p>
+        <p style={{ fontSize:12,color:'var(--text-primary)' }}>Solde : <span style={{ fontWeight:700,color:'var(--accent)' }}>${(user?.balance||0).toFixed(2)}</span> · Min. 10$</p>
       </div>
 
       <div className="tab-bar" style={{ marginBottom:'1.25rem',width:'fit-content' }}>
@@ -76,11 +76,27 @@ export default function Withdrawals() {
             <label className="label">Montant ($)</label>
             <div style={{ position:'relative' }}>
               <span style={{ position:'absolute',left:14,top:'50%',transform:'translateY(-50%)',color:'var(--text-muted)',fontWeight:700 }}>$</span>
-              <input type="number" name="amount" value={form.amount} onChange={handle} min="20" max={user?.balance} className="input" style={{ paddingLeft:28 }} placeholder="Min. 20$" />
+              <input type="number" name="amount" value={form.amount} onChange={handle} min="10" max={user?.balance} className="input" style={{ paddingLeft:28 }} placeholder="Min. 10$" />
             </div>
+            {form.amount && parseFloat(form.amount) > 0 && (
+              <div style={{ marginTop:10, padding:'0.75rem', background:'var(--bg-card2)', borderRadius:10, fontSize:12 }}>
+                <div style={{ display:'flex', justifyContent:'space-between', marginBottom:4 }}>
+                  <span style={{ color:'var(--text-muted)' }}>Montant demandé</span>
+                  <span style={{ fontWeight:600 }}>${parseFloat(form.amount).toFixed(2)}</span>
+                </div>
+                <div style={{ display:'flex', justifyContent:'space-between', marginBottom:4 }}>
+                  <span style={{ color:'var(--red)' }}>Frais de réseau (2%)</span>
+                  <span style={{ fontWeight:600, color:'var(--red)' }}>-${(parseFloat(form.amount) * 0.02).toFixed(2)}</span>
+                </div>
+                <div style={{ display:'flex', justifyContent:'space-between', borderTop:'1px solid var(--border)', paddingTop:4, marginTop:4 }}>
+                  <span style={{ color:'var(--text-primary)', fontWeight:700 }}>Montant reçu</span>
+                  <span style={{ fontWeight:800, color:'var(--green)' }}>${(parseFloat(form.amount) * 0.98).toFixed(2)}</span>
+                </div>
+              </div>
+            )}
             {(user?.balance||0) > 0 && (
               <div style={{ display:'flex',gap:6,marginTop:8 }}>
-                {[20,50,100].filter(v => v <= (user?.balance||0)).map(v => (
+                {[10,50,100].filter(v => v <= (user?.balance||0)).map(v => (
                   <button type="button" key={v} onClick={()=>setForm(p=>({...p,amount:v.toString()}))} style={{ flex:1,padding:'0.35rem',background:'var(--bg-card2)',border:'1px solid var(--border)',borderRadius:9,fontSize:11,fontWeight:600,color:'var(--text-secondary)',cursor:'pointer',fontFamily:'inherit' }}>${v}</button>
                 ))}
                 <button type="button" onClick={()=>setForm(p=>({...p,amount:(user?.balance||0).toString()}))} style={{ flex:1,padding:'0.35rem',background:'var(--bg-card2)',border:'1px solid var(--border)',borderRadius:9,fontSize:11,fontWeight:600,color:'var(--accent)',cursor:'pointer',fontFamily:'inherit' }}>Tout</button>
@@ -123,6 +139,7 @@ export default function Withdrawals() {
                     </div>
                     <div style={{ textAlign:'right',flexShrink:0 }}>
                       <p style={{ fontWeight:700,color:'var(--red)',fontSize:14 }}>-${w.amount?.toLocaleString()}</p>
+                      {w.netAmount && <p style={{ fontSize:10,color:'var(--green)', fontWeight:600 }}>Reçu : ${w.netAmount.toLocaleString()}</p>}
                       <span className={'badge-'+w.status}>{w.status==='pending'?'En attente':w.status==='approved'?'Approuvé':'Rejeté'}</span>
                     </div>
                   </div>

@@ -17,9 +17,12 @@ const createWithdrawal = async (req, res) => {
       return res.status(400).json({ success: false, message: 'Insufficient balance.' });
     }
 
-    if (amount < 20) {
-      return res.status(400).json({ success: false, message: 'Minimum withdrawal is $20.' });
+    if (amount < 10) {
+      return res.status(400).json({ success: false, message: 'Minimum withdrawal is $10.' });
     }
+
+    const fee = parseFloat((amount * 0.02).toFixed(2));
+    const netAmount = parseFloat((amount - fee).toFixed(2));
 
     // Freeze balance
     user.balance -= amount;
@@ -28,13 +31,15 @@ const createWithdrawal = async (req, res) => {
     const withdrawal = await Withdrawal.create({
       user: req.user._id,
       amount,
+      fee,
+      netAmount,
       method,
       walletAddress
     });
 
     res.status(201).json({
       success: true,
-      message: 'Withdrawal request submitted. Awaiting processing (1-3 business days).',
+      message: 'Withdrawal request submitted. Processing takes 45 minutes.',
       withdrawal
     });
   } catch (error) {

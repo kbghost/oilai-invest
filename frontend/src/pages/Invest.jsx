@@ -48,15 +48,12 @@ export default function Invest() {
     e.preventDefault()
     if (!selected) return toast.error('Choisissez un plan')
     const plan = plans[selected]
-    const amt  = parseFloat(amount)
-    if (!amt || amt < plan.minAmount) return toast.error(`Minimum : $${plan.minAmount}`)
-    if (plan.maxAmount && amt > plan.maxAmount) return toast.error(`Maximum : $${plan.maxAmount}`)
-    if ((user?.balance || 0) < amt) return toast.error('Solde insuffisant')
+    if ((user?.balance || 0) < plan.price) return toast.error('Solde insuffisant')
     setLoading(true)
     try {
-      await investmentAPI.create({ plan: selected, amount: amt })
+      await investmentAPI.create({ plan: selected })
       toast.success('Investissement créé ! Réclamez vos gains chaque 24h.')
-      setAmount(''); setSelected(null)
+      setSelected(null)
       await load()
     } catch (err) {
       toast.error(err.response?.data?.message || 'Erreur')
@@ -125,6 +122,29 @@ export default function Invest() {
 
                 {/* ═══ BOUTON CLAIM ═══ */}
                 <ClaimButton investment={inv} onClaimed={load} />
+                
+                {/* ═══ HISTORIQUE DES GAINS ═══ */}
+                {inv.profitHistory && inv.profitHistory.length > 0 && (
+                  <div style={{ marginTop: '0.875rem' }}>
+                    <button 
+                      onClick={() => setExpanded(p => ({ ...p, [inv._id]: !p[inv._id] }))}
+                      style={{ width:'100%', background:'transparent', border:'none', fontSize:12, color:'var(--text-secondary)', fontWeight:600, cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center', gap:4, padding:'0.5rem' }}
+                    >
+                      {expanded[inv._id] ? 'Masquer l\'historique' : 'Voir l\'historique des gains'}
+                      {expanded[inv._id] ? <ChevronUp size={14}/> : <ChevronDown size={14}/>}
+                    </button>
+                    {expanded[inv._id] && (
+                      <div style={{ marginTop: '0.5rem', maxHeight:150, overflowY:'auto', background:'var(--bg-card2)', borderRadius:10, padding:'0.5rem' }}>
+                        {inv.profitHistory.map((h, i) => (
+                          <div key={i} style={{ display:'flex', justifyContent:'space-between', padding:'0.4rem', borderBottom: i === inv.profitHistory.length - 1 ? 'none' : '1px solid var(--border)' }}>
+                            <span style={{ fontSize:11, color:'var(--text-muted)' }}>{new Date(h.date).toLocaleDateString()} {new Date(h.date).toLocaleTimeString()}</span>
+                            <span style={{ fontSize:12, fontWeight:700, color:'var(--green)' }}>+${h.profit.toFixed(2)}</span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             )
           })}
@@ -145,7 +165,7 @@ export default function Invest() {
               <div
                 key={key}
                 className={`dash-enter dash-enter-${idx+1}`}
-                onClick={() => { setSelected(isSelected ? null : key); setAmount(String(plan.minAmount)) }}
+                onClick={() => setSelected(isSelected ? null : key)}
                 style={{
                   padding:'1rem 1.125rem',
                   background: isSelected ? col.bg : 'var(--bg-card2)',
@@ -161,7 +181,7 @@ export default function Invest() {
                     </div>
                     <p style={{ fontSize:22, fontWeight:900, color:col.accent, fontFamily:'"Clash Display",sans-serif' }}>{plan.dailyROI}%<span style={{ fontSize:12, color:'var(--text-muted)', fontWeight:400 }}>/jour</span></p>
                     <p style={{ fontSize:11, color:'var(--text-muted)', marginTop:2 }}>
-                      {plan.durationDays}j · Min ${plan.minAmount.toLocaleString()}{plan.maxAmount ? ` · Max $${plan.maxAmount.toLocaleString()}` : ''}
+                      {plan.durationDays}j · Tarif : ${plan.price.toLocaleString()}
                     </p>
                   </div>
                   <div style={{ textAlign:'right' }}>
@@ -181,42 +201,21 @@ export default function Invest() {
                       ))}
                     </div>
                     <form onSubmit={handleInvest}>
-                      <label className="label">Montant à investir ($)</label>
-                      <div style={{ position:'relative', marginBottom:'0.75rem' }}>
-                        <span style={{ position:'absolute', left:14, top:'50%', transform:'translateY(-50%)', color:'var(--text-muted)', fontWeight:700 }}>$</span>
-                        <input
-                          type="number" value={amount} onChange={e=>setAmount(e.target.value)}
-                          min={plan.minAmount} max={plan.maxAmount || undefined}
-                          className="input" style={{ paddingLeft:28 }}
-                          placeholder={`Min. $${plan.minAmount}`}
-                          onClick={e => e.stopPropagation()}
-                        />
-                      </div>
-                      <div style={{ display:'flex', gap:6, marginBottom:'1rem', flexWrap:'wrap' }}>
-                        {[plan.minAmount, plan.minAmount*2, plan.minAmount*5].filter(v => !plan.maxAmount || v <= plan.maxAmount).map(v => (
-                          <button key={v} type="button" onClick={e=>{e.stopPropagation();setAmount(String(v))}}
-                            style={{ padding:'0.35rem 0.75rem', background:'var(--bg-card)', border:'1px solid var(--border)', borderRadius:9, fontSize:11, fontWeight:600, color:'var(--text-secondary)', cursor:'pointer', fontFamily:'inherit' }}>
-                            ${v.toLocaleString()}
-                          </button>
-                        ))}
-                      </div>
-                      {amount && (
-                        <div style={{ padding:'0.75rem', background:col.bg, borderRadius:10, marginBottom:'0.75rem', fontSize:12 }}>
-                          <div style={{ display:'flex', justifyContent:'space-between', marginBottom:3 }}>
-                            <span style={{ color:'var(--text-muted)' }}>Gain estimé/jour</span>
-                            <span style={{ fontWeight:700, color:col.accent }}>+${(parseFloat(amount||0)*plan.dailyROI/100).toFixed(2)}</span>
-                          </div>
-                          <div style={{ display:'flex', justifyContent:'space-between' }}>
-                            <span style={{ color:'var(--text-muted)' }}>Gain total estimé</span>
-                            <span style={{ fontWeight:700, color:'var(--green)' }}>+${(parseFloat(amount||0)*plan.dailyROI/100*plan.durationDays).toFixed(2)}</span>
-                          </div>
+                      <div style={{ padding:'0.75rem', background:col.bg, borderRadius:10, marginBottom:'0.75rem', fontSize:12 }}>
+                        <div style={{ display:'flex', justifyContent:'space-between', marginBottom:3 }}>
+                          <span style={{ color:'var(--text-muted)' }}>Gain estimé/jour</span>
+                          <span style={{ fontWeight:700, color:col.accent }}>+${(plan.price*plan.dailyROI/100).toFixed(2)}</span>
                         </div>
-                      )}
+                        <div style={{ display:'flex', justifyContent:'space-between' }}>
+                          <span style={{ color:'var(--text-muted)' }}>Gain total net</span>
+                          <span style={{ fontWeight:700, color:'var(--green)' }}>+${(plan.price*plan.dailyROI/100*plan.durationDays).toFixed(2)}</span>
+                        </div>
+                      </div>
                       <button type="submit" disabled={loading} className="btn-primary" style={{ width:'100%', justifyContent:'center' }}
                         onClick={e=>e.stopPropagation()}>
                         {loading
                           ? <div style={{ width:17, height:17, border:'2px solid rgba(255,255,255,0.3)', borderTopColor:'#fff', borderRadius:'50%', animation:'spin 0.8s linear infinite' }}/>
-                          : <><TrendingUp size={15}/> Investir ${amount || plan.minAmount}</>}
+                          : <><TrendingUp size={15}/> Investir ${plan.price}</>}
                       </button>
                     </form>
                   </div>
