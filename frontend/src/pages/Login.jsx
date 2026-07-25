@@ -35,21 +35,21 @@ export default function Login() {
             <div className="auth-logo-icon">
               <Zap size={18} color="#fff" />
             </div>
-            <span className="auth-logo-text">OilAI <span className="auth-logo-accent">Invest</span></span>
+            <span className="auth-logo-text" style={{ color: '#000' }}>OilAI <span className="auth-logo-accent" style={{ color: '#000' }}>Invest</span></span>
           </Link>
 
           <div className="animate-fade-up">
-            <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--accent)', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: 12 }}>
+            <p style={{ fontSize: 11, fontWeight: 800, color: '#000', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: 12 }}>
               🌍 Plateforme #1 Afrique de l'Ouest
             </p>
-            <h2 style={{ fontFamily: '"Poppins",sans-serif', fontSize: '2.4rem', fontWeight: 800, color: '#fff', lineHeight: 1.15, marginBottom: '1.5rem', letterSpacing: '-0.02em' }}>
+            <h2 style={{ fontFamily: '"Poppins",sans-serif', fontSize: '2.4rem', fontWeight: 800, color: '#000', lineHeight: 1.15, marginBottom: '1.5rem', letterSpacing: '-0.02em' }}>
               Votre argent travaille,<br />même quand vous dormez.
             </h2>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
               {['ROI jusqu\'à 20%/jour', 'Dépôts 100% crypto', 'Sécurité AES-256', 'Support 24/7 en français'].map((f, i) => (
-                <div key={f} className={`animate-fade-up stagger-${i+1}`} style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 14, color: 'rgba(255,255,255,0.7)', fontWeight: 500 }}>
-                  <div style={{ width: 24, height: 24, borderRadius: '50%', background: 'rgba(34,197,94,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid rgba(34,197,94,0.3)' }}>
-                    <span style={{ color: 'var(--accent)', fontWeight: 800, fontSize: 12 }}>✓</span>
+                <div key={f} className={`animate-fade-up stagger-${i+1}`} style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 14, color: '#000', fontWeight: 700 }}>
+                  <div style={{ width: 24, height: 24, borderRadius: '50%', background: 'rgba(0,0,0,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid rgba(0,0,0,0.2)' }}>
+                    <span style={{ color: '#000', fontWeight: 900, fontSize: 12 }}>✓</span>
                   </div>
                   {f}
                 </div>
@@ -57,7 +57,7 @@ export default function Login() {
             </div>
           </div>
 
-          <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)', fontWeight: 500 }}>© 2025 OilAI Invest. Tous droits réservés.</p>
+          <p style={{ fontSize: 12, color: 'rgba(0,0,0,0.6)', fontWeight: 600 }}>© 2025 OilAI Invest. Tous droits réservés.</p>
         </div>
       </div>
 

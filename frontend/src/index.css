@@ -752,24 +752,6 @@ html, body, #root {
   #desktop-sb  { display: flex !important; flex-direction: column !important; }
   #dash-main   { margin-left: 252px !important; }
   #admin-sb    { display: flex !important; flex-direction: column !important; }
-  #admin-main  { margin-left: 230px !important; }
-  #mob-top     { display: none !important; }
-  #admin-top   { display: none !important; }
-}
-
-/* ─── CONVERTED FROM INLINE STYLE JSX — all media queries in one place ─── */
-@media (max-width: 640px) {
-  #nav-lnks   { display: none !important; }
-}
-@media (max-width: 480px) {
-  #stats-row  { grid-template-columns: repeat(2,1fr) !important; }
-}
-@media (min-width: 900px) {
-  #oil-slider-grid { grid-template-columns: 1fr 320px !important; }
-  #chart-inv-grid  { grid-template-columns: 1.1fr 1fr !important; }
-  #slider-oil-grid { grid-template-columns: 1fr 280px !important; }
-}
-@media (min-width: 1024px) {
   #login-left      { display: flex !important; flex-direction: column !important; }
   #reg-left        { display: flex !important; flex-direction: column !important; }
   #live-feed-wrap  { bottom: 24px !important; }

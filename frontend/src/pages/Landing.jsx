@@ -63,16 +63,16 @@ export default function Landing() {
             <div style={{ fontSize:9,color:'var(--text-muted)',letterSpacing:'0.08em',textTransform:'uppercase',lineHeight:1 }}>Investissement IA</div>
           </div>
         </div>
-        <div style={{ display:'flex', alignItems:'center', gap:6 }}>
-          <div id="nav-lnks" style={{ display:'flex', gap:'1.25rem', marginRight:8 }}>
+        <div style={{ display:'flex', alignItems:'center', gap:4 }}>
+          <div id="nav-lnks" style={{ display:'flex', gap:'1rem', marginRight:4 }}>
 {[['#plans','Plans'],['#calcul','Calcul'],['#paiements','Paiement']].map(([h,l]) => (
               <a key={h} href={h} style={{ fontSize:13,fontWeight:500,color:'var(--text-secondary)',textDecoration:'none' }}
                 onMouseEnter={e=>e.target.style.color='var(--accent)'} onMouseLeave={e=>e.target.style.color='var(--text-secondary)'}>{l}</a>
             ))}
           </div>
           <ThemeToggle compact />
-          <Link to="/login" style={{ padding:'0.45rem 0.75rem',borderRadius:9,fontSize:12,fontWeight:600,color:'var(--text-secondary)',textDecoration:'none',border:'1px solid var(--border)',background:'var(--bg-card2)' }}>Connexion</Link>
-          <Link to="/register" className="btn-primary" style={{ padding:'0.45rem 0.875rem',fontSize:12 }}>Commencer</Link>
+          <Link to="/login" className="hide-mobile" style={{ padding:'0.4rem 0.6rem',borderRadius:9,fontSize:12,fontWeight:600,color:'var(--text-secondary)',textDecoration:'none',border:'1px solid var(--border)',background:'var(--bg-card2)' }}>Connexion</Link>
+          <Link to="/register" className="btn-primary" style={{ padding:'0.4rem 0.6rem',fontSize:12, whiteSpace: 'nowrap' }}>Commencer</Link>
         </div>
       </nav>
 

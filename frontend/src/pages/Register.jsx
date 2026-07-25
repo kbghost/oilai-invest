@@ -67,24 +67,24 @@ export default function Register() {
             <div className="auth-logo-icon">
               <Zap size={18} color="#fff" />
             </div>
-            <span className="auth-logo-text">OilAI <span className="auth-logo-accent">Invest</span></span>
+            <span className="auth-logo-text" style={{ color: '#000' }}>OilAI <span className="auth-logo-accent" style={{ color: '#000' }}>Invest</span></span>
           </Link>
           
           <div className="animate-fade-up">
-            <h2 style={{ fontFamily: '"Poppins",sans-serif', fontSize: '2.4rem', fontWeight: 800, color: '#fff', marginBottom: '1.5rem', lineHeight: 1.15, letterSpacing: '-0.02em' }}>
+            <h2 style={{ fontFamily: '"Poppins",sans-serif', fontSize: '2.4rem', fontWeight: 800, color: '#000', marginBottom: '1.5rem', lineHeight: 1.15, letterSpacing: '-0.02em' }}>
               Rejoignez<br /><span className="gradient-text">18 000+ investisseurs</span><br />africains
             </h2>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', maxWidth: 320 }}>
               {[['124M$+', 'Actifs gérés'], ['20%/j', 'ROI max'], ['70+', 'Pays'], ['24/7', 'Support IA']].map(([v, l], i) => (
-                <div key={l} className={`animate-fade-up stagger-${i+1}`} style={{ padding: '1rem', background: 'rgba(34,197,94,0.1)', border: '1px solid rgba(34,197,94,0.2)', borderRadius: 16, textAlign: 'center', backdropFilter: 'blur(10px)' }}>
-                  <p style={{ fontFamily: '"Poppins",sans-serif', fontWeight: 800, color: 'var(--accent)', fontSize: '1.25rem' }}>{v}</p>
-                  <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.7)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{l}</p>
+                <div key={l} className={`animate-fade-up stagger-${i+1}`} style={{ padding: '1rem', background: 'rgba(0,0,0,0.05)', border: '1px solid rgba(0,0,0,0.1)', borderRadius: 16, textAlign: 'center', backdropFilter: 'blur(10px)' }}>
+                  <p style={{ fontFamily: '"Poppins",sans-serif', fontWeight: 800, color: '#000', fontSize: '1.25rem' }}>{v}</p>
+                  <p style={{ fontSize: 11, color: 'rgba(0,0,0,0.7)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{l}</p>
                 </div>
               ))}
             </div>
           </div>
           
-          <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)', fontWeight: 500 }}>© 2025 OilAI Invest</p>
+          <p style={{ fontSize: 12, color: 'rgba(0,0,0,0.6)', fontWeight: 600 }}>© 2025 OilAI Invest</p>
         </div>
       </div>
 
