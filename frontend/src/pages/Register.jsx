@@ -6,6 +6,17 @@ import { referralAPI } from '../services/api'
 import { Eye, EyeOff, Zap, ArrowRight, Check, X } from 'lucide-react'
 import toast from 'react-hot-toast'
 
+const AFRICAN_COUNTRIES = [
+  { name: 'Côte d’Ivoire', code: 'CI', dialCode: '+225', maxDigits: 10 },
+  { name: 'Nigeria', code: 'NG', dialCode: '+234', maxDigits: 10 },
+  { name: 'Kenya', code: 'KE', dialCode: '+254', maxDigits: 10 },
+  { name: 'Ghana', code: 'GH', dialCode: '+233', maxDigits: 9 },
+  { name: 'Senegal', code: 'SN', dialCode: '+221', maxDigits: 9 },
+  { name: 'Cameroon', code: 'CM', dialCode: '+237', maxDigits: 9 },
+  { name: 'Rwanda', code: 'RW', dialCode: '+250', maxDigits: 9 },
+  { name: 'Mali', code: 'ML', dialCode: '+223', maxDigits: 8 },
+]
+
 export default function Register() {
   const { register } = useAuth()
   const navigate = useNavigate()
@@ -13,14 +24,29 @@ export default function Register() {
 
   const [form, setForm] = useState({
     firstName: '', lastName: '', email: '', password: '',
-    phone: '', country: '',
+    phone: '', country: AFRICAN_COUNTRIES[0].name,
     referralCode: searchParams.get('ref') || '',
   })
+  const [selectedCountry, setSelectedCountry] = useState(AFRICAN_COUNTRIES[0])
   const [show, setShow] = useState(false)
   const [loading, setLoading] = useState(false)
   const [refStatus, setRefStatus] = useState(null) // null | 'checking' | {valid, name} | {valid:false}
 
   const handle = e => setForm(p => ({ ...p, [e.target.name]: e.target.value }))
+
+  const handleCountryChange = e => {
+    const country = AFRICAN_COUNTRIES.find(c => c.name === e.target.value) || AFRICAN_COUNTRIES[0]
+    setSelectedCountry(country)
+    setForm(p => {
+      const currentDigits = (p.phone || '').replace(/^\+\d+/, '').replace(/\D/g, '')
+      return { ...p, country: country.name, phone: `${country.dialCode}${currentDigits.slice(0, country.maxDigits)}` }
+    })
+  }
+
+  const handlePhoneChange = e => {
+    const digits = e.target.value.replace(/\D/g, '').slice(0, selectedCountry.maxDigits)
+    setForm(p => ({ ...p, phone: `${selectedCountry.dialCode}${digits}` }))
+  }
 
   // Valide le code de parrainage en temps réel avec debounce 600ms
   useEffect(() => {
@@ -136,12 +162,27 @@ export default function Register() {
 
             <div className="auth-grid">
               <div>
-                <label className="label">Téléphone</label>
-                <input name="phone" value={form.phone} onChange={handle} className="input" placeholder="+xxx..." />
+                <label className="label">Pays</label>
+                <select name="country" value={form.country} onChange={handleCountryChange} className="input" style={{ appearance: 'auto' }}>
+                  {AFRICAN_COUNTRIES.map(country => (
+                    <option key={country.code} value={country.name}>{country.name}</option>
+                  ))}
+                </select>
               </div>
               <div>
-                <label className="label">Pays</label>
-                <input name="country" value={form.country} onChange={handle} className="input" placeholder="Votre pays" />
+                <label className="label">Téléphone</label>
+                <input
+                  name="phone"
+                  value={form.phone}
+                  onChange={handlePhoneChange}
+                  className="input"
+                  inputMode="numeric"
+                  placeholder={`${selectedCountry.dialCode}771234567`}
+                  style={{ fontFamily: 'monospace' }}
+                />
+                <p style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 6 }}>
+                  Indicateur auto : {selectedCountry.dialCode} · max {selectedCountry.maxDigits} chiffres
+                </p>
               </div>
             </div>
 

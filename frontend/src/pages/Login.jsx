@@ -66,15 +66,15 @@ export default function Login() {
         <div className="auth-mobile-header">
           <Link to="/" className="auth-logo-link">
             <div className="auth-logo-icon" style={{ width: 32, height: 32 }}><Zap size={15} color="#fff" /></div>
-            <span className="auth-logo-text" style={{ fontSize: '1.1rem' }}>OilAI</span>
+            <span className="auth-logo-text" style={{ fontSize: '1.1rem' }}>OilAI Invest</span>
           </Link>
           <ThemeToggle compact />
         </div>
 
         <div className="auth-card animate-fade-up stagger-1">
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-            <h1 style={{ fontFamily: '"Poppins",sans-serif', fontSize: '1.85rem', fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
-              Connexion
+            <h1 style={{ fontFamily: '"Poppins",sans-serif', fontSize: '1.7rem', fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
+              Connexion à OilAI Invest
             </h1>
             <div style={{ display: 'none' }} className="desktop-theme-toggle"><ThemeToggle compact /></div>
           </div>

@@ -1658,7 +1658,16 @@ body,
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 2rem;
+    margin-bottom: 1.15rem;
+}
+
+@media (max-width: 1023px) {
+    .auth-right {
+        padding-top: 0.75rem;
+    }
+    .auth-card {
+        padding: 1.4rem 1.1rem;
+    }
 }
 
 @media (min-width: 1024px) {
@@ -1742,7 +1751,9 @@ body,
     justify-content: center;
 }
 
+
 /* Navbar logo subtitle hidden on very small screens */
+
 .nav-subtitle {
     display: block;
 }
