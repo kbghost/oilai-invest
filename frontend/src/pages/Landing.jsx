@@ -62,7 +62,12 @@ export default function Landing() {
             <div style={{ fontSize:9,color:'var(--text-muted)',letterSpacing:'0.08em',textTransform:'uppercase',lineHeight:1 }}>Investissement IA</div>
           </div>
         </div>
-        <div className="nav-buttons-wrap" style={{ flexWrap:'wrap', justifyContent:'flex-end' }}>
+        <div className="nav-links-desktop">
+          <a href="#plans" className="nav-link">Plans</a>
+          <a href="#calcul" className="nav-link">Simulateur</a>
+          <a href="#paiements" className="nav-link">Paiements</a>
+        </div>
+        <div className="nav-buttons-wrap">
           <ThemeToggle compact />
           <Link to="/login" className="nav-btn-connexion">Connexion</Link>
           <Link to="/register" className="btn-primary nav-btn-commencer">Commencer</Link>
@@ -71,7 +76,7 @@ export default function Landing() {
 
       {/* ── HERO SLIDER ── */}
       <section style={{ paddingTop:60 }}>
-        <div style={{ maxWidth:1200, margin:'0 auto', padding:'0 1rem', display:'flex', justifyContent:'center' }}>
+        <div style={{ width:'100%', maxWidth:'100%', margin:'0 auto', padding:'0', display:'flex', justifyContent:'center' }}>
           <ImageSlider height="clamp(300px, 55vw, 580px)" showText={true} />
         </div>
       </section>

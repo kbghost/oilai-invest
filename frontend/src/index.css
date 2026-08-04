@@ -102,8 +102,8 @@
         font-family: inherit;
     }
     .btn-primary:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 6px 24px var(--accent-glow);
+        transform: none;
+        box-shadow: 0 4px 16px var(--accent-glow);
     }
     .btn-primary:disabled {
         opacity: 0.5;
@@ -231,9 +231,9 @@
         z-index: 1;
     }
     .stat-card:hover {
-        transform: translateY(-4px) scale(1.01);
-        box-shadow: var(--shadow);
-        border-color: var(--accent);
+        transform: none;
+        box-shadow: var(--shadow-card);
+        border-color: var(--border);
     }
     .gradient-text {
         background: linear-gradient(135deg, var(--accent-light), var(--accent));
@@ -262,8 +262,8 @@
         text-decoration: none;
     }
     .nav-link:hover {
-        background: var(--bg-card2);
-        color: var(--text-primary);
+        background: transparent;
+        color: var(--text-secondary);
     }
     .nav-link.active {
         background: var(--accent-glow);
@@ -1164,7 +1164,7 @@ input[type=range]::-webkit-slider-runnable-track {
 }
 
 .shine-card:hover::after {
-    left: 120%;
+    left: -60%;
 }
 
 
@@ -1201,7 +1201,7 @@ input[type=range]::-webkit-slider-runnable-track {
 }
 
 .gradient-border:hover::before {
-    opacity: 1;
+    opacity: 0;
 }
 
 
@@ -1691,12 +1691,19 @@ body,
 
 /* ─── NAV BUTTONS RESPONSIVENESS ─── */
 
+.nav-links-desktop {
+    display: none;
+    align-items: center;
+    gap: 1rem;
+}
+
 .nav-buttons-wrap {
     display: flex;
     align-items: center;
-    gap: 6px;
-    flex-wrap: wrap;
+    gap: 0.9rem;
+    flex-wrap: nowrap;
     justify-content: flex-end;
+    overflow-x: auto;
 }
 
 .nav-btn-connexion,
@@ -1705,9 +1712,9 @@ body,
 }
 
 .nav-btn-connexion {
-    padding: 0.45rem 0.75rem;
-    border-radius: 9px;
-    font-size: 12px;
+    padding: 0.65rem 1rem;
+    border-radius: 11px;
+    font-size: 13px;
     font-weight: 600;
     color: var(--text-secondary);
     text-decoration: none;
@@ -1716,8 +1723,8 @@ body,
 }
 
 .nav-btn-commencer {
-    padding: 0.45rem 0.875rem;
-    font-size: 12px;
+    padding: 0.65rem 1.1rem;
+    font-size: 13px;
     white-space: nowrap;
 }
 
