@@ -132,6 +132,7 @@ export default function ImageSlider({ height = '520px', showText = true }) {
             ))}
           </div>
         </div>
+      </div>
       )}
 
       {/* Arrow buttons */}
