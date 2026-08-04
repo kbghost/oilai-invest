@@ -48,18 +48,21 @@ export default function Landing() {
       <nav style={{
         position:'fixed', top:0, left:0, right:0, zIndex:100,
         display:'flex', alignItems:'center', justifyContent:'space-between',
-        padding:'0.75rem 1.25rem',
+        padding:'0.6rem 1rem',
         background: isDark ? 'rgba(5,10,20,0.9)' : 'rgba(242,245,252,0.95)',
         backdropFilter:'blur(20px)',
         borderBottom:'1px solid var(--border)',
+        gap:'0.5rem',
+        minHeight: 56,
       }}>
-        <div style={{ display:'flex', alignItems:'center', gap:8 }}>
-          <div style={{ width:34,height:34,borderRadius:10,background:'linear-gradient(135deg,var(--accent),var(--accent-dark))',display:'flex',alignItems:'center',justifyContent:'center',boxShadow:'0 4px 12px var(--accent-glow)' }}>
-            <Zap size={16} color="#fff" />
+        {/* Logo */}
+        <div style={{ display:'flex', alignItems:'center', gap:7, flexShrink:0 }}>
+          <div style={{ width:32,height:32,borderRadius:9,background:'linear-gradient(135deg,var(--accent),var(--accent-dark))',display:'flex',alignItems:'center',justifyContent:'center',boxShadow:'0 4px 12px var(--accent-glow)', flexShrink:0 }}>
+            <Zap size={15} color="#fff" />
           </div>
           <div>
-            <span style={{ fontFamily:'"Poppins",sans-serif',fontWeight:700,fontSize:'1rem',color:'var(--text-primary)' }}>OilAI <span style={{ color:'var(--accent)' }}>Invest</span></span>
-            <div style={{ fontSize:9,color:'var(--text-muted)',letterSpacing:'0.08em',textTransform:'uppercase',lineHeight:1 }}>Investissement IA</div>
+            <span style={{ fontFamily:'"Poppins",sans-serif',fontWeight:700,fontSize:'0.95rem',color:'var(--text-primary)',lineHeight:1.2,display:'block' }}>OilAI <span style={{ color:'var(--accent)' }}>Invest</span></span>
+            <div className="nav-subtitle" style={{ fontSize:8,color:'var(--text-muted)',letterSpacing:'0.08em',textTransform:'uppercase',lineHeight:1 }}>Investissement IA</div>
           </div>
         </div>
         <div className="nav-links-desktop">
@@ -128,10 +131,15 @@ export default function Landing() {
                 <Link
                   to="/register"
                   style={{
-                    display:'inline-flex',width:'100%',justifyContent:'center',fontSize:12,padding:'0.7rem 1rem',borderRadius:14,
-                    background:`linear-gradient(135deg,${plan.color}cc,${plan.color}88)`,color:'#fff',fontWeight:700,textDecoration:'none',alignItems:'center'
+                    display:'inline-flex',width:'100%',justifyContent:'center',
+                    fontSize:13,padding:'0.75rem 1rem',borderRadius:14,
+                    background:'linear-gradient(135deg,var(--accent),var(--accent-dark))',
+                    color:'#fff',fontWeight:700,textDecoration:'none',alignItems:'center',
+                    boxShadow:'0 4px 14px var(--accent-glow)',
+                    transition:'all 0.2s',
+                    whiteSpace:'nowrap',
                   }}>
-                  Commencer — {plan.name}
+                  Commencer
                 </Link>
               </div>
             ))}
