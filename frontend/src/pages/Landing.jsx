@@ -3,7 +3,6 @@ import { useEffect } from 'react'
 import { useTheme } from '../context/ThemeContext'
 import ThemeToggle from '../components/ui/ThemeToggle'
 import ImageSlider from '../components/ui/ImageSlider'
-import SpeakButton from '../components/ui/SpeakButton'
 import ROICalculator from '../components/ui/ROICalculator'
 import Testimonials from '../components/ui/Testimonials'
 import { TrustBadges, LiveTicker } from '../components/ui/TrustBadges'
@@ -121,12 +120,14 @@ export default function Landing() {
                 </div>
                 <p style={{ fontFamily:'"Poppins",sans-serif',fontSize:'2.5rem',fontWeight:700,color:plan.color,lineHeight:1,marginBottom:4 }}>{plan.roi}</p>
                 <p style={{ fontSize:12,color:'var(--text-muted)',marginBottom:'1rem' }}>par jour · {plan.duration} jours · Tarif {plan.min}</p>
-                <SpeakButton
-                  text={`Le plan ${plan.name} rapporte ${plan.roi} par jour pendant ${plan.duration} jours. Tarif fixe de ${plan.min}. Rejoignez OilAI Invest !`}
-                  variant="primary"
-                  style={{ width:'100%',justifyContent:'center',fontSize:12,padding:'0.7rem 1rem',background:`linear-gradient(135deg,${plan.color}cc,${plan.color}88)` }}>
+                <Link
+                  to="/register"
+                  style={{
+                    display:'inline-flex',width:'100%',justifyContent:'center',fontSize:12,padding:'0.7rem 1rem',borderRadius:14,
+                    background:`linear-gradient(135deg,${plan.color}cc,${plan.color}88)`,color:'#fff',fontWeight:700,textDecoration:'none',alignItems:'center'
+                  }}>
                   Commencer — {plan.name}
-                </SpeakButton>
+                </Link>
               </div>
             ))}
           </div>
@@ -214,12 +215,12 @@ export default function Landing() {
             18 000+ investisseurs africains génèrent des profits quotidiens avec OilAI.
           </p>
           <div style={{ display:'flex',gap:'0.75rem',justifyContent:'center',flexWrap:'wrap' }} className="reveal">
-            <SpeakButton
-              text="Créez votre compte OilAI Invest gratuit et gagnez jusqu'à 20 pourcent par jour. Rejoignez 18 000 investisseurs africains maintenant !"
-              onClick={() => window.location.href='/register'}
-              style={{ fontSize:'0.9rem',padding:'0.875rem 1.75rem',animation:'glowPulse 2.5s ease-in-out infinite' }}>
+            <Link to="/register" style={{
+              display:'inline-flex',alignItems:'center',justifyContent:'center',gap:8,fontSize:'0.9rem',padding:'0.875rem 1.75rem',
+              borderRadius:14,fontWeight:700,color:'#fff',background:'linear-gradient(135deg,var(--accent),var(--accent-dark))',textDecoration:'none',animation:'glowPulse 2.5s ease-in-out infinite'
+            }}>
               🚀 Créer mon compte
-            </SpeakButton>
+            </Link>
           </div>
           <p style={{ fontSize:11,color:'var(--text-muted)',marginTop:'1rem' }}>✅ Gratuit · ✅ Sans engagement · ✅ Retrait libre</p>
         </div>

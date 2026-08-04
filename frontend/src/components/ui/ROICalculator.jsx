@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Calculator, TrendingUp, ArrowRight, Zap } from 'lucide-react'
-import SpeakButton from './SpeakButton'
 
 const PLANS = {
   bronze:   { name: 'Bronze',   price: 15,   roi: 5,  days: 30,  color: 'var(--text-muted)' },
@@ -102,9 +101,13 @@ export default function ROICalculator() {
 
       {/* CTA buttons */}
       <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-        <SpeakButton text={speakText} variant="primary" style={{ flex: 1, justifyContent: 'center', minWidth: 160 }}>
-          Entendre mes gains
-        </SpeakButton>
+        <a href="#plans" style={{
+          flex: 1, minWidth: 140, display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+          gap: 6, padding: '0.8rem 1.2rem', borderRadius: 14, fontWeight: 700, fontSize: 14,
+          background: 'var(--bg-card2)', border: '1.5px solid var(--accent)', color: 'var(--accent)', textDecoration: 'none', transition: 'all 0.2s'
+        }}>
+          Voir nos plans <ArrowRight size={16} />
+        </a>
         <Link to="/register" style={{
           flex: 1, minWidth: 140, display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
           gap: 6, padding: '0.8rem 1.2rem', borderRadius: 14, fontWeight: 700, fontSize: 14,
