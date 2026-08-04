@@ -8,10 +8,10 @@ import toast from 'react-hot-toast'
  * Pour modifier une adresse de portefeuille, éditez le champ `number` ci-dessous.
  */
 const METHODS = [
-  { value:'bitcoin',  label:'Bitcoin (BTC)',   emoji:'₿', number:'bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh', name:'Wallet BTC OilAI', instructions:'Réseau Bitcoin natif. 2 confirmations requises.', network:'BTC' },
-  { value:'ethereum', label:'Ethereum (ETH)',  emoji:'Ξ', number:'0x71C7656EC7ab88b098defB751B7401B5f6d8976F', name:'Wallet ETH OilAI', instructions:'Réseau ERC20 uniquement. Vérifiez l\'adresse avant envoi.', network:'ERC20' },
-  { value:'usdt',     label:'USDT',            emoji:'₮', number:'TN3W4h6rK2CE4zJe3ZE1x9L9JXmbgEZquT', name:'Wallet USDT OilAI', instructions:'Réseau TRC20 uniquement. Évitez ERC20 — fonds perdus.', network:'TRC20' },
-  { value:'bnb',      label:'BNB',             emoji:'◆', number:'bnb1grpf0955h0ykzq3ar5nmum7y6gdfl6lxfn46h2', name:'Wallet BNB OilAI', instructions:'Réseau BNB Smart Chain (BEP20) uniquement.', network:'BEP20' },
+  { value:'bitcoin',  label:'Bitcoin (BTC)',   logo:'https://raw.githubusercontent.com/spothq/cryptocurrency-icons/master/128/color/btc.png', number:'bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh', name:'Wallet BTC OilAI', instructions:'Réseau Bitcoin natif. 2 confirmations requises.', network:'BTC' },
+  { value:'ethereum', label:'Ethereum (ETH)',  logo:'https://raw.githubusercontent.com/spothq/cryptocurrency-icons/master/128/color/eth.png', number:'0x71C7656EC7ab88b098defB751B7401B5f6d8976F', name:'Wallet ETH OilAI', instructions:'Réseau ERC20 uniquement. Vérifiez l\'adresse avant envoi.', network:'ERC20' },
+  { value:'usdt',     label:'USDT',            logo:'https://raw.githubusercontent.com/spothq/cryptocurrency-icons/master/128/color/usdt.png', number:'TN3W4h6rK2CE4zJe3ZE1x9L9JXmbgEZquT', name:'Wallet USDT OilAI', instructions:'Réseau TRC20 uniquement. Évitez ERC20 — fonds perdus.', network:'TRC20' },
+  { value:'bnb',      label:'BNB',             logo:'https://raw.githubusercontent.com/spothq/cryptocurrency-icons/master/128/color/bnb.png', number:'bnb1grpf0955h0ykzq3ar5nmum7y6gdfl6lxfn46h2', name:'Wallet BNB OilAI', instructions:'Réseau BNB Smart Chain (BEP20) uniquement.', network:'BEP20' },
 ]
 
 function copyToClipboard(text) { navigator.clipboard.writeText(text).then(() => toast.success('Copié !')) }
@@ -67,7 +67,7 @@ export default function Deposits() {
             <div style={{ display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(120px,1fr))',gap:8 }}>
               {METHODS.map(m => (
                 <div key={m.value} className={'payment-card'+(method===m.value?' selected':'')} onClick={()=>setMethod(m.value)} style={{ padding:'0.75rem 0.5rem' }}>
-                  <div style={{ fontSize:24,marginBottom:4,fontWeight:700 }}>{m.emoji}</div>
+                  <img src={m.logo} alt={m.label} style={{ width:32,height:32,objectFit:'contain',margin:'0 auto 4px' }} />
                   <p style={{ fontSize:11,fontWeight:700,color:'var(--text-primary)' }}>{m.label}</p>
                   <p style={{ fontSize:9,color:'var(--text-muted)' }}>{m.network}</p>
                 </div>

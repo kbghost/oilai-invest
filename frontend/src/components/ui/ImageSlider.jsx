@@ -105,18 +105,19 @@ export default function ImageSlider({ height = '520px', showText = true }) {
         {/* Gradient overlay */}
         <div style={{
           position: 'absolute', inset: 0,
-          background: 'linear-gradient(to right, rgba(5,10,20,0.90) 40%, rgba(5,10,20,0.40) 100%)'
+          background: 'linear-gradient(to right, rgba(5,10,20,0.96) 32%, rgba(5,10,20,0.30) 100%)'
         }} />
       </div>
 
       {/* Text content */}
       {showText && (
-        <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '2.5rem 3rem', zIndex: 2 }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '0.3rem 0.9rem', background: 'rgba(245,166,35,0.18)', border: '1px solid rgba(245,166,35,0.35)', borderRadius: 999, color: 'var(--accent)', fontSize: 12, fontWeight: 700, letterSpacing: '0.05em', marginBottom: '1.25rem', width: 'fit-content' }}>
-            {slide.badge}
-          </div>
+        <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems:'center', justifyContent:'center', padding: '1.5rem 1.25rem', zIndex: 2 }}>
+          <div style={{ maxWidth: 620, width:'100%' }}>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '0.3rem 0.9rem', background: 'rgba(245,166,35,0.18)', border: '1px solid rgba(245,166,35,0.35)', borderRadius: 999, color: 'var(--accent)', fontSize: 12, fontWeight: 700, letterSpacing: '0.05em', marginBottom: '1.25rem', width: 'fit-content' }}>
+              {slide.badge}
+            </div>
 
-          <h2 style={{ fontFamily: '"Poppins", sans-serif', fontSize: 'clamp(1.4rem, 3vw, 2.2rem)', fontWeight: 700, color: '#fff', lineHeight: 1.25, marginBottom: '1rem', whiteSpace: 'pre-line' }}>
+          <h2 style={{ fontFamily: '"Poppins", sans-serif', fontSize: 'clamp(1.4rem, 3vw, 2.2rem)', fontWeight: 700, color: '#fff', lineHeight: 1.25, marginBottom: '1rem', whiteSpace: 'pre-line', textShadow: '0 16px 30px rgba(0,0,0,0.45)' }}>
             {slide.title}
           </h2>
 

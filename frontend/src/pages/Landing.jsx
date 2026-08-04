@@ -11,7 +11,7 @@ import LiveFeed from '../components/ui/LiveFeed'
 import AnimatedCounter from '../components/ui/AnimatedCounter'
 import FloatingParticles from '../components/ui/FloatingParticles'
 import { useScrollReveal } from '../hooks/index.js'
-import { Zap, ArrowRight, Play, Clock } from 'lucide-react'
+import { Zap, Clock } from 'lucide-react'
 
 const PLANS = [
   { key:'bronze',   name:'Bronze',   min:'15$',   roi:'5%',   duration:30, color:'#cd7f32', badge:'Débutant' },
@@ -63,13 +63,7 @@ export default function Landing() {
             <div style={{ fontSize:9,color:'var(--text-muted)',letterSpacing:'0.08em',textTransform:'uppercase',lineHeight:1 }}>Investissement IA</div>
           </div>
         </div>
-        <div className="nav-buttons-wrap">
-          <div id="nav-lnks" style={{ display:'flex', gap:'1.25rem', marginRight:8 }}>
-{[['#plans','Plans'],['#calcul','Calcul'],['#paiements','Paiement']].map(([h,l]) => (
-              <a key={h} href={h} style={{ fontSize:13,fontWeight:500,color:'var(--text-secondary)',textDecoration:'none' }}
-                onMouseEnter={e=>e.target.style.color='var(--accent)'} onMouseLeave={e=>e.target.style.color='var(--text-secondary)'}>{l}</a>
-            ))}
-          </div>
+        <div className="nav-buttons-wrap" style={{ flexWrap:'wrap', justifyContent:'flex-end' }}>
           <ThemeToggle compact />
           <Link to="/login" className="nav-btn-connexion">Connexion</Link>
           <Link to="/register" className="btn-primary nav-btn-commencer">Commencer</Link>
@@ -78,7 +72,9 @@ export default function Landing() {
 
       {/* ── HERO SLIDER ── */}
       <section style={{ paddingTop:60 }}>
-        <ImageSlider height="clamp(300px, 55vw, 580px)" showText={true} />
+        <div style={{ maxWidth:1200, margin:'0 auto', padding:'0 1rem', display:'flex', justifyContent:'center' }}>
+          <ImageSlider height="clamp(300px, 55vw, 580px)" showText={true} />
+        </div>
       </section>
 
       {/* ── LIVE TICKER ── */}
@@ -115,13 +111,9 @@ export default function Landing() {
               Choisissez votre <span className="gradient-text">croissance</span>
             </h2>
           </div>
-
           <div style={{ display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(240px,1fr))',gap:'1rem' }}>
             {PLANS.map((plan, i) => (
-              <div key={plan.key} className={`card shine-card gradient-border reveal stagger-${i+1}`}
-                style={{ position:'relative',overflow:'hidden',border:'1px solid var(--border)',transition:'all 0.3s',cursor:'default' }}
-                onMouseEnter={e=>{e.currentTarget.style.borderColor=plan.color;e.currentTarget.style.transform='translateY(-6px)';}}
-                onMouseLeave={e=>{e.currentTarget.style.borderColor='var(--border)';e.currentTarget.style.transform='';}}>
+              <div key={plan.key} className={`card shine-card gradient-border reveal stagger-${i+1}`} style={{ position:'relative',overflow:'hidden',border:'1px solid var(--border)',transition:'all 0.3s',cursor:'default' }}>
                 <div style={{ position:'absolute',top:0,left:0,right:0,height:3,background:plan.color }} />
                 <div style={{ display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:'0.75rem' }}>
                   <h3 style={{ fontFamily:'"Poppins",sans-serif',fontSize:'1.3rem',fontWeight:700,color:'var(--text-primary)' }}>{plan.name}</h3>
@@ -137,15 +129,6 @@ export default function Landing() {
                 </SpeakButton>
               </div>
             ))}
-          </div>
-
-          <div style={{ textAlign:'center',marginTop:'2rem' }} className="reveal">
-            <SpeakButton
-              text="Rejoignez OilAI Invest et gagnez jusqu'à 20 pourcent par jour grâce à l'IA pétrolière. Inscription gratuite !"
-              onClick={() => window.location.href='/register'}
-              style={{ fontSize:'0.95rem',padding:'0.875rem 2rem',animation:'glowPulse 2.5s ease-in-out infinite' }}>
-              🚀 Créer mon compte — C'est gratuit
-            </SpeakButton>
           </div>
         </div>
       </section>
@@ -177,10 +160,7 @@ export default function Landing() {
           </div>
           <div style={{ display:'flex',justifyContent:'center',gap:'0.75rem',flexWrap:'wrap' }}>
             {PAYMENTS.map((p, i) => (
-              <div key={p.name} className={`reveal stagger-${i+1}`}
-                style={{ display:'flex',alignItems:'center',gap:8,padding:'0.75rem 1.1rem',background:'var(--bg-card)',border:'1px solid var(--border)',borderRadius:14,transition:'all 0.25s' }}
-                onMouseEnter={e=>{e.currentTarget.style.borderColor='var(--accent)';e.currentTarget.style.transform='translateY(-3px)';}}
-                onMouseLeave={e=>{e.currentTarget.style.borderColor='var(--border)';e.currentTarget.style.transform='';}}>
+              <div key={p.name} className={`reveal stagger-${i+1}`} style={{ display:'flex',alignItems:'center',gap:8,padding:'0.75rem 1.1rem',background:'var(--bg-card)',border:'1px solid var(--border)',borderRadius:14,transition:'all 0.25s' }}>
                 <span style={{ fontSize:22 }}>{p.logo}</span>
                 <span style={{ fontWeight:700,color:'var(--text-primary)',fontSize:13 }}>{p.name}</span>
               </div>
@@ -240,9 +220,6 @@ export default function Landing() {
               style={{ fontSize:'0.9rem',padding:'0.875rem 1.75rem',animation:'glowPulse 2.5s ease-in-out infinite' }}>
               🚀 Créer mon compte
             </SpeakButton>
-            <a href="#calcul" className="btn-outline" style={{ fontSize:'0.9rem',padding:'0.875rem 1.5rem',textDecoration:'none' }}>
-              <Play size={14} /> Simuler
-            </a>
           </div>
           <p style={{ fontSize:11,color:'var(--text-muted)',marginTop:'1rem' }}>✅ Gratuit · ✅ Sans engagement · ✅ Retrait libre</p>
         </div>
@@ -260,6 +237,7 @@ export default function Landing() {
           © 2025 OilAI Invest · Plateforme panafricaine<br />
           L'investissement comporte des risques. Les performances passées ne garantissent pas les résultats futurs.
         </p>
+      </footer>
       {/* ── SECTION À PROPOS ── */}
       <section id="about" style={{ padding:"5rem 1.25rem", background:"var(--bg-base)" }}>
         <div style={{ maxWidth:1100, margin:"0 auto" }}>
@@ -326,8 +304,6 @@ export default function Landing() {
           </div>
         </div>
       </section>
-
-      </footer>
     </div>
   )
 }

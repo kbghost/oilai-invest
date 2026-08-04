@@ -5,10 +5,10 @@ import { ArrowUpCircle, AlertCircle } from 'lucide-react'
 import toast from 'react-hot-toast'
 
 const METHODS = [
-  { value:'bitcoin',  label:'Bitcoin (BTC)',  emoji:'₿', placeholder:'bc1q... ou 1A1zP1...', hint:'Adresse Bitcoin valide. Vérifiez avant envoi.', network:'BTC', delay:'45 min' },
-  { value:'ethereum', label:'Ethereum (ETH)', emoji:'Ξ', placeholder:'0x...', hint:'Adresse ERC20 valide uniquement.', network:'ERC20', delay:'45 min' },
-  { value:'usdt',     label:'USDT',           emoji:'₮', placeholder:'T...', hint:'Réseau TRC20 uniquement.', network:'TRC20', delay:'45 min' },
-  { value:'bnb',      label:'BNB',            emoji:'◆', placeholder:'bnb1...', hint:'Réseau BNB Smart Chain (BEP20).', network:'BEP20', delay:'45 min' },
+  { value:'bitcoin',  label:'Bitcoin (BTC)',  logo:'https://raw.githubusercontent.com/spothq/cryptocurrency-icons/master/128/color/btc.png', placeholder:'bc1q... ou 1A1zP1...', hint:'Adresse Bitcoin valide. Vérifiez avant envoi.', network:'BTC', delay:'45 min' },
+  { value:'ethereum', label:'Ethereum (ETH)', logo:'https://raw.githubusercontent.com/spothq/cryptocurrency-icons/master/128/color/eth.png', placeholder:'0x...', hint:'Adresse ERC20 valide uniquement.', network:'ERC20', delay:'45 min' },
+  { value:'usdt',     label:'USDT',           logo:'https://raw.githubusercontent.com/spothq/cryptocurrency-icons/master/128/color/usdt.png', placeholder:'T...', hint:'Réseau TRC20 uniquement.', network:'TRC20', delay:'45 min' },
+  { value:'bnb',      label:'BNB',            logo:'https://raw.githubusercontent.com/spothq/cryptocurrency-icons/master/128/color/bnb.png', placeholder:'bnb1...', hint:'Réseau BNB Smart Chain (BEP20).', network:'BEP20', delay:'45 min' },
 ]
 
 export default function Withdrawals() {
@@ -64,7 +64,7 @@ export default function Withdrawals() {
             <div style={{ display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(110px,1fr))',gap:8 }}>
               {METHODS.map(m => (
                 <div key={m.value} className={'payment-card'+(form.method===m.value?' selected':'')} onClick={()=>setForm(p=>({...p,method:m.value,walletAddress:''}))} style={{ padding:'0.65rem 0.4rem' }}>
-                  <div style={{ fontSize:22,marginBottom:3,fontWeight:700 }}>{m.emoji}</div>
+                  <img src={m.logo} alt={m.label} style={{ width:28,height:28,objectFit:'contain',margin:'0 auto 4px' }} />
                   <p style={{ fontSize:10,fontWeight:700,color:'var(--text-primary)' }}>{m.label}</p>
                   <p style={{ fontSize:9,color:'var(--text-muted)' }}>{m.network}</p>
                 </div>
@@ -132,7 +132,9 @@ export default function Withdrawals() {
                 const m = METHODS.find(x => x.value === w.method)
                 return (
                   <div key={w._id} className="mobile-list-item">
-                    <div style={{ width:36,height:36,borderRadius:11,background:w.status==='approved'?'rgba(45,212,191,0.1)':w.status==='rejected'?'rgba(255,92,122,0.1)':'var(--accent-glow)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:16,fontWeight:700,flexShrink:0,color:'var(--text-primary)' }}>{m?.emoji||'₿'}</div>
+                    <div style={{ width:36,height:36,borderRadius:11,background:w.status==='approved'?'rgba(45,212,191,0.1)':w.status==='rejected'?'rgba(255,92,122,0.1)':'var(--accent-glow)',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0 }}>
+                      {m?.logo ? <img src={m.logo} alt={m?.label} style={{ width:20,height:20,objectFit:'contain' }} /> : <span style={{ fontSize:16,fontWeight:700,color:'var(--text-primary)' }}>{m?.emoji||'₿'}</span>}
+                    </div>
                     <div style={{ flex:1,minWidth:0 }}>
                       <p style={{ fontWeight:600,color:'var(--text-primary)',fontSize:13 }}>{m?.label||w.method}</p>
                       <p style={{ fontSize:10,color:'var(--text-muted)',fontFamily:'monospace',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',maxWidth:150 }}>{w.walletAddress}</p>
