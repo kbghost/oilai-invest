@@ -61,7 +61,10 @@ export default function Landing() {
             <Zap size={15} color="#fff" />
           </div>
           <div>
-            <span style={{ fontFamily:'"Poppins",sans-serif',fontWeight:700,fontSize:'0.95rem',color:'var(--text-primary)',lineHeight:1.2,display:'block' }}>OilAI <span style={{ color:'var(--accent)' }}>Invest</span></span>
+            <span style={{ fontFamily:'"Poppins",sans-serif',fontWeight:700,fontSize:'0.95rem',lineHeight:1.2,display:'block' }}>
+              <span style={{ color: isDark ? '#fff' : '#111' }}>OilAI</span>{' '}
+              <span style={{ color:'var(--accent)' }}>Invest</span>
+            </span>
             <div className="nav-subtitle" style={{ fontSize:8,color:'var(--text-muted)',letterSpacing:'0.08em',textTransform:'uppercase',lineHeight:1 }}>Investissement IA</div>
           </div>
         </div>
@@ -73,7 +76,7 @@ export default function Landing() {
         <div className="nav-buttons-wrap">
           <ThemeToggle compact />
           <Link to="/login" className="nav-btn-connexion">Connexion</Link>
-          <Link to="/register" className="btn-primary nav-btn-commencer">Commencer</Link>
+          <Link to="/register" className="btn-primary nav-btn-commencer">Démarrer</Link>
         </div>
       </nav>
 

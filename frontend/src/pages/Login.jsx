@@ -35,7 +35,10 @@ export default function Login() {
             <div className="auth-logo-icon">
               <Zap size={18} color="#fff" />
             </div>
-            <span className="auth-logo-text" style={{ color: '#000' }}>OilAI <span className="auth-logo-accent" style={{ color: '#000' }}>Invest</span></span>
+            <span className="auth-logo-text" style={{ color: '#000' }}>
+              <span style={{ color: '#000' }}>OilAI</span>{' '}
+              <span className="auth-logo-accent" style={{ color: '#16A34A' }}>Invest</span>
+            </span>
           </Link>
 
           <div className="animate-fade-up">
@@ -66,7 +69,10 @@ export default function Login() {
         <div className="auth-mobile-header">
           <Link to="/" className="auth-logo-link">
             <div className="auth-logo-icon" style={{ width: 32, height: 32 }}><Zap size={15} color="#fff" /></div>
-            <span className="auth-logo-text" style={{ fontSize: '1.1rem' }}>OilAI Invest</span>
+            <span className="auth-logo-text" style={{ fontSize: '1.1rem' }}>
+              <span style={{ color: 'var(--text-primary)' }}>OilAI</span>{' '}
+              <span style={{ color: 'var(--accent)' }}>Invest</span>
+            </span>
           </Link>
           <ThemeToggle compact />
         </div>
