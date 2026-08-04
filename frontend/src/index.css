@@ -1730,14 +1730,17 @@ body,
 
 @media (max-width: 640px) {
     .nav-buttons-wrap {
-        gap: 4px;
+        gap: 0.85rem;
     }
-    .nav-btn-connexion {
-        padding: 0.35rem 0.5rem;
-        font-size: 10.5px;
-    }
+    .nav-btn-connexion,
     .nav-btn-commencer {
-        padding: 0.35rem 0.5rem;
-        font-size: 10.5px;
+        padding: 0.65rem 0.95rem;
+        font-size: 13px;
+    }
+}
+
+@media (min-width: 900px) {
+    .nav-links-desktop {
+        display: flex;
     }
 }
