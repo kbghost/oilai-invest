@@ -316,7 +316,7 @@ export default function Landing() {
               { val:"24/7",  label:"AI Support" },
             ].map(({ val, label }) => (
               <div key={label} style={{ textAlign:"center", padding:"0.75rem 0.5rem" }}>
-                <p style={{ fontFamily:"'Poppins",sans-serif', fontWeight:800, fontSize:"1.6rem", color:"var(--accent)", marginBottom:4 }}>{val}</p>
+                <p style={{ fontFamily:"'Poppins',sans-serif", fontWeight:800, fontSize:"1.6rem", color:"var(--accent)", marginBottom:4 }}>{val}</p>
                 <p style={{ fontSize:11, color:"var(--text-muted)", fontWeight:600 }}>{label}</p>
               </div>
             ))}
