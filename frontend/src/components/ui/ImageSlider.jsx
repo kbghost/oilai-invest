@@ -24,43 +24,38 @@ import { ChevronLeft, ChevronRight } from 'lucide-react'
 const INTERVAL_MS = 7000 // 7 secondes
 
 // ═══════════════════════════════════════════════════════════
-// 🖼️  SLIDES — Modifiez ici les images et textes
+// 🖼️  SLIDES — Edit images and text here
 // ═══════════════════════════════════════════════════════════
 export const SLIDES = [
   {
     image: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=1400&q=80',
-    badge: '🤖 IA Prédictive',
-    title: 'Investissez dans le Pétrole\navec l\'Intelligence Artificielle',
-    sub: 'Notre IA analyse les marchés pétroliers mondiaux en temps réel pour maximiser vos rendements quotidiens.',
-    // SOURCE : Unsplash — Photo de "markus-winkler" (trading screen)
+    badge: '🤖 Predictive AI',
+    title: 'Invest in Oil\nwith Artificial Intelligence',
+    sub: 'Our AI analyzes global oil markets in real time to maximize your daily returns.',
   },
   {
     image: 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1400&q=80',
-    badge: '🛢️ Marché Pétrolier',
-    title: 'Le Pétrole, Moteur de\nVotre Croissance Financière',
-    sub: 'Accédez aux opportunités des marchés énergétiques mondiaux depuis votre téléphone, partout en Afrique.',
-    // SOURCE : Unsplash — Photo de "maarten-van-den-heuvel" (oil refinery)
+    badge: '🛢️ Oil Market',
+    title: 'Oil, the Engine of\nYour Financial Growth',
+    sub: 'Access global energy market opportunities directly from your phone, anywhere in the world.',
   },
   {
     image: 'https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=1400&q=80',
-    badge: '📈 Rendement Garanti',
-    title: 'Jusqu\'à 3.5% de Profit\nChaque Jour',
-    sub: 'Des plans adaptés à tous les budgets. Démarrez avec seulement 100$ et regardez votre capital fructifier.',
-    // SOURCE : Unsplash — Photo de "m-b-m" (stock market)
+    badge: '📈 High Daily Yields',
+    title: 'Up to 20% Profit\nEvery Single Day',
+    sub: 'Flexible investment plans tailored for every budget. Start with as little as $15 and grow your capital.',
   },
   {
     image: 'https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=1400&q=80',
-    badge: '🌍 Made for Africa',
-    title: 'Dépôts et Retraits\n100% Cryptomonnaies',
-    sub: 'Bitcoin, Ethereum, USDT, BNB — déposez et retirez facilement, en toute sécurité, où que vous soyez en Afrique.',
-    // SOURCE : Unsplash — Photo de "robin-worrall" (mobile phone africa)
+    badge: '🌍 Crypto-Powered',
+    title: 'Instant Deposits & Withdrawals\n100% Crypto',
+    sub: 'Bitcoin, Ethereum, USDT, BNB — deposit and withdraw effortlessly with total security.',
   },
   {
     image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1400&q=80',
-    badge: '🔒 100% Sécurisé',
-    title: 'Votre Capital est\nProtégé à Tout Moment',
-    sub: 'Sécurité bancaire, chiffrement AES-256, et équipe dédiée au support. Investissez l\'esprit tranquille.',
-    // SOURCE : Unsplash — Photo de "carlos-muza" (security laptop)
+    badge: '🔒 100% Secure',
+    title: 'Your Capital is\nProtected 24/7',
+    sub: 'Institutional-grade security, AES-256 encryption, and dedicated AI support. Invest with complete peace of mind.',
   },
 ]
 // ═══════════════════════════════════════════════════════════
@@ -99,7 +94,7 @@ export default function ImageSlider({ height = '520px', showText = true }) {
         <img
           src={slide.image}
           alt={slide.title}
-          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+          style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center' }}
           loading="eager"
         />
         {/* Gradient overlay */}
