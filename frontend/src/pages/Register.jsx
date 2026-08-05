@@ -219,32 +219,6 @@ export default function Register() {
               </div>
             </div>
 
-            <div className="auth-grid">
-              <div>
-                <label className="label">Country</label>
-                <select name="country" value={form.country} onChange={handleCountryChange} className="input" style={{ appearance: 'auto' }}>
-                  {WEST_AFRICAN_COUNTRIES.map(country => (
-                    <option key={country.code} value={country.name}>{country.name}</option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <label className="label">Phone Number</label>
-                <input
-                  name="phone"
-                  value={form.phone}
-                  onChange={handlePhoneChange}
-                  className="input"
-                  inputMode="numeric"
-                  placeholder={`${selectedCountry.dialCode} 12345678`}
-                  style={{ fontFamily: 'monospace' }}
-                />
-                <p style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 6 }}>
-                  Auto code: {selectedCountry.dialCode} · max {selectedCountry.maxDigits} digits
-                </p>
-              </div>
-            </div>
-
             {/* Referral code */}
             <div>
               <label className="label" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
