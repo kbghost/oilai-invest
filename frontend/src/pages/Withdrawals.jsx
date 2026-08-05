@@ -149,6 +149,8 @@ export default function Withdrawals() {
               })}
             </div>
           )}
+        </div>
+      )}
     </div>
   )
 }
