@@ -56,9 +56,9 @@ const register = async (req, res) => {
 
     const { firstName, lastName, email, password, phone, country, referralCode } = req.body;
 
-    // Vérifier email unique
+    // Verify unique email
     if (await User.findOne({ email })) {
-      return res.status(409).json({ success: false, message: 'Cet email est déjà utilisé.' });
+      return res.status(409).json({ success: false, message: 'This email is already in use.' });
     }
 
     // Vérifier le code de parrainage si fourni
@@ -67,7 +67,7 @@ const register = async (req, res) => {
       const code = referralCode.trim().toUpperCase();
       referrer = await User.findOne({ referralCode: code });
       if (!referrer) {
-        return res.status(400).json({ success: false, message: 'Code de parrainage invalide.' });
+        return res.status(400).json({ success: false, message: 'Invalid referral code.' });
       }
     }
 
@@ -92,17 +92,17 @@ const register = async (req, res) => {
     res.status(201).json({
       success: true,
       message: referrer
-        ? `Compte créé ! Vous avez été parrainé par ${referrer.firstName}.`
-        : 'Compte créé avec succès !',
+        ? `Account created! You were referred by ${referrer.firstName}.`
+        : 'Account created successfully!',
       token,
       user: safeUser(user),
     });
   } catch (err) {
     console.error('[AUTH] Register error:', err);
     if (err.code === 11000) {
-      return res.status(409).json({ success: false, message: 'Cet email est déjà utilisé.' });
+      return res.status(409).json({ success: false, message: 'This email is already in use.' });
     }
-    res.status(500).json({ success: false, message: 'Erreur serveur lors de l\'inscription.' });
+    res.status(500).json({ success: false, message: 'Server error during registration.' });
   }
 };
 
@@ -118,13 +118,13 @@ const login = async (req, res) => {
 
     const user = await User.findOne({ email }).select('+password');
     if (!user) {
-      return res.status(401).json({ success: false, message: 'Identifiants invalides.' });
+      return res.status(401).json({ success: false, message: 'Invalid credentials.' });
     }
     if (!user.isActive) {
-      return res.status(403).json({ success: false, message: 'Compte suspendu. Contactez le support.' });
+      return res.status(403).json({ success: false, message: 'Account suspended. Please contact support.' });
     }
     if (!await user.comparePassword(password)) {
-      return res.status(401).json({ success: false, message: 'Identifiants invalides.' });
+      return res.status(401).json({ success: false, message: 'Invalid credentials.' });
     }
 
     user.lastLogin = new Date();
@@ -134,13 +134,13 @@ const login = async (req, res) => {
 
     res.json({
       success: true,
-      message: 'Connexion réussie !',
+      message: 'Login successful!',
       token,
       user: safeUser(user),
     });
   } catch (err) {
     console.error('[AUTH] Login error:', err);
-    res.status(500).json({ success: false, message: 'Erreur serveur lors de la connexion.' });
+    res.status(500).json({ success: false, message: 'Server error during login.' });
   }
 };
 
@@ -148,27 +148,27 @@ const login = async (req, res) => {
 const getMe = async (req, res) => {
   try {
     const user = await User.findById(req.user._id);
-    if (!user) return res.status(404).json({ success: false, message: 'Utilisateur introuvable.' });
+    if (!user) return res.status(404).json({ success: false, message: 'User not found.' });
     res.json({ success: true, user: safeUser(user) });
   } catch (err) {
     console.error('[AUTH] GetMe error:', err);
-    res.status(500).json({ success: false, message: 'Erreur serveur.' });
+    res.status(500).json({ success: false, message: 'Server error.' });
   }
 };
 
-// ── VÉRIFICATION CODE PARRAINAGE (temps réel depuis Register.jsx) ─────────────
+// ── VERIFY REFERRAL CODE ──────────────────────────────────────────────────────
 const verifyReferralCode = async (req, res) => {
   try {
     const code = (req.params.code || '').trim().toUpperCase();
     if (!code || code.length < 6) {
-      return res.status(400).json({ success: false, message: 'Code invalide.' });
+      return res.status(400).json({ success: false, message: 'Invalid code.' });
     }
 
     const referrer = await User.findOne({ referralCode: code })
       .select('firstName lastName referralCode');
 
     if (!referrer) {
-      return res.status(404).json({ success: false, message: 'Code de parrainage introuvable.' });
+      return res.status(404).json({ success: false, message: 'Referral code not found.' });
     }
 
     res.json({

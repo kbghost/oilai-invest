@@ -95,20 +95,20 @@ export default function Dashboard() {
         <div className="balance-hero shine-card" style={{ boxShadow:'0 10px 32px -8px var(--accent-glow)' }}>
           <div style={{ position:'relative',zIndex:1 }}>
             <div style={{ display:'flex',alignItems:'center',gap:7,marginBottom:5 }}>
-              <p style={{ fontSize:12,fontWeight:700,opacity:0.85,letterSpacing:'0.02em' }}>Bonjour, {user?.firstName}</p>
+              <p style={{ fontSize:12,fontWeight:700,opacity:0.85,letterSpacing:'0.02em' }}>Hello, {user?.firstName}</p>
               <span style={{ display:'inline-flex',alignItems:'center',gap:4,fontSize:10,fontWeight:700,background:'rgba(255,255,255,0.18)',padding:'0.15rem 0.5rem',borderRadius:999 }}>
-                <ShieldCheck size={11} /> Compte vérifié
+                <ShieldCheck size={11} /> Verified Account
               </span>
             </div>
-            <p style={{ fontSize:12,opacity:0.75,marginBottom:'0.875rem' }}>Solde disponible sur votre portefeuille</p>
+            <p style={{ fontSize:12,opacity:0.75,marginBottom:'0.875rem' }}>Available wallet balance</p>
             <p className="dash-balance-amount" style={{ marginBottom:'1.1rem' }}>
               <AnimatedCounter value={user?.balance || 0} prefix="$" duration={1500} decimals={2} />
             </p>
             <div style={{ display:'flex',gap:8 }}>
               {[
-                { to:'deposits',    icon:ArrowDownCircle, label:'Dépôt' },
-                { to:'withdrawals', icon:ArrowUpCircle,   label:'Retrait' },
-                { to:'invest',      icon:TrendingUp,      label:'Investir' },
+                { to:'deposits',    icon:ArrowDownCircle, label:'Deposit' },
+                { to:'withdrawals', icon:ArrowUpCircle,   label:'Withdraw' },
+                { to:'invest',      icon:TrendingUp,      label:'Invest' },
               ].map(({ to, icon:Icon, label }) => (
                 <Link key={to} to={to} style={{ flex:1,display:'flex',flexDirection:'column',alignItems:'center',gap:4,padding:'0.55rem 0.25rem',background:'rgba(255,255,255,0.16)',borderRadius:12,backdropFilter:'blur(8px)',textDecoration:'none',color:'#fff',fontSize:10.5,fontWeight:700,border:'1px solid rgba(255,255,255,0.18)',transition:'background 0.2s' }}
                   onMouseEnter={e=>e.currentTarget.style.background='rgba(255,255,255,0.26)'}
@@ -124,15 +124,15 @@ export default function Dashboard() {
 
       {/* ── Stats Grid ── */}
       <div className="stat-grid-mobile">
-        <StatCard label="Total investi" numValue={totalInvested} prefix="$" icon={TrendingUp}  color="var(--blue)"   delayClass="dash-enter-2" />
-        <StatCard label="Gains totaux"  numValue={totalEarned}   prefix="$" icon={Zap}          color="var(--green)"  delayClass="dash-enter-3" />
-        <StatCard label="Plans actifs"  value={activeInvs.length}           icon={Activity}     color="var(--accent)" delayClass="dash-enter-4" />
-        <StatCard label="Rendement"     value={activeInvs.length > 0 ? `${(totalEarned / Math.max(totalInvested,1) * 100).toFixed(1)}%` : '0%'} icon={ArrowUpRight} color="#a78bfa" delayClass="dash-enter-5" />
+        <StatCard label="Total Invested" numValue={totalInvested} prefix="$" icon={TrendingUp}  color="var(--blue)"   delayClass="dash-enter-2" />
+        <StatCard label="Total Earnings" numValue={totalEarned}   prefix="$" icon={Zap}          color="var(--green)"  delayClass="dash-enter-3" />
+        <StatCard label="Active Plans"  value={activeInvs.length}           icon={Activity}     color="var(--accent)" delayClass="dash-enter-4" />
+        <StatCard label="Return Rate"   value={activeInvs.length > 0 ? `${(totalEarned / Math.max(totalInvested,1) * 100).toFixed(1)}%` : '0%'} icon={ArrowUpRight} color="#a78bfa" delayClass="dash-enter-5" />
       </div>
 
       {/* ── Market overview + slider ── */}
       <div style={{ display:'grid',gap:'1rem' }} id="oil-slider-grid">
-<div className="dash-enter dash-enter-2">
+        <div className="dash-enter dash-enter-2">
           <ImageSlider height="240px" showText={true} />
         </div>
 
@@ -140,8 +140,8 @@ export default function Dashboard() {
           <div className="float-card dash-enter dash-enter-3" style={{ display:'flex',flexDirection:'column',gap:'0.75rem' }}>
             <div style={{ display:'flex',alignItems:'center',justifyContent:'space-between' }}>
               <div>
-                <p className="dash-card-title" style={{ color:'var(--text-primary)' }}>Marché Pétrole · WTI</p>
-                <p style={{ fontSize:11,color:'var(--text-muted)' }}>Analyse IA en continu</p>
+                <p className="dash-card-title" style={{ color:'var(--text-primary)' }}>Oil Market · WTI</p>
+                <p style={{ fontSize:11,color:'var(--text-muted)' }}>Real-time AI Analysis</p>
               </div>
               <div className="live-dot" />
             </div>
@@ -166,8 +166,8 @@ export default function Dashboard() {
 
             <div style={{ display:'flex',flexDirection:'column',gap:6,padding:'0.75rem',background:'var(--bg-card2)',borderRadius:12 }}>
               {[
-                { l:'Signal IA', v:oilData.aiPrediction.signal, c:oilData.aiPrediction.signal.includes('BUY')?'var(--green)':'var(--red)' },
-                { l:'Indice de confiance', v:oilData.aiPrediction.confidence+'%', c:'var(--accent)' },
+                { l:'AI Signal', v:oilData.aiPrediction.signal, c:oilData.aiPrediction.signal.includes('BUY')?'var(--green)':'var(--red)' },
+                { l:'Confidence Index', v:oilData.aiPrediction.confidence+'%', c:'var(--accent)' },
               ].map(({ l,v,c }) => (
                 <div key={l} style={{ display:'flex',justifyContent:'space-between',fontSize:12 }}>
                   <span style={{ color:'var(--text-muted)' }}>{l}</span>
@@ -181,11 +181,11 @@ export default function Dashboard() {
 
       {/* ── Chart + Active investments ── */}
       <div style={{ display:'grid',gap:'1rem' }} id="chart-inv-grid">
-<div className="float-card dash-enter dash-enter-4">
+        <div className="float-card dash-enter dash-enter-4">
           <div style={{ display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:'1rem' }}>
             <div>
-              <p className="dash-card-title" style={{ color:'var(--text-primary)' }}>Évolution des profits</p>
-              <p style={{ fontSize:11,color:'var(--text-muted)' }}>14 derniers jours</p>
+              <p className="dash-card-title" style={{ color:'var(--text-primary)' }}>Profit Growth</p>
+              <p style={{ fontSize:11,color:'var(--text-muted)' }}>Last 14 days</p>
             </div>
             <span style={{ fontSize:11,fontWeight:700,padding:'0.25rem 0.65rem',background:'rgba(45,212,191,0.12)',color:'var(--green)',border:'1px solid rgba(45,212,191,0.25)',borderRadius:999 }}>
               +{totalEarned>0 ? ((totalEarned/Math.max(totalInvested,1))*100).toFixed(1) : 0}%
@@ -209,25 +209,25 @@ export default function Dashboard() {
           ) : (
             <div style={{ height:190,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',color:'var(--text-muted)' }}>
               <TrendingUp size={28} style={{ opacity:0.3,marginBottom:8 }} />
-              <p style={{ fontSize:12 }}>Aucun historique de profit pour l'instant</p>
-              <Link to="invest" style={{ color:'var(--accent)',fontSize:12,marginTop:6,textDecoration:'none',fontWeight:700 }}>Démarrer un investissement →</Link>
+              <p style={{ fontSize:12 }}>No profit history available yet</p>
+              <Link to="invest" style={{ color:'var(--accent)',fontSize:12,marginTop:6,textDecoration:'none',fontWeight:700 }}>Start an Investment →</Link>
             </div>
           )}
         </div>
 
         <div className="float-card dash-enter dash-enter-5">
           <div style={{ display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:'0.875rem' }}>
-            <p className="dash-card-title" style={{ color:'var(--text-primary)' }}>Plans actifs</p>
+            <p className="dash-card-title" style={{ color:'var(--text-primary)' }}>Active Plans</p>
             <Link to="invest" style={{ fontSize:11,color:'var(--accent)',textDecoration:'none',fontWeight:700,display:'flex',alignItems:'center',gap:3 }}>
-              Tout voir <ChevronRight size={12} />
+              View All <ChevronRight size={12} />
             </Link>
           </div>
 
           {activeInvs.length === 0 ? (
             <div style={{ textAlign:'center',padding:'2.25rem 0' }}>
               <TrendingUp size={32} style={{ margin:'0 auto 10px',color:'var(--text-muted)',opacity:0.3 }} />
-              <p style={{ color:'var(--text-muted)',fontSize:12,marginBottom:12 }}>Vous n'avez pas encore de plan actif</p>
-              <Link to="invest" className="btn-primary" style={{ fontSize:12,padding:'0.6rem 1.25rem' }}>Découvrir les plans</Link>
+              <p style={{ color:'var(--text-muted)',fontSize:12,marginBottom:12 }}>You do not have any active investment plan</p>
+              <Link to="invest" className="btn-primary" style={{ fontSize:12,padding:'0.6rem 1.25rem' }}>Explore Investment Plans</Link>
             </div>
           ) : (
             <div style={{ display:'flex',flexDirection:'column',gap:8 }}>
@@ -245,7 +245,7 @@ export default function Dashboard() {
                       </div>
                       <div style={{ display:'flex',justifyContent:'space-between',marginBottom:4 }}>
                         <span style={{ fontSize:10,color:'var(--text-muted)',display:'flex',alignItems:'center',gap:3 }}>
-                          <Clock size={10} /> {inv.daysCompleted}/{inv.durationDays} jours
+                          <Clock size={10} /> {inv.daysCompleted}/{inv.durationDays} days
                         </span>
                         <span style={{ fontSize:10,color:'var(--text-primary)',fontWeight:600 }}>${inv.amount.toLocaleString()}</span>
                       </div>
@@ -263,12 +263,12 @@ export default function Dashboard() {
 
       {/* ── Quick Actions ── */}
       <div className="float-card dash-enter dash-enter-6">
-        <p className="dash-card-title" style={{ color:'var(--text-primary)',marginBottom:'0.875rem' }}>Actions rapides</p>
+        <p className="dash-card-title" style={{ color:'var(--text-primary)',marginBottom:'0.875rem' }}>Quick Actions</p>
         <div style={{ display:'flex',gap:8 }}>
-          <QuickBtn to="deposits"     icon={ArrowDownCircle} label="Déposer"    color="var(--green)" />
-          <QuickBtn to="withdrawals"  icon={ArrowUpCircle}   label="Retirer"    color="var(--red)" />
-          <QuickBtn to="invest"       icon={TrendingUp}      label="Investir"   color="var(--accent)" />
-          <QuickBtn to="transactions" icon={History}         label="Historique" color="var(--blue)" />
+          <QuickBtn to="deposits"     icon={ArrowDownCircle} label="Deposit"    color="var(--green)" />
+          <QuickBtn to="withdrawals"  icon={ArrowUpCircle}   label="Withdraw"   color="var(--red)" />
+          <QuickBtn to="invest"       icon={TrendingUp}      label="Invest"     color="var(--accent)" />
+          <QuickBtn to="transactions" icon={History}         label="History"    color="var(--blue)" />
         </div>
       </div>
 

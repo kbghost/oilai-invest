@@ -2,12 +2,12 @@
 import { Shield, Lock, Award, Globe, Clock, CheckCircle } from 'lucide-react'
 
 const BADGES = [
-  { icon: Shield,       label: 'Sécurité AES-256',    desc: 'Chiffrement bancaire',      color: 'var(--blue)' },
-  { icon: Lock,         label: 'SSL Certifié',         desc: 'Connexion sécurisée',       color: 'var(--green)' },
-  { icon: Award,        label: 'Plateforme #1',        desc: 'Afrique de l\'Ouest',       color: 'var(--accent)' },
-  { icon: Globe,        label: '70+ Pays',             desc: 'Couverture mondiale',        color: '#a78bfa' },
-  { icon: Clock,        label: 'Profits 24/7',         desc: 'IA active en permanence',   color: 'var(--accent)' },
-  { icon: CheckCircle,  label: 'Retraits Garantis',   desc: 'Sous 24-48h ouvrées',        color: 'var(--green)' },
+  { icon: Shield,       label: 'AES-256 Security',      desc: 'Bank-grade encryption',        color: 'var(--blue)' },
+  { icon: Lock,         label: 'SSL Certified',          desc: 'Secure connection',             color: 'var(--green)' },
+  { icon: Award,        label: '#1 Platform',            desc: 'West Africa',                   color: 'var(--accent)' },
+  { icon: Globe,        label: '70+ Countries',          desc: 'Global coverage',               color: '#a78bfa' },
+  { icon: Clock,        label: '24/7 Profits',           desc: 'AI always active',              color: 'var(--accent)' },
+  { icon: CheckCircle,  label: 'Guaranteed Withdrawals', desc: 'Processed within 24-48h',       color: 'var(--green)' },
 ]
 
 export function TrustBadges() {
@@ -15,7 +15,7 @@ export function TrustBadges() {
     <section style={{ padding: '4rem 2rem', background: 'var(--bg-card)', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}>
       <div style={{ maxWidth: 1100, margin: '0 auto' }}>
         <p style={{ textAlign: 'center', fontSize: 12, fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '2rem' }} className="reveal">
-          🛡️ Plateforme de confiance
+          🛡️ Trusted Platform
         </p>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '1rem' }}>
           {BADGES.map((b, i) => (
@@ -36,20 +36,20 @@ export function TrustBadges() {
 
 // ─────────────────────────────────────────────────────────────────────────────
 
-// LiveTicker.jsx — Bandeau défilant d'activité
+// LiveTicker.jsx — Scrolling activity banner
 const TICKER_ITEMS = [
-  '🟢 Kofi vient de gagner +$47.50',
-  '📈 Prix WTI : $81.42 ↑ +1.82%',
-  '🔵 Fatou a déposé $500 en Bitcoin',
-  '🤖 IA Signal : STRONG BUY — Confiance 87%',
-  '🟢 Ibrahim vient de gagner +$112.30',
-  '💰 18 432 investisseurs actifs en ce moment',
-  '📊 ROI moyen du jour : +2.8%',
-  '✅ Serge a retiré $315 avec succès',
-  '🛢️ OPEC+ maintient ses réductions de production',
-  '⚡ Adjoua vient de rejoindre OilAI',
-  '💹 Profit total généré aujourd\'hui : $48 320',
-  '🟢 Jean a déposé $2 000 en USDT',
+  '🟢 Kofi just earned +$47.50',
+  '📈 WTI Price: $81.42 ↑ +1.82%',
+  '🔵 Fatou deposited $500 in Bitcoin',
+  '🤖 AI Signal: STRONG BUY — Confidence 87%',
+  '🟢 Ibrahim just earned +$112.30',
+  '💰 18,432 active investors right now',
+  '📊 Average daily ROI: +2.8%',
+  '✅ Serge successfully withdrew $315',
+  '🛢️ OPEC+ maintains production cuts',
+  '⚡ Adjoua just joined OilAI',
+  '💹 Total profits generated today: $48,320',
+  '🟢 Jean deposited $2,000 in USDT',
 ]
 
 export function LiveTicker() {

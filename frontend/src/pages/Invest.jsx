@@ -36,7 +36,7 @@ export default function Invest() {
       const [p, i] = await Promise.all([investmentAPI.getPlans(), investmentAPI.getAll()])
       setPlans(p.data.plans)
       setInvestments(i.data.investments)
-    } catch { toast.error('Erreur chargement') }
+    } catch { toast.error('Error loading plans') }
   }
 
   useEffect(() => { load() }, [])
@@ -46,36 +46,36 @@ export default function Invest() {
 
   const handleInvest = async e => {
     e.preventDefault()
-    if (!selected) return toast.error('Choisissez un plan')
+    if (!selected) return toast.error('Please choose a plan')
     const plan = plans[selected]
-    if ((user?.balance || 0) < plan.price) return toast.error('Solde insuffisant')
+    if ((user?.balance || 0) < plan.price) return toast.error('Insufficient balance')
     setLoading(true)
     try {
       await investmentAPI.create({ plan: selected })
-      toast.success('Investissement créé ! Réclamez vos gains chaque 24h.')
+      toast.success('Investment started! Claim your earnings every 24 hours.')
       setSelected(null)
       await load()
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Erreur')
+      toast.error(err.response?.data?.message || 'Error creating investment')
     } finally { setLoading(false) }
   }
 
   return (
     <div className="dash-enter" style={{ maxWidth:720, margin:'0 auto', display:'flex', flexDirection:'column', gap:'1.25rem' }}>
 
-      {/* En-tête */}
+      {/* Header */}
       <div>
-        <h1 style={{ fontFamily:'"Poppins",sans-serif', fontSize:'1.5rem', fontWeight:700, color:'var(--text-primary)', marginBottom:3 }}>Investir</h1>
+        <h1 style={{ fontFamily:'"Poppins",sans-serif', fontSize:'1.5rem', fontWeight:700, color:'var(--text-primary)', marginBottom:3 }}>Invest</h1>
         <p style={{ color:'var(--text-secondary)', fontSize:13 }}>
-          Solde disponible : <span style={{ fontWeight:700, color:'var(--accent)' }}>${(user?.balance || 0).toFixed(2)}</span>
+          Available Balance: <span style={{ fontWeight:700, color:'var(--accent)' }}>${(user?.balance || 0).toFixed(2)}</span>
         </p>
       </div>
 
-      {/* ── Investissements actifs avec bouton Claim ── */}
+      {/* ── Active Investments with Claim button ── */}
       {activeInvs.length > 0 && (
         <div style={{ display:'flex', flexDirection:'column', gap:'0.875rem' }}>
           <p className="dash-card-title" style={{ color:'var(--text-primary)' }}>
-            Mes plans actifs ({activeInvs.length})
+            My Active Plans ({activeInvs.length})
           </p>
           {activeInvs.map(inv => {
             const col = PLAN_COLORS[inv.plan] || PLAN_COLORS.starter
@@ -91,7 +91,7 @@ export default function Invest() {
                     <div>
                       <p style={{ fontWeight:800, color:'var(--text-primary)', fontSize:14, textTransform:'capitalize' }}>{inv.plan}</p>
                       <p style={{ fontSize:11, color:'var(--text-muted)', display:'flex', alignItems:'center', gap:3 }}>
-                        <Clock size={10} /> {inv.daysCompleted}/{inv.durationDays} jours
+                        <Clock size={10} /> {inv.daysCompleted}/{inv.durationDays} days
                       </p>
                     </div>
                   </div>
@@ -109,9 +109,9 @@ export default function Invest() {
                 {/* Stats */}
                 <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr 1fr', gap:8, marginBottom:'1rem' }}>
                   {[
-                    { l:'ROI/jour',    v:`${inv.dailyROI}%`,            c:col.accent },
-                    { l:'Gains totaux',v:`$${inv.totalEarned.toFixed(2)}`, c:'var(--green)' },
-                    { l:'En attente', v:`$${(inv.pendingProfit||0).toFixed(2)}`, c:'var(--text-primary)' },
+                    { l:'Daily ROI',      v:`${inv.dailyROI}%`,            c:col.accent },
+                    { l:'Total Earnings',v:`$${inv.totalEarned.toFixed(2)}`, c:'var(--green)' },
+                    { l:'Pending',        v:`$${(inv.pendingProfit||0).toFixed(2)}`, c:'var(--text-primary)' },
                   ].map(({ l, v, c }) => (
                     <div key={l} style={{ padding:'0.6rem 0.5rem', background:'var(--bg-card2)', borderRadius:10, textAlign:'center' }}>
                       <p style={{ fontWeight:800, color:c, fontSize:13, marginBottom:1 }}>{v}</p>
@@ -120,17 +120,17 @@ export default function Invest() {
                   ))}
                 </div>
 
-                {/* ═══ BOUTON CLAIM ═══ */}
+                {/* ═══ CLAIM BUTTON ═══ */}
                 <ClaimButton investment={inv} onClaimed={load} />
                 
-                {/* ═══ HISTORIQUE DES GAINS ═══ */}
+                {/* ═══ PROFIT HISTORY ═══ */}
                 {inv.profitHistory && inv.profitHistory.length > 0 && (
                   <div style={{ marginTop: '0.875rem' }}>
                     <button 
                       onClick={() => setExpanded(p => ({ ...p, [inv._id]: !p[inv._id] }))}
                       style={{ width:'100%', background:'transparent', border:'none', fontSize:12, color:'var(--text-secondary)', fontWeight:600, cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center', gap:4, padding:'0.5rem' }}
                     >
-                      {expanded[inv._id] ? 'Masquer l\'historique' : 'Voir l\'historique des gains'}
+                      {expanded[inv._id] ? 'Hide earnings history' : 'View earnings history'}
                       {expanded[inv._id] ? <ChevronUp size={14}/> : <ChevronDown size={14}/>}
                     </button>
                     {expanded[inv._id] && (
@@ -151,10 +151,10 @@ export default function Invest() {
         </div>
       )}
 
-      {/* ── Formulaire nouveau plan ── */}
+      {/* ── Choose Plan Form ── */}
       <div className="float-card">
         <p className="dash-card-title" style={{ color:'var(--text-primary)', marginBottom:'1rem' }}>
-          Choisir un plan
+          Choose a Plan
         </p>
 
         <div style={{ display:'flex', flexDirection:'column', gap:'0.75rem' }}>
@@ -177,15 +177,15 @@ export default function Invest() {
                   <div>
                     <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:4 }}>
                       <p style={{ fontFamily:'"Poppins",sans-serif', fontWeight:700, fontSize:'1rem', color:'var(--text-primary)', textTransform:'capitalize' }}>{plan.name}</p>
-                      {key === 'pro' && <span style={{ fontSize:9, fontWeight:700, padding:'2px 7px', background:'var(--accent)', color:'#fff', borderRadius:999 }}>POPULAIRE</span>}
+                      {key === 'pro' && <span style={{ fontSize:9, fontWeight:700, padding:'2px 7px', background:'var(--accent)', color:'#fff', borderRadius:999 }}>POPULAR</span>}
                     </div>
-                    <p style={{ fontSize:22, fontWeight:900, color:col.accent, fontFamily:'"Poppins",sans-serif' }}>{plan.dailyROI}%<span style={{ fontSize:12, color:'var(--text-muted)', fontWeight:400 }}>/jour</span></p>
+                    <p style={{ fontSize:22, fontWeight:900, color:col.accent, fontFamily:'"Poppins",sans-serif' }}>{plan.dailyROI}%<span style={{ fontSize:12, color:'var(--text-muted)', fontWeight:400 }}>/day</span></p>
                     <p style={{ fontSize:11, color:'var(--text-muted)', marginTop:2 }}>
-                      {plan.durationDays}j · Tarif : ${plan.price.toLocaleString()}
+                      {plan.durationDays} days · Price: ${plan.price.toLocaleString()}
                     </p>
                   </div>
                   <div style={{ textAlign:'right' }}>
-                    <p style={{ fontSize:11, color:'var(--text-muted)', marginBottom:4 }}>ROI total</p>
+                    <p style={{ fontSize:11, color:'var(--text-muted)', marginBottom:4 }}>Total ROI</p>
                     <p style={{ fontWeight:800, color:col.accent, fontSize:18 }}>{plan.dailyROI * plan.durationDays}%</p>
                     {isSelected ? <ChevronUp size={16} color={col.accent} style={{ marginTop:6 }} /> : <ChevronDown size={16} color="var(--text-muted)" style={{ marginTop:6 }} />}
                   </div>
@@ -203,11 +203,11 @@ export default function Invest() {
                     <form onSubmit={handleInvest}>
                       <div style={{ padding:'0.75rem', background:col.bg, borderRadius:10, marginBottom:'0.75rem', fontSize:12 }}>
                         <div style={{ display:'flex', justifyContent:'space-between', marginBottom:3 }}>
-                          <span style={{ color:'var(--text-muted)' }}>Gain estimé/jour</span>
+                          <span style={{ color:'var(--text-muted)' }}>Est. daily profit</span>
                           <span style={{ fontWeight:700, color:col.accent }}>+${(plan.price*plan.dailyROI/100).toFixed(2)}</span>
                         </div>
                         <div style={{ display:'flex', justifyContent:'space-between' }}>
-                          <span style={{ color:'var(--text-muted)' }}>Gain total net</span>
+                          <span style={{ color:'var(--text-muted)' }}>Est. net total profit</span>
                           <span style={{ fontWeight:700, color:'var(--green)' }}>+${(plan.price*plan.dailyROI/100*plan.durationDays).toFixed(2)}</span>
                         </div>
                       </div>
@@ -215,7 +215,7 @@ export default function Invest() {
                         onClick={e=>e.stopPropagation()}>
                         {loading
                           ? <div style={{ width:17, height:17, border:'2px solid rgba(255,255,255,0.3)', borderTopColor:'#fff', borderRadius:'50%', animation:'spin 0.8s linear infinite' }}/>
-                          : <><TrendingUp size={15}/> Investir ${plan.price}</>}
+                          : <><TrendingUp size={15}/> Invest ${plan.price}</>}
                       </button>
                     </form>
                   </div>
@@ -226,10 +226,10 @@ export default function Invest() {
         </div>
       </div>
 
-      {/* ── Investissements terminés ── */}
+      {/* ── Completed Investments ── */}
       {completedInvs.length > 0 && (
         <div className="float-card">
-          <p className="dash-card-title" style={{ color:'var(--text-primary)', marginBottom:'0.875rem' }}>Terminés ({completedInvs.length})</p>
+          <p className="dash-card-title" style={{ color:'var(--text-primary)', marginBottom:'0.875rem' }}>Completed ({completedInvs.length})</p>
           <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
             {completedInvs.map(inv => (
               <div key={inv._id} className="mobile-list-item">
@@ -238,11 +238,11 @@ export default function Invest() {
                 </div>
                 <div style={{ flex:1, minWidth:0 }}>
                   <p style={{ fontWeight:700, color:'var(--text-primary)', fontSize:13, textTransform:'capitalize' }}>{inv.plan}</p>
-                  <p style={{ fontSize:11, color:'var(--text-muted)' }}>{inv.durationDays} jours · ${inv.amount.toLocaleString()}</p>
+                  <p style={{ fontSize:11, color:'var(--text-muted)' }}>{inv.durationDays} days · ${inv.amount.toLocaleString()}</p>
                 </div>
                 <div style={{ textAlign:'right', flexShrink:0 }}>
                   <p style={{ fontWeight:800, color:'var(--green)', fontSize:13 }}>+${inv.totalEarned.toFixed(2)}</p>
-                  <span className="badge-completed">Terminé</span>
+                  <span className="badge-completed">Completed</span>
                 </div>
               </div>
             ))}

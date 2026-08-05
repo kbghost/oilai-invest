@@ -5,8 +5,8 @@ const ITEMS = [
   { to:'/admin',             label:'Dashboard',   icon:LayoutDashboard },
   { to:'/admin/users',       label:'Users',       icon:Users },
   null,
-  { to:'/admin/deposits',    label:'Dépôts',      icon:ArrowDownCircle },
-  { to:'/admin/withdrawals', label:'Retraits',    icon:ArrowUpCircle },
+  { to:'/admin/deposits',    label:'Deposits',    icon:ArrowDownCircle },
+  { to:'/admin/withdrawals', label:'Withdrawals', icon:ArrowUpCircle },
 ]
 
 export default function AdminBottomNav() {

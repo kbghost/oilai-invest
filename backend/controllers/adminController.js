@@ -44,7 +44,7 @@ const getDashboardStats = async (req, res) => {
     });
   } catch (error) {
     console.error('[ADMIN STATS ERROR]', error);
-    res.status(500).json({ success: false, message: error.message || 'Erreur serveur.' });
+    res.status(500).json({ success: false, message: error.message || 'Server error.' });
   }
 };
 
@@ -71,7 +71,7 @@ const getAllUsers = async (req, res) => {
     res.json({ success: true, users, total, pages: Math.ceil(total / parseInt(limit)) });
   } catch (error) {
     console.error('[ADMIN GET USERS ERROR]', error);
-    res.status(500).json({ success: false, message: error.message || 'Erreur serveur.' });
+    res.status(500).json({ success: false, message: error.message || 'Server error.' });
   }
 };
 
@@ -79,22 +79,22 @@ const getAllUsers = async (req, res) => {
 const toggleUserStatus = async (req, res) => {
   try {
     if (req.user._id.toString() === req.params.id) {
-      return res.status(400).json({ success: false, message: 'Vous ne pouvez pas désactiver votre propre compte administrateur.' });
+      return res.status(400).json({ success: false, message: 'You cannot deactivate your own administrator account.' });
     }
     const user = await User.findById(req.params.id);
-    if (!user) return res.status(404).json({ success: false, message: 'Utilisateur introuvable.' });
+    if (!user) return res.status(404).json({ success: false, message: 'User not found.' });
 
     user.isActive = !user.isActive;
     await user.save({ validateBeforeSave: false });
 
     res.json({
       success: true,
-      message: `Utilisateur ${user.isActive ? 'activé' : 'banni'} avec succès.`,
+      message: `User ${user.isActive ? 'activated' : 'banned'} successfully.`,
       user
     });
   } catch (error) {
     console.error('[ADMIN TOGGLE USER ERROR]', error);
-    res.status(500).json({ success: false, message: error.message || 'Erreur serveur.' });
+    res.status(500).json({ success: false, message: error.message || 'Server error.' });
   }
 };
 
@@ -105,26 +105,26 @@ const adjustBalance = async (req, res) => {
     const numAmount = parseFloat(amount);
 
     if (isNaN(numAmount) || numAmount <= 0) {
-      return res.status(400).json({ success: false, message: 'Veuillez saisir un montant valide supérieur à 0.' });
+      return res.status(400).json({ success: false, message: 'Please enter a valid amount greater than 0.' });
     }
 
     const user = await User.findById(req.params.id);
-    if (!user) return res.status(404).json({ success: false, message: 'Utilisateur introuvable.' });
+    if (!user) return res.status(404).json({ success: false, message: 'User not found.' });
 
     if (type === 'credit') {
       user.balance = parseFloat(((user.balance || 0) + numAmount).toFixed(2));
     } else {
       if ((user.balance || 0) < numAmount) {
-        return res.status(400).json({ success: false, message: 'Solde utilisateur insuffisant pour ce débit.' });
+        return res.status(400).json({ success: false, message: 'User balance is insufficient for this debit.' });
       }
       user.balance = parseFloat(((user.balance || 0) - numAmount).toFixed(2));
     }
 
     await user.save({ validateBeforeSave: false });
-    res.json({ success: true, message: `Solde ${type === 'credit' ? 'crédité' : 'débité'} avec succès.`, user });
+    res.json({ success: true, message: `Balance ${type === 'credit' ? 'credited' : 'debited'} successfully.`, user });
   } catch (error) {
     console.error('[ADMIN ADJUST BALANCE ERROR]', error);
-    res.status(500).json({ success: false, message: error.message || 'Erreur serveur.' });
+    res.status(500).json({ success: false, message: error.message || 'Server error.' });
   }
 };
 

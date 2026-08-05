@@ -30,17 +30,17 @@ export default function Transactions() {
   }
 
   const tabs = [
-    { val:'all', label:'Tout' },
-    { val:'deposit', label:'Dépôts' },
-    { val:'withdrawal', label:'Retraits' },
+    { val:'all',        label:'All' },
+    { val:'deposit',    label:'Deposits' },
+    { val:'withdrawal', label:'Withdrawals' },
     { val:'investment', label:'Invest.' },
   ]
 
   return (
     <div className="dash-enter" style={{ maxWidth:720,margin:'0 auto',display:'flex',flexDirection:'column',gap:'1rem' }}>
       <div>
-        <h1 style={{ fontFamily:'"Poppins",sans-serif',fontSize:'1.5rem',fontWeight:700,color:'var(--text-primary)',marginBottom:3 }}>Historique</h1>
-        <p style={{ color:'var(--text-secondary)',fontSize:13 }}>Toutes vos transactions</p>
+        <h1 style={{ fontFamily:'"Poppins",sans-serif',fontSize:'1.5rem',fontWeight:700,color:'var(--text-primary)',marginBottom:3 }}>Transaction History</h1>
+        <p style={{ color:'var(--text-secondary)',fontSize:13 }}>All your transactions in one place</p>
       </div>
 
       <div className="tab-bar" style={{ width:'fit-content',overflowX:'auto' }}>
@@ -53,7 +53,7 @@ export default function Transactions() {
         {filtered.length === 0 ? (
           <div style={{ textAlign:'center',padding:'3rem 1.5rem',color:'var(--text-muted)' }}>
             <TrendingUp size={32} style={{ margin:'0 auto 10px',opacity:0.3 }} />
-            <p style={{ fontSize:13 }}>Aucune transaction</p>
+            <p style={{ fontSize:13 }}>No transactions found</p>
           </div>
         ) : (
           <div>
@@ -62,8 +62,8 @@ export default function Transactions() {
               const Icon = cfg.icon
               const label = t._type === 'investment'
                 ? (t.plan?.charAt(0).toUpperCase()+t.plan?.slice(1))+' Plan'
-                : t._type === 'deposit' ? 'Dépôt '+(PAYMENT_LABELS[t.method]||t.method)
-                : 'Retrait '+(PAYMENT_LABELS[t.method]||t.method)
+                : t._type === 'deposit' ? 'Deposit — '+(PAYMENT_LABELS[t.method]||t.method)
+                : 'Withdrawal — '+(PAYMENT_LABELS[t.method]||t.method)
               return (
                 <div key={t._id} style={{ display:'flex',alignItems:'center',gap:11,padding:'0.875rem 1.1rem',borderBottom:i<filtered.length-1?'1px solid var(--border)':'none' }}>
                   <div style={{ width:34,height:34,borderRadius:10,background:cfg.bg,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0 }}>
@@ -71,17 +71,17 @@ export default function Transactions() {
                   </div>
                   <div style={{ flex:1,minWidth:0 }}>
                     <p style={{ fontWeight:600,color:'var(--text-primary)',fontSize:13,marginBottom:1 }}>{label}</p>
-                    <p style={{ fontSize:10,color:'var(--text-muted)' }}>{new Date(t.createdAt).toLocaleDateString('fr-FR',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'})}</p>
+                    <p style={{ fontSize:10,color:'var(--text-muted)' }}>{new Date(t.createdAt).toLocaleDateString('en-US',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'})}</p>
                   </div>
                   <div style={{ textAlign:'right',flexShrink:0 }}>
-                    <p style={{ fontWeight:700,color:t._type==='deposit'?'var(--green)':'var(--red)',fontSize:13 }}>{cfg.sign}${t.amount?.toLocaleString('fr-FR')}</p>
+                    <p style={{ fontWeight:700,color:t._type==='deposit'?'var(--green)':'var(--red)',fontSize:13 }}>{cfg.sign}${t.amount?.toLocaleString('en-US')}</p>
                     {t.status && <span className={'badge-'+t.status} style={{ fontSize:9 }}>{
-                      t.status==='pending' ? 'En attente' :
-                      t.status==='approved' ? 'Approuvé' :
-                      t.status==='rejected' ? 'Rejeté' :
-                      t.status==='active' ? 'Actif' :
-                      t.status==='completed' ? 'Terminé' :
-                      t.status==='cancelled' ? 'Annulé' : t.status
+                      t.status==='pending'   ? 'Pending'   :
+                      t.status==='approved'  ? 'Approved'  :
+                      t.status==='rejected'  ? 'Rejected'  :
+                      t.status==='active'    ? 'Active'    :
+                      t.status==='completed' ? 'Completed' :
+                      t.status==='cancelled' ? 'Cancelled' : t.status
                     }</span>}
                   </div>
                 </div>

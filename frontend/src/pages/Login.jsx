@@ -18,15 +18,15 @@ export default function Login() {
     setLoading(true)
     try {
       const data = await login(form.email, form.password)
-      toast.success('Connexion réussie !')
+      toast.success('Login successful!')
       navigate(data.user.role === 'admin' ? '/admin' : '/dashboard')
-    } catch (err) { toast.error(err.response?.data?.message || 'Connexion échouée') }
+    } catch (err) { toast.error(err.response?.data?.message || 'Login failed') }
     finally { setLoading(false) }
   }
 
   return (
     <div className="auth-container">
-      {/* Panneau gauche (Bureau) */}
+      {/* Left Panel (Desktop) */}
       <div className="auth-left">
         <img src="/images/login_bg.png" alt="Login Background" className="auth-bg-img" />
         <div className="auth-bg-overlay" />
@@ -43,13 +43,13 @@ export default function Login() {
 
           <div className="animate-fade-up">
             <p style={{ fontSize: 11, fontWeight: 800, color: '#000', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: 12 }}>
-              🌍 Plateforme #1 Afrique de l'Ouest
+              🌍 West Africa's #1 Platform
             </p>
             <h2 style={{ fontFamily: '"Poppins",sans-serif', fontSize: '2.4rem', fontWeight: 800, color: '#000', lineHeight: 1.15, marginBottom: '1.5rem', letterSpacing: '-0.02em' }}>
-              Votre argent travaille,<br />même quand vous dormez.
+              Your money works,<br />even while you sleep.
             </h2>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-              {['ROI jusqu\'à 20%/jour', 'Dépôts 100% crypto', 'Sécurité AES-256', 'Support 24/7 en français'].map((f, i) => (
+              {['ROI up to 20%/day', 'Instant Crypto & Mobile Deposits', 'AES-256 Security Encryption', '24/7 AI-Powered Support'].map((f, i) => (
                 <div key={f} className={`animate-fade-up stagger-${i+1}`} style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 14, color: '#000', fontWeight: 700 }}>
                   <div style={{ width: 24, height: 24, borderRadius: '50%', background: 'rgba(0,0,0,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid rgba(0,0,0,0.2)' }}>
                     <span style={{ color: '#000', fontWeight: 900, fontSize: 12 }}>✓</span>
@@ -60,11 +60,11 @@ export default function Login() {
             </div>
           </div>
 
-          <p style={{ fontSize: 12, color: 'rgba(0,0,0,0.6)', fontWeight: 600 }}>© 2025 OilAI Invest. Tous droits réservés.</p>
+          <p style={{ fontSize: 12, color: 'rgba(0,0,0,0.6)', fontWeight: 600 }}>© 2025 OilAI Invest. All rights reserved.</p>
         </div>
       </div>
 
-      {/* Formulaire droite */}
+      {/* Right Form */}
       <div className="auth-right">
         <div className="auth-mobile-header">
           <Link to="/" className="auth-logo-link">
@@ -80,22 +80,22 @@ export default function Login() {
         <div className="auth-card animate-fade-up stagger-1">
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
             <h1 style={{ fontFamily: '"Poppins",sans-serif', fontSize: '1.7rem', fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
-              Connexion à OilAI Invest
+              Login to OilAI Invest
             </h1>
             <div style={{ display: 'none' }} className="desktop-theme-toggle"><ThemeToggle compact /></div>
           </div>
-          <p style={{ color: 'var(--text-secondary)', fontSize: 14, marginBottom: '2rem' }}>Accédez à votre tableau de bord investisseur.</p>
+          <p style={{ color: 'var(--text-secondary)', fontSize: 14, marginBottom: '2rem' }}>Access your investor dashboard.</p>
           
           <form onSubmit={submit} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
             <div>
-              <label className="label">Adresse Email</label>
-              <input name="email" type="email" required value={form.email} onChange={handle} className="input" placeholder="votre@email.com" />
+              <label className="label">Email Address</label>
+              <input name="email" type="email" required value={form.email} onChange={handle} className="input" placeholder="e.g. john.doe@example.com" />
             </div>
             
             <div>
               <label className="label" style={{ display: 'flex', justifyContent: 'space-between' }}>
-                Mot de passe
-                <span style={{ fontSize: 11, color: 'var(--accent)', cursor: 'pointer', textTransform: 'none', fontWeight: 600 }}>Oublié ?</span>
+                Password
+                <span style={{ fontSize: 11, color: 'var(--accent)', cursor: 'pointer', textTransform: 'none', fontWeight: 600 }}>Forgot?</span>
               </label>
               <div style={{ position: 'relative' }}>
                 <input name="password" type={show ? 'text' : 'password'} required value={form.password} onChange={handle} className="input" style={{ paddingRight: 48 }} placeholder="••••••••" />
@@ -109,14 +109,14 @@ export default function Login() {
               {loading ? (
                 <div style={{ width: 22, height: 22, border: '2.5px solid rgba(255,255,255,0.3)', borderTopColor: '#fff', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
               ) : (
-                <><span>Se connecter</span><ArrowRight size={18} /></>
+                <><span>Sign In</span><ArrowRight size={18} /></>
               )}
             </button>
           </form>
           
           <div style={{ marginTop: '2rem', textAlign: 'center' }}>
             <p style={{ color: 'var(--text-muted)', fontSize: 13 }}>
-              Nouveau sur OilAI ? <Link to="/register" style={{ color: 'var(--accent)', fontWeight: 700, textDecoration: 'none', marginLeft: 4 }}>Créer un compte</Link>
+              New to OilAI? <Link to="/register" style={{ color: 'var(--accent)', fontWeight: 700, textDecoration: 'none', marginLeft: 4 }}>Create an account</Link>
             </p>
           </div>
         </div>

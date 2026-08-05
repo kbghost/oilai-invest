@@ -10,13 +10,13 @@ import {
 } from 'lucide-react'
 
 const navItems = [
-  { to:'/dashboard',              label:'Dashboard',  icon:LayoutDashboard },
-  { to:'/dashboard/invest',       label:'Investir',   icon:TrendingUp },
-  { to:'/dashboard/deposits',     label:'Dépôts',     icon:ArrowDownCircle },
-  { to:'/dashboard/withdrawals',  label:'Retraits',   icon:ArrowUpCircle },
-  { to:'/dashboard/transactions', label:'Historique', icon:History },
-  { to:'/dashboard/profile',      label:'Profil',     icon:User },
-  { to:'/dashboard/referral',     label:'Parrainage', icon:Gift },
+  { to:'/dashboard',              label:'Dashboard',   icon:LayoutDashboard },
+  { to:'/dashboard/invest',       label:'Invest',      icon:TrendingUp },
+  { to:'/dashboard/deposits',     label:'Deposits',    icon:ArrowDownCircle },
+  { to:'/dashboard/withdrawals',  label:'Withdrawals', icon:ArrowUpCircle },
+  { to:'/dashboard/transactions', label:'History',     icon:History },
+  { to:'/dashboard/profile',      label:'Profile',     icon:User },
+  { to:'/dashboard/referral',     label:'Referrals',   icon:Gift },
 ]
 
 function SidebarContent({ mobile, setOpen }) {
@@ -33,16 +33,16 @@ function SidebarContent({ mobile, setOpen }) {
           </div>
           <div>
             <p style={{ fontFamily:'"Poppins",sans-serif',fontWeight:700,fontSize:'1rem',color:'var(--text-primary)',lineHeight:1 }}>OilAI Invest</p>
-            <p style={{ fontSize:10,color:'var(--text-muted)',marginTop:2 }}>Investissement IA · Afrique</p>
+            <p style={{ fontSize:10,color:'var(--text-muted)',marginTop:2 }}>AI Investment · West Africa</p>
           </div>
         </div>
       </div>
 
       {/* Balance pill */}
       <div style={{ margin:'0.875rem',padding:'1rem',background:'linear-gradient(135deg,rgba(245,166,35,0.18),rgba(245,166,35,0.06))',border:'1px solid rgba(245,166,35,0.25)',borderRadius:16 }}>
-        <p style={{ fontSize:10,color:'rgba(245,166,35,0.7)',marginBottom:3,textTransform:'uppercase',letterSpacing:'0.06em',fontWeight:700 }}>Solde disponible</p>
+        <p style={{ fontSize:10,color:'rgba(245,166,35,0.7)',marginBottom:3,textTransform:'uppercase',letterSpacing:'0.06em',fontWeight:700 }}>Available Balance</p>
         <p style={{ fontFamily:'"Poppins",sans-serif',fontSize:'1.35rem',fontWeight:800,color:'var(--accent)' }}>
-          {(user?.balance||0).toLocaleString('fr-FR',{minimumFractionDigits:2})} $
+          ${(user?.balance||0).toLocaleString('en-US',{minimumFractionDigits:2, maximumFractionDigits:2})}
         </p>
       </div>
 
@@ -83,7 +83,7 @@ function SidebarContent({ mobile, setOpen }) {
           </div>
         </div>
         <button onClick={()=>{ logout(); navigate('/') }} style={{ width:'100%',display:'flex',alignItems:'center',gap:8,padding:'0.6rem 0.875rem',borderRadius:12,background:'rgba(255,75,110,0.08)',border:'1px solid rgba(255,75,110,0.15)',color:'var(--red)',fontSize:13,fontWeight:600,cursor:'pointer',fontFamily:'inherit' }}>
-          <LogOut size={14} /> Déconnexion
+          <LogOut size={14} /> Log Out
         </button>
       </div>
     </div>

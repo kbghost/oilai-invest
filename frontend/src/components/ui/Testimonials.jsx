@@ -3,40 +3,40 @@ import AnimatedCounter from './AnimatedCounter'
 const TESTIMONIALS = [
   {
     name: 'Kofi Mensah',
-    role: 'Investisseur vérifié',
-    plan: 'Plan Premium',
+    role: 'Verified Investor',
+    plan: 'Premium Plan',
     earned: 4820,
-    text: 'OilAI Invest a changé ma vie. En 3 mois, j\'ai gagné plus que mon salaire annuel. Les profits arrivent chaque jour sans que je fasse quoi que ce soit !',
+    text: 'OilAI Invest has changed my life. In just 3 months, I earned more than my annual salary. Profits arrive every single day without me having to do anything!',
     avatar: 'KM',
     color: 'var(--accent)',
     stars: 5,
   },
   {
     name: 'Fatou Diallo',
-    role: 'Investisseuse vérifiée',
-    plan: 'Plan Pro',
+    role: 'Verified Investor',
+    plan: 'Pro Plan',
     earned: 1850,
-    text: 'Au début j\'étais sceptique, mais après mon premier retrait crypto réussi, j\'ai doublé ma mise. Le support est réactif et tout est transparent.',
+    text: 'I was skeptical at first, but after my first successful crypto withdrawal, I doubled my stake. The support team is responsive and everything is completely transparent.',
     avatar: 'FD',
     color: 'var(--blue)',
     stars: 5,
   },
   {
     name: 'Ibrahim Touré',
-    role: 'Investisseur vérifié',
-    plan: 'Plan Starter',
+    role: 'Verified Investor',
+    plan: 'Starter Plan',
     earned: 520,
-    text: 'J\'ai commencé avec seulement 200$ et en un mois j\'avais déjà gagné 130$ de profits. C\'est la meilleure plateforme d\'investissement que j\'ai testée en Afrique.',
+    text: 'I started with only $200 and within a month I had already earned $130 in profits. This is the best investment platform I have ever tried in West Africa.',
     avatar: 'IT',
     color: 'var(--green)',
     stars: 5,
   },
   {
     name: 'Adjoua Koné',
-    role: 'Investisseuse vérifiée',
-    plan: 'Plan Premium',
+    role: 'Verified Investor',
+    plan: 'Premium Plan',
     earned: 9400,
-    text: 'Je recommande OilAI à toute ma famille. L\'IA prédit vraiment bien les marchés pétroliers. Mes revenus passifs ont explosé depuis que j\'ai rejoint la plateforme.',
+    text: 'I recommend OilAI to all my family members. The AI is incredibly accurate at predicting oil markets. My passive income has skyrocketed since I joined the platform.',
     avatar: 'AK',
     color: '#a78bfa',
     stars: 5,
@@ -49,14 +49,14 @@ export default function Testimonials() {
       {/* Header */}
       <div style={{ textAlign: 'center', marginBottom: '3rem' }} className="reveal">
         <p style={{ fontSize: 12, fontWeight: 700, color: 'var(--accent)', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: 10 }}>
-          ⭐ Témoignages Vérifiés
+          ⭐ Verified Testimonials
         </p>
         <h2 style={{ fontFamily: '"Poppins", sans-serif', fontSize: 'clamp(1.6rem, 4vw, 2.5rem)', fontWeight: 700, color: 'var(--text-primary)', marginBottom: 10 }}>
-          Ce que disent nos{' '}
-          <span className="gradient-text">investisseurs africains</span>
+          What our{' '}
+          <span className="gradient-text">investors say</span>
         </h2>
         <p style={{ color: 'var(--text-secondary)', maxWidth: 500, margin: '0 auto', fontSize: 14, lineHeight: 1.7 }}>
-          Plus de 18 000 investisseurs nous font confiance chaque jour en Afrique de l'Ouest et au-delà.
+          Over 18,000 investors trust us every day across West Africa and beyond.
         </p>
       </div>
 
@@ -83,7 +83,7 @@ export default function Testimonials() {
             {/* Earned badge */}
             <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '0.3rem 0.75rem', background: 'rgba(0,212,160,0.08)', border: '1px solid rgba(0,212,160,0.2)', borderRadius: 999, marginBottom: '1rem' }}>
               <span style={{ fontSize: 11, color: 'var(--green)', fontWeight: 700 }}>
-                +$<AnimatedCounter value={t.earned} duration={1800} /> gagnés
+                +$<AnimatedCounter value={t.earned} duration={1800} /> earned
               </span>
             </div>
 

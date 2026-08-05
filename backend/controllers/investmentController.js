@@ -174,15 +174,15 @@ const createInvestment = async (req, res) => {
     const { plan } = req.body;
     const planConfig = PLANS[plan];
     if (!planConfig) {
-      return res.status(400).json({ success: false, message: 'Plan invalide.' });
+      return res.status(400).json({ success: false, message: 'Invalid plan.' });
     }
 
     const amt = planConfig.price;
 
     const user = await User.findById(req.user._id);
-    if (!user) return res.status(404).json({ success: false, message: 'Utilisateur introuvable.' });
+    if (!user) return res.status(404).json({ success: false, message: 'User not found.' });
     if (user.balance < amt) {
-      return res.status(400).json({ success: false, message: `Solde insuffisant. Solde actuel : $${user.balance.toFixed(2)}` });
+      return res.status(400).json({ success: false, message: `Insufficient balance. Current balance: $${user.balance.toFixed(2)}` });
     }
 
     // Calculer le 1er profit immédiatement disponible
@@ -208,13 +208,13 @@ const createInvestment = async (req, res) => {
 
     res.status(201).json({
       success: true,
-      message: `Plan ${planConfig.name} créé ! Premier gain de $${firstProfit} déjà disponible.`,
+      message: `${planConfig.name} plan activated! First profit of $${firstProfit} already available.`,
       investment,
       firstProfit,
     });
   } catch (err) {
     console.error('[INVEST] Create error:', err);
-    res.status(500).json({ success: false, message: 'Erreur lors de la création.' });
+    res.status(500).json({ success: false, message: 'Error creating investment.' });
   }
 };
 
@@ -229,10 +229,10 @@ const claimProfit = async (req, res) => {
     });
 
     if (!investment) {
-      return res.status(404).json({ success: false, message: 'Investissement introuvable.' });
+      return res.status(404).json({ success: false, message: 'Investment not found.' });
     }
     if (investment.status !== 'active') {
-      return res.status(400).json({ success: false, message: 'Cet investissement n\'est plus actif.' });
+      return res.status(400).json({ success: false, message: 'This investment is no longer active.' });
     }
 
     // ── Vérification du cooldown ─────────────────────────────────────────
@@ -245,8 +245,8 @@ const claimProfit = async (req, res) => {
       return res.status(429).json({
         success:     false,
         message:     hoursLeft > 0
-          ? `Prochain claim dans ${hoursLeft}h ${minutesLeft}min.`
-          : `Prochain claim dans ${minsLeft} min.`,
+          ? `Next claim in ${hoursLeft}h ${minutesLeft}min.`
+          : `Next claim in ${minsLeft} min.`,
         nextClaimAt: investment.nextClaimAt,
         hoursLeft,
         minutesLeft,
@@ -261,7 +261,7 @@ const claimProfit = async (req, res) => {
       investment.pendingProfit = calculateDailyProfit(investment.amount, investment.dailyROI, variation);
 
       if (investment.pendingProfit <= 0) {
-        return res.status(400).json({ success: false, message: 'Aucun gain disponible pour le moment.' });
+        return res.status(400).json({ success: false, message: 'No profits available at the moment.' });
       }
     }
 
@@ -303,7 +303,7 @@ const claimProfit = async (req, res) => {
       return res.json({
         success:      true,
         completed:    true,
-        message:      `🎉 Plan terminé ! $${profitToClaim.toFixed(2)} de gains + $${investment.amount.toFixed(2)} de capital remboursés sur votre solde.`,
+        message:      `🎉 Plan completed! $${profitToClaim.toFixed(2)} in earnings + $${investment.amount.toFixed(2)} capital returned to your balance.`,
         profitClaimed: profitToClaim,
         capitalReturned: investment.amount,
         nextProfit:   0,
@@ -322,7 +322,7 @@ const claimProfit = async (req, res) => {
     return res.json({
       success:       true,
       completed:     false,
-      message:       `✅ $${profitToClaim.toFixed(2)} crédités sur votre solde !`,
+      message:       `✅ $${profitToClaim.toFixed(2)} credited to your balance!`,
       profitClaimed: profitToClaim,
       nextProfit,
       nextClaimAt,
@@ -332,7 +332,7 @@ const claimProfit = async (req, res) => {
 
   } catch (err) {
     console.error('[INVEST] Claim error:', err);
-    res.status(500).json({ success: false, message: 'Erreur lors de la réclamation.' });
+    res.status(500).json({ success: false, message: 'Error claiming profits.' });
   }
 };
 
@@ -344,7 +344,7 @@ const getUserInvestments = async (req, res) => {
     const investments = await Investment.find({ user: req.user._id }).sort({ createdAt: -1 });
     res.json({ success: true, investments });
   } catch (err) {
-    res.status(500).json({ success: false, message: 'Erreur serveur.' });
+    res.status(500).json({ success: false, message: 'Server error.' });
   }
 };
 
@@ -373,7 +373,7 @@ const processDailyProfits = async (req = null, res = null) => {
     }
   }
 
-  const msg = `${count} investissement(s) traité(s). $${totalGenerated.toFixed(2)} générés en attente de claim.`;
+  const msg = `${count} investment(s) processed. $${totalGenerated.toFixed(2)} generated pending claim.`;
   console.log('[CRON]', msg);
 
   if (res) res.json({ success: true, message: msg, processed: count, totalGenerated });

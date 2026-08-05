@@ -22,9 +22,9 @@ export default function AdminWithdrawals() {
       const r = await withdrawalAPI.adminGetAll({ status })
       setWithdrawals(r.data.withdrawals)
     } catch (err) {
-      const msg = err.response?.data?.message || err.message || 'Erreur de chargement'
+      const msg = err.response?.data?.message || err.message || 'Failed to load withdrawals'
       setLoadError(msg)
-      toast.error('Retraits : ' + msg)
+      toast.error('Withdrawals: ' + msg)
     } finally { setLoading(false) }
   }
   useEffect(() => { load() }, [status])
@@ -33,11 +33,11 @@ export default function AdminWithdrawals() {
     try {
       if (action === 'approve') await withdrawalAPI.approve(modal._id, form)
       else await withdrawalAPI.reject(modal._id, form)
-      toast.success('Retrait ' + (action === 'approve' ? 'approuvé ✅' : 'rejeté ❌'))
+      toast.success('Withdrawal ' + (action === 'approve' ? 'approved ✅' : 'rejected ❌'))
       setModal(null); setForm({ note: '', txHash: '' })
       await load()
     } catch (err) {
-      const msg = err.response?.data?.message || err.message || 'Erreur'
+      const msg = err.response?.data?.message || err.message || 'Error'
       toast.error(msg)
     }
   }
@@ -45,19 +45,19 @@ export default function AdminWithdrawals() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
       <div>
-        <h1 style={{ fontFamily: '"Poppins", sans-serif', fontSize: '1.8rem', fontWeight: 700, color: 'var(--text-primary)', marginBottom: 4 }}>Retraits</h1>
-        <p style={{ color: 'var(--text-secondary)', fontSize: 14 }}>Valider et traiter les demandes de retrait</p>
+        <h1 style={{ fontFamily: '"Poppins", sans-serif', fontSize: '1.8rem', fontWeight: 700, color: 'var(--text-primary)', marginBottom: 4 }}>Withdrawals</h1>
+        <p style={{ color: 'var(--text-secondary)', fontSize: 14 }}>Review and process withdrawal requests</p>
       </div>
 
       {loadError && (
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '0.875rem 1rem', background: 'rgba(255,75,110,0.08)', border: '1px solid rgba(255,75,110,0.2)', borderRadius: 12, color: 'var(--red)', fontSize: 13 }}>
           <AlertCircle size={16} />
-          <span><strong>Erreur :</strong> {loadError} — Vérifiez que le backend est démarré et que MongoDB est connecté.</span>
+          <span><strong>Error:</strong> {loadError} — Make sure the backend is running and MongoDB is connected.</span>
         </div>
       )}
 
       <div className="tab-bar" style={{ width: 'fit-content' }}>
-        {[['pending','En attente'],['approved','Approuvés'],['rejected','Rejetés']].map(([val,label]) => (
+        {[['pending','Pending'],['approved','Approved'],['rejected','Rejected']].map(([val,label]) => (
           <button key={val} className={'tab-btn' + (status === val ? ' active' : '')} onClick={() => setStatus(val)}>{label}</button>
         ))}
       </div>
@@ -66,20 +66,20 @@ export default function AdminWithdrawals() {
         <table className="data-table">
           <thead>
             <tr>
-              <th style={{ paddingLeft: '1.5rem' }}>Utilisateur</th>
-              <th>Mode</th>
-              <th>Adresse / Numéro</th>
-              <th style={{ textAlign: 'right' }}>Montant</th>
+              <th style={{ paddingLeft: '1.5rem' }}>User</th>
+              <th>Method</th>
+              <th>Address / Number</th>
+              <th style={{ textAlign: 'right' }}>Amount</th>
               <th style={{ textAlign: 'center' }}>Date</th>
-              <th style={{ textAlign: 'center' }}>Statut</th>
+              <th style={{ textAlign: 'center' }}>Status</th>
               {status === 'pending' && <th style={{ textAlign: 'center', paddingRight: '1.5rem' }}>Actions</th>}
             </tr>
           </thead>
           <tbody>
             {loading ? (
-              <tr><td colSpan={7} style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-muted)' }}>Chargement…</td></tr>
+              <tr><td colSpan={7} style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-muted)' }}>Loading…</td></tr>
             ) : withdrawals.length === 0 ? (
-              <tr><td colSpan={7} style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-muted)' }}>Aucun retrait</td></tr>
+              <tr><td colSpan={7} style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-muted)' }}>No withdrawals found</td></tr>
             ) : withdrawals.map(w => (
               <tr key={w._id}>
                 <td style={{ paddingLeft: '1.5rem' }}>
@@ -94,9 +94,9 @@ export default function AdminWithdrawals() {
                   {w.walletAddress}
                 </td>
                 <td style={{ textAlign: 'right', fontWeight: 700, color: 'var(--red)' }}>-${w.amount?.toLocaleString()}</td>
-                <td style={{ textAlign: 'center', color: 'var(--text-muted)', fontSize: 12 }}>{new Date(w.createdAt).toLocaleDateString('fr-FR')}</td>
+                <td style={{ textAlign: 'center', color: 'var(--text-muted)', fontSize: 12 }}>{new Date(w.createdAt).toLocaleDateString('en-US')}</td>
                 <td style={{ textAlign: 'center' }}>
-                  <span className={'badge-' + w.status}>{w.status === 'pending' ? 'En attente' : w.status === 'approved' ? 'Approuvé' : 'Rejeté'}</span>
+                  <span className={'badge-' + w.status}>{w.status === 'pending' ? 'Pending' : w.status === 'approved' ? 'Approved' : 'Rejected'}</span>
                 </td>
                 {status === 'pending' && (
                   <td style={{ textAlign: 'center', paddingRight: '1.5rem' }}>
@@ -124,7 +124,7 @@ export default function AdminWithdrawals() {
           <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(4px)' }} onClick={() => setModal(null)} />
           <div className="card" style={{ position: 'relative', width: '100%', maxWidth: 400, zIndex: 1 }}>
             <h3 style={{ fontFamily: '"Poppins", sans-serif', fontWeight: 700, color: 'var(--text-primary)', marginBottom: 6 }}>
-              {action === 'approve' ? '✅ Approuver' : '❌ Rejeter'} le retrait
+              {action === 'approve' ? '✅ Approve' : '❌ Reject'} Withdrawal
             </h3>
             <div style={{ padding: '0.875rem', background: 'var(--bg-card2)', borderRadius: 12, marginBottom: '1rem' }}>
               <p style={{ fontSize: 13, color: 'var(--text-secondary)', marginBottom: 4 }}>{modal.user?.firstName} {modal.user?.lastName}</p>
@@ -134,19 +134,19 @@ export default function AdminWithdrawals() {
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
               {action === 'approve' && (
                 <div>
-                  <label className="label">Hash de transaction (optionnel)</label>
-                  <input value={form.txHash} onChange={e => setForm(p => ({ ...p, txHash: e.target.value }))} className="input" placeholder="TX hash / référence" />
+                  <label className="label">Transaction Hash (optional)</label>
+                  <input value={form.txHash} onChange={e => setForm(p => ({ ...p, txHash: e.target.value }))} className="input" placeholder="TX hash / reference" />
                 </div>
               )}
               <div>
-                <label className="label">Note admin</label>
-                <textarea value={form.note} onChange={e => setForm(p => ({ ...p, note: e.target.value }))} className="input" style={{ height: 72, resize: 'none' }} placeholder="Message pour l'utilisateur…" />
+                <label className="label">Admin note</label>
+                <textarea value={form.note} onChange={e => setForm(p => ({ ...p, note: e.target.value }))} className="input" style={{ height: 72, resize: 'none' }} placeholder="Message to the user…" />
               </div>
             </div>
             <div style={{ display: 'flex', gap: 10, marginTop: '1.25rem' }}>
-              <button onClick={() => setModal(null)} className="btn-ghost" style={{ flex: 1, justifyContent: 'center' }}>Annuler</button>
+              <button onClick={() => setModal(null)} className="btn-ghost" style={{ flex: 1, justifyContent: 'center' }}>Cancel</button>
               <button onClick={confirm} style={{ flex: 1, padding: '0.75rem', borderRadius: 14, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit', fontSize: 14, border: 'none', color: '#fff', background: action === 'approve' ? 'linear-gradient(135deg, var(--green), #00a87d)' : 'linear-gradient(135deg, var(--red), #b02040)' }}>
-                Confirmer
+                Confirm
               </button>
             </div>
           </div>

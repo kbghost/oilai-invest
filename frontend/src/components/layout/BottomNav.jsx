@@ -8,11 +8,11 @@ import {
 import toast from 'react-hot-toast'
 
 const NAV_ITEMS = [
-  { to: '/dashboard',          label: 'Accueil',   icon: LayoutDashboard },
-  { to: '/dashboard/invest',   label: 'Investir',  icon: TrendingUp },
-  { to: '/dashboard/deposits', label: 'Dépôts',    icon: ArrowDownCircle },
-  { to: '/dashboard/referral', label: 'Parrainage',icon: Gift },
-  { to: '/dashboard/profile',  label: 'Profil',    icon: User },
+  { to: '/dashboard',          label: 'Home',      icon: LayoutDashboard },
+  { to: '/dashboard/invest',   label: 'Invest',    icon: TrendingUp },
+  { to: '/dashboard/deposits', label: 'Deposits',  icon: ArrowDownCircle },
+  { to: '/dashboard/referral', label: 'Referrals', icon: Gift },
+  { to: '/dashboard/profile',  label: 'Profile',   icon: User },
 ]
 
 export default function BottomNav() {
@@ -23,13 +23,13 @@ export default function BottomNav() {
   const handleLogout = () => {
     setMenuOpen(false)
     logout()
-    toast.success('Déconnexion réussie')
+    toast.success('Logged out successfully')
     navigate('/')
   }
 
   return (
     <>
-      {/* ─── Menu flottant (retraits, historique, déconnexion) ─── */}
+      {/* ─── Floating Menu (withdrawals, history, logout) ─── */}
       {menuOpen && (
         <div
           style={{
@@ -42,7 +42,7 @@ export default function BottomNav() {
             onClick={e => e.stopPropagation()}
             style={{
               position:'absolute',
-              bottom: 80,                    /* juste au-dessus de la bottom-nav */
+              bottom: 80,                    /* right above bottom-nav */
               left: '50%',
               transform: 'translateX(-50%)',
               width: 240,
@@ -53,16 +53,16 @@ export default function BottomNav() {
               overflow: 'hidden',
             }}
           >
-            {/* Titre */}
+            {/* Title */}
             <div style={{ display:'flex',alignItems:'center',justifyContent:'space-between',padding:'0.875rem 1rem',borderBottom:'1px solid var(--border)' }}>
-              <p style={{ fontWeight:700, color:'var(--text-primary)', fontSize:14 }}>Plus d'options</p>
+              <p style={{ fontWeight:700, color:'var(--text-primary)', fontSize:14 }}>More Options</p>
               <button onClick={() => setMenuOpen(false)} style={{ background:'none',border:'none',cursor:'pointer',color:'var(--text-muted)',display:'flex' }}><X size={18}/></button>
             </div>
 
             {/* Items */}
             {[
-              { to:'/dashboard/withdrawals',  label:'Retraits',   icon:ArrowUpCircle, color:'var(--red)' },
-              { to:'/dashboard/transactions', label:'Historique',  icon:History,       color:'var(--blue)' },
+              { to:'/dashboard/withdrawals',  label:'Withdrawals', icon:ArrowUpCircle, color:'var(--red)' },
+              { to:'/dashboard/transactions', label:'History',     icon:History,       color:'var(--blue)' },
             ].map(({ to, label, icon:Icon, color }) => (
               <Link
                 key={to} to={to}
@@ -83,7 +83,7 @@ export default function BottomNav() {
               </Link>
             ))}
 
-            {/* Déconnexion */}
+            {/* Logout */}
             <button
               onClick={handleLogout}
               style={{
@@ -97,13 +97,13 @@ export default function BottomNav() {
               <div style={{ width:34,height:34,borderRadius:10,background:'rgba(255,92,122,0.1)',border:'1px solid rgba(255,92,122,0.2)',display:'flex',alignItems:'center',justifyContent:'center' }}>
                 <LogOut size={16} color="var(--red)" />
               </div>
-              Se déconnecter
+              Log Out
             </button>
           </div>
         </div>
       )}
 
-      {/* ─── Barre de navigation fixe ─── */}
+      {/* ─── Fixed Bottom Navigation Bar ─── */}
       <nav className="bottom-nav">
         {NAV_ITEMS.map(({ to, label, icon:Icon }) => (
           <NavLink

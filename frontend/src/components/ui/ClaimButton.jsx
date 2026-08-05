@@ -77,7 +77,7 @@ export default function ClaimButton({ investment, onClaimed }) {
     } finally { setLoading(false) }
   }
 
-  // ── Déjà réclamé aujourd'hui ──
+  // ── Already claimed today (countdown) ──
   if (countdown) {
     return (
       <div style={{
@@ -91,9 +91,9 @@ export default function ClaimButton({ investment, onClaimed }) {
             <Lock size={15} color="var(--text-muted)" />
           </div>
           <div>
-            <p style={{ fontSize:12, fontWeight:700, color:'var(--text-secondary)' }}>Prochain claim dans</p>
+            <p style={{ fontSize:12, fontWeight:700, color:'var(--text-secondary)' }}>Next claim in</p>
             <p style={{ fontSize:11, color:'var(--text-muted)' }}>
-              Gain en attente demain : <span style={{ color:'var(--accent)', fontWeight:700 }}>
+              Pending profit tomorrow: <span style={{ color:'var(--accent)', fontWeight:700 }}>
                 ~${pending > 0 ? pending.toFixed(2) : (investment.amount * investment.dailyROI / 100).toFixed(2)}
               </span>
             </p>
@@ -112,7 +112,7 @@ export default function ClaimButton({ investment, onClaimed }) {
     )
   }
 
-  // ── Déjà réclamé (feedback immédiat) ──
+  // ── Already claimed (immediate feedback) ──
   if (claimed) {
     return (
       <div style={{
@@ -121,12 +121,12 @@ export default function ClaimButton({ investment, onClaimed }) {
         border:'1px solid rgba(34,197,94,0.2)',
       }}>
         <Check size={18} color="var(--green)" strokeWidth={3} />
-        <p style={{ fontSize:13, fontWeight:700, color:'var(--green)' }}>Gains crédités sur votre solde !</p>
+        <p style={{ fontSize:13, fontWeight:700, color:'var(--green)' }}>Profits credited to your balance!</p>
       </div>
     )
   }
 
-  // ── Bouton actif ──
+  // ── Active Claim Button ──
   return (
     <button
       onClick={handleClaim}
@@ -152,10 +152,10 @@ export default function ClaimButton({ investment, onClaimed }) {
         }
         <div style={{ textAlign:'left' }}>
           <p style={{ fontSize:13, fontWeight:800, color:'#fff', marginBottom:1 }}>
-            {loading ? 'Traitement...' : 'Réclamer mes gains'}
+            {loading ? 'Processing...' : 'Claim My Profits'}
           </p>
           <p style={{ fontSize:11, color:'rgba(255,255,255,0.8)' }}>
-            {canClaim ? `+$${pending.toFixed(2)} disponibles` : 'Aucun gain disponible'}
+            {canClaim ? `+$${pending.toFixed(2)} available` : 'No profit available'}
           </p>
         </div>
       </div>

@@ -6,10 +6,10 @@ import AdminBottomNav from '../../components/layout/AdminBottomNav'
 import { LayoutDashboard, Users, ArrowDownCircle, ArrowUpCircle, LogOut, Shield, Menu, X, ChevronRight, Zap } from 'lucide-react'
 
 const navItems = [
-  { to:'/admin',             label:'Dashboard',    icon:LayoutDashboard },
-  { to:'/admin/users',       label:'Utilisateurs', icon:Users },
-  { to:'/admin/deposits',    label:'Dépôts',       icon:ArrowDownCircle },
-  { to:'/admin/withdrawals', label:'Retraits',     icon:ArrowUpCircle },
+  { to:'/admin',             label:'Dashboard',   icon:LayoutDashboard },
+  { to:'/admin/users',       label:'Users',       icon:Users },
+  { to:'/admin/deposits',    label:'Deposits',    icon:ArrowDownCircle },
+  { to:'/admin/withdrawals', label:'Withdrawals', icon:ArrowUpCircle },
 ]
 
 function SidebarContent({ mobile, setOpen }) {
@@ -19,7 +19,7 @@ function SidebarContent({ mobile, setOpen }) {
     <div style={{ display:'flex',flexDirection:'column',height:'100%' }}>
       <div style={{ padding:'1.25rem 1.1rem',borderBottom:'1px solid var(--border)',display:'flex',alignItems:'center',gap:9 }}>
         <div style={{ width:34,height:34,borderRadius:10,background:'linear-gradient(135deg,#a78bfa,#7c3aed)',display:'flex',alignItems:'center',justifyContent:'center' }}><Shield size={16} color="#fff" /></div>
-        <div><p style={{ fontFamily:'"Poppins",sans-serif',fontWeight:700,color:'var(--text-primary)',fontSize:'0.95rem',lineHeight:1 }}>Admin</p><p style={{ fontSize:10,color:'var(--text-muted)' }}>OilAI Invest</p></div>
+        <div><p style={{ fontFamily:'"Poppins",sans-serif',fontWeight:700,color:'var(--text-primary)',fontSize:'0.95rem',lineHeight:1 }}>Admin Panel</p><p style={{ fontSize:10,color:'var(--text-muted)' }}>OilAI Invest</p></div>
       </div>
       <nav style={{ flex:1,padding:'0.7rem',display:'flex',flexDirection:'column',gap:2 }}>
         {navItems.map(({ to, label, icon:Icon }) => (
@@ -27,11 +27,11 @@ function SidebarContent({ mobile, setOpen }) {
             {({ isActive }) => (<><Icon size={15} style={{ flexShrink:0,opacity:isActive?1:0.6 }} /><span>{label}</span>{isActive && <ChevronRight size={11} style={{ marginLeft:'auto',opacity:0.4 }} />}</>)}
           </NavLink>
         ))}
-        <NavLink to="/dashboard" className="nav-link" style={{ marginTop:6,color:'var(--accent)' }} onClick={()=>mobile&&setOpen(false)}><Zap size={15} /> Dashboard user</NavLink>
+        <NavLink to="/dashboard" className="nav-link" style={{ marginTop:6,color:'var(--accent)' }} onClick={()=>mobile&&setOpen(false)}><Zap size={15} /> User Dashboard</NavLink>
       </nav>
       <div style={{ padding:'0.875rem',borderTop:'1px solid var(--border)' }}>
         <div style={{ marginBottom:8 }}><ThemeToggle /></div>
-        <button onClick={()=>{ logout(); navigate('/') }} style={{ width:'100%',display:'flex',alignItems:'center',gap:7,padding:'0.55rem 0.75rem',borderRadius:11,background:'rgba(255,75,110,0.08)',border:'1px solid rgba(255,75,110,0.15)',color:'var(--red)',fontSize:12,fontWeight:600,cursor:'pointer',fontFamily:'inherit' }}><LogOut size={13}/> Déconnexion</button>
+        <button onClick={()=>{ logout(); navigate('/') }} style={{ width:'100%',display:'flex',alignItems:'center',gap:7,padding:'0.55rem 0.75rem',borderRadius:11,background:'rgba(255,75,110,0.08)',border:'1px solid rgba(255,75,110,0.15)',color:'var(--red)',fontSize:12,fontWeight:600,cursor:'pointer',fontFamily:'inherit' }}><LogOut size={13}/> Log Out</button>
       </div>
     </div>
   )

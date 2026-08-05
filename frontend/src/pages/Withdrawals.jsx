@@ -5,10 +5,10 @@ import { ArrowUpCircle, AlertCircle } from 'lucide-react'
 import toast from 'react-hot-toast'
 
 const METHODS = [
-  { value:'bitcoin',  label:'Bitcoin (BTC)',  logo:'https://raw.githubusercontent.com/spothq/cryptocurrency-icons/master/128/color/btc.png', placeholder:'bc1q... ou 1A1zP1...', hint:'Adresse Bitcoin valide. Vérifiez avant envoi.', network:'BTC', delay:'45 min' },
-  { value:'ethereum', label:'Ethereum (ETH)', logo:'https://raw.githubusercontent.com/spothq/cryptocurrency-icons/master/128/color/eth.png', placeholder:'0x...', hint:'Adresse ERC20 valide uniquement.', network:'ERC20', delay:'45 min' },
-  { value:'usdt',     label:'USDT',           logo:'https://raw.githubusercontent.com/spothq/cryptocurrency-icons/master/128/color/usdt.png', placeholder:'T...', hint:'Réseau TRC20 uniquement.', network:'TRC20', delay:'45 min' },
-  { value:'bnb',      label:'BNB',            logo:'https://raw.githubusercontent.com/spothq/cryptocurrency-icons/master/128/color/bnb.png', placeholder:'bnb1...', hint:'Réseau BNB Smart Chain (BEP20).', network:'BEP20', delay:'45 min' },
+  { value:'bitcoin',  label:'Bitcoin (BTC)',  logo:'https://raw.githubusercontent.com/spothq/cryptocurrency-icons/master/128/color/btc.png', placeholder:'bc1q... or 1A1zP1...', hint:'Valid Bitcoin address. Verify before sending.', network:'BTC', delay:'45 min' },
+  { value:'ethereum', label:'Ethereum (ETH)', logo:'https://raw.githubusercontent.com/spothq/cryptocurrency-icons/master/128/color/eth.png', placeholder:'0x...', hint:'Valid ERC20 address only.', network:'ERC20', delay:'45 min' },
+  { value:'usdt',     label:'USDT',           logo:'https://raw.githubusercontent.com/spothq/cryptocurrency-icons/master/128/color/usdt.png', placeholder:'T...', hint:'TRC20 network only.', network:'TRC20', delay:'45 min' },
+  { value:'bnb',      label:'BNB',            logo:'https://raw.githubusercontent.com/spothq/cryptocurrency-icons/master/128/color/bnb.png', placeholder:'bnb1...', hint:'BNB Smart Chain (BEP20) network.', network:'BEP20', delay:'45 min' },
 ]
 
 export default function Withdrawals() {
@@ -24,43 +24,43 @@ export default function Withdrawals() {
 
   const submit = async e => {
     e.preventDefault()
-    if (parseFloat(form.amount) < 10) return toast.error('Minimum : 10$')
-    if (!form.method) return toast.error('Choisissez une cryptomonnaie')
-    if (!form.walletAddress) return toast.error('Entrez votre adresse de portefeuille')
-    if ((user?.balance||0) < parseFloat(form.amount)) return toast.error('Solde insuffisant')
+    if (parseFloat(form.amount) < 10) return toast.error('Minimum: $10')
+    if (!form.method) return toast.error('Please select a cryptocurrency')
+    if (!form.walletAddress) return toast.error('Enter your wallet address')
+    if ((user?.balance||0) < parseFloat(form.amount)) return toast.error('Insufficient balance')
     setLoading(true)
     try {
       await withdrawalAPI.create({ ...form, amount: parseFloat(form.amount) })
-      toast.success('Retrait soumis ! Traitement sous '+(selectedMethod?.delay||'45 min'))
+      toast.success('Withdrawal submitted! Processing within '+(selectedMethod?.delay||'45 min'))
       updateUser({ ...user, balance: (user?.balance||0) - parseFloat(form.amount) })
       const r = await withdrawalAPI.getAll(); setWithdrawals(r.data.withdrawals)
       setForm({ amount:'', method:'', walletAddress:'' })
       setTab('history')
-    } catch (err) { toast.error(err.response?.data?.message || 'Erreur') }
+    } catch (err) { toast.error(err.response?.data?.message || 'Error creating withdrawal') }
     finally { setLoading(false) }
   }
 
   return (
     <div className="dash-enter" style={{ maxWidth:560,margin:'0 auto' }}>
       <div style={{ marginBottom:'1rem' }}>
-        <h1 style={{ fontFamily:'"Poppins",sans-serif',fontSize:'1.5rem',fontWeight:700,color:'var(--text-primary)',marginBottom:3 }}>Retraits</h1>
-        <p style={{ color:'var(--text-secondary)',fontSize:13 }}>Retirez vos gains en cryptomonnaie</p>
+        <h1 style={{ fontFamily:'"Poppins",sans-serif',fontSize:'1.5rem',fontWeight:700,color:'var(--text-primary)',marginBottom:3 }}>Withdrawals</h1>
+        <p style={{ color:'var(--text-secondary)',fontSize:13 }}>Withdraw your profits in cryptocurrency</p>
       </div>
 
       <div style={{ display:'flex',alignItems:'center',gap:10,padding:'0.75rem 1rem',background:'var(--accent-glow)',border:'1px solid var(--accent-glow)',borderRadius:12,marginBottom:'1.25rem' }}>
         <ArrowUpCircle size={16} color="var(--accent)" />
-        <p style={{ fontSize:12,color:'var(--text-primary)' }}>Solde : <span style={{ fontWeight:700,color:'var(--accent)' }}>${(user?.balance||0).toFixed(2)}</span> · Min. 10$</p>
+        <p style={{ fontSize:12,color:'var(--text-primary)' }}>Balance: <span style={{ fontWeight:700,color:'var(--accent)' }}>${(user?.balance||0).toFixed(2)}</span> · Min. $10</p>
       </div>
 
       <div className="tab-bar" style={{ marginBottom:'1.25rem',width:'fit-content' }}>
-        <button className={'tab-btn'+(tab==='new'?' active':'')} onClick={()=>setTab('new')}>Nouveau</button>
-        <button className={'tab-btn'+(tab==='history'?' active':'')} onClick={()=>setTab('history')}>Historique</button>
+        <button className={'tab-btn'+(tab==='new'?' active':'')} onClick={()=>setTab('new')}>New Request</button>
+        <button className={'tab-btn'+(tab==='history'?' active':'')} onClick={()=>setTab('history')}>History</button>
       </div>
 
       {tab === 'new' && (
         <form onSubmit={submit} style={{ display:'flex',flexDirection:'column',gap:'1rem' }}>
           <div className="card">
-            <p style={{ fontSize:11,fontWeight:700,color:'var(--text-secondary)',textTransform:'uppercase',letterSpacing:'0.06em',marginBottom:'0.75rem' }}>Cryptomonnaie de retrait</p>
+            <p style={{ fontSize:11,fontWeight:700,color:'var(--text-secondary)',textTransform:'uppercase',letterSpacing:'0.06em',marginBottom:'0.75rem' }}>Withdrawal Cryptocurrency</p>
             <div style={{ display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(110px,1fr))',gap:8 }}>
               {METHODS.map(m => (
                 <div key={m.value} className={'payment-card'+(form.method===m.value?' selected':'')} onClick={()=>setForm(p=>({...p,method:m.value,walletAddress:''}))} style={{ padding:'0.65rem 0.4rem' }}>
@@ -73,23 +73,23 @@ export default function Withdrawals() {
           </div>
 
           <div className="card">
-            <label className="label">Montant ($)</label>
+            <label className="label">Amount ($)</label>
             <div style={{ position:'relative' }}>
               <span style={{ position:'absolute',left:14,top:'50%',transform:'translateY(-50%)',color:'var(--text-muted)',fontWeight:700 }}>$</span>
-              <input type="number" name="amount" value={form.amount} onChange={handle} min="10" max={user?.balance} className="input" style={{ paddingLeft:28 }} placeholder="Min. 10$" />
+              <input type="number" name="amount" value={form.amount} onChange={handle} min="10" max={user?.balance} className="input" style={{ paddingLeft:28 }} placeholder="Min. $10" />
             </div>
             {form.amount && parseFloat(form.amount) > 0 && (
               <div style={{ marginTop:10, padding:'0.75rem', background:'var(--bg-card2)', borderRadius:10, fontSize:12 }}>
                 <div style={{ display:'flex', justifyContent:'space-between', marginBottom:4 }}>
-                  <span style={{ color:'var(--text-muted)' }}>Montant demandé</span>
+                  <span style={{ color:'var(--text-muted)' }}>Requested Amount</span>
                   <span style={{ fontWeight:600 }}>${parseFloat(form.amount).toFixed(2)}</span>
                 </div>
                 <div style={{ display:'flex', justifyContent:'space-between', marginBottom:4 }}>
-                  <span style={{ color:'var(--red)' }}>Frais de réseau (2%)</span>
+                  <span style={{ color:'var(--red)' }}>Network Fee (2%)</span>
                   <span style={{ fontWeight:600, color:'var(--red)' }}>-${(parseFloat(form.amount) * 0.02).toFixed(2)}</span>
                 </div>
                 <div style={{ display:'flex', justifyContent:'space-between', borderTop:'1px solid var(--border)', paddingTop:4, marginTop:4 }}>
-                  <span style={{ color:'var(--text-primary)', fontWeight:700 }}>Montant reçu</span>
+                  <span style={{ color:'var(--text-primary)', fontWeight:700 }}>Net Amount Received</span>
                   <span style={{ fontWeight:800, color:'var(--green)' }}>${(parseFloat(form.amount) * 0.98).toFixed(2)}</span>
                 </div>
               </div>
@@ -99,33 +99,33 @@ export default function Withdrawals() {
                 {[10,50,100].filter(v => v <= (user?.balance||0)).map(v => (
                   <button type="button" key={v} onClick={()=>setForm(p=>({...p,amount:v.toString()}))} style={{ flex:1,padding:'0.35rem',background:'var(--bg-card2)',border:'1px solid var(--border)',borderRadius:9,fontSize:11,fontWeight:600,color:'var(--text-secondary)',cursor:'pointer',fontFamily:'inherit' }}>${v}</button>
                 ))}
-                <button type="button" onClick={()=>setForm(p=>({...p,amount:(user?.balance||0).toString()}))} style={{ flex:1,padding:'0.35rem',background:'var(--bg-card2)',border:'1px solid var(--border)',borderRadius:9,fontSize:11,fontWeight:600,color:'var(--accent)',cursor:'pointer',fontFamily:'inherit' }}>Tout</button>
+                <button type="button" onClick={()=>setForm(p=>({...p,amount:(user?.balance||0).toString()}))} style={{ flex:1,padding:'0.35rem',background:'var(--bg-card2)',border:'1px solid var(--border)',borderRadius:9,fontSize:11,fontWeight:600,color:'var(--accent)',cursor:'pointer',fontFamily:'inherit' }}>All</button>
               </div>
             )}
           </div>
 
           <div className="card">
-            <label className="label">{selectedMethod ? selectedMethod.label+' — Adresse' : 'Adresse de portefeuille'}</label>
-            <input type="text" name="walletAddress" value={form.walletAddress} onChange={handle} className="input" placeholder={selectedMethod?.placeholder || 'Choisissez une crypto'} />
+            <label className="label">{selectedMethod ? selectedMethod.label+' — Address' : 'Wallet Address'}</label>
+            <input type="text" name="walletAddress" value={form.walletAddress} onChange={handle} className="input" placeholder={selectedMethod?.placeholder || 'Select a crypto'} />
             {selectedMethod?.hint && <p style={{ fontSize:11,color:'var(--text-muted)',marginTop:6,display:'flex',gap:5,alignItems:'flex-start' }}><AlertCircle size={12} style={{ flexShrink:0,marginTop:1 }} /> {selectedMethod.hint}</p>}
           </div>
 
           <div style={{ padding:'0.75rem 0.875rem',background:'rgba(255,92,122,0.07)',border:'1px solid rgba(255,92,122,0.18)',borderRadius:10,fontSize:11,color:'var(--text-secondary)',display:'flex',gap:6 }}>
             <AlertCircle size={13} color="var(--red)" style={{ flexShrink:0,marginTop:1 }} />
-            <span>Vérifiez votre adresse avant de soumettre. Transaction blockchain non annulable.</span>
+            <span>Please verify your wallet address carefully. Blockchain transactions cannot be reversed.</span>
           </div>
 
           <button type="submit" disabled={loading} className="btn-primary" style={{ width:'100%',justifyContent:'center',padding:'0.9rem' }}>
-            {loading ? <div style={{ width:19,height:19,border:'2px solid rgba(255,255,255,0.3)',borderTopColor:'#fff',borderRadius:'50%',animation:'spin 0.8s linear infinite' }} /> : <><ArrowUpCircle size={16}/> Demander le retrait</>}
+            {loading ? <div style={{ width:19,height:19,border:'2px solid rgba(255,255,255,0.3)',borderTopColor:'#fff',borderRadius:'50%',animation:'spin 0.8s linear infinite' }} /> : <><ArrowUpCircle size={16}/> Submit Withdrawal</>}
           </button>
         </form>
       )}
 
       {tab === 'history' && (
         <div className="card">
-          <p style={{ fontFamily:'"Poppins",sans-serif',fontWeight:700,color:'var(--text-primary)',marginBottom:'1rem',fontSize:'0.95rem' }}>Historique</p>
+          <p style={{ fontFamily:'"Poppins",sans-serif',fontWeight:700,color:'var(--text-primary)',marginBottom:'1rem',fontSize:'0.95rem' }}>Withdrawal History</p>
           {withdrawals.length === 0 ? (
-            <div style={{ textAlign:'center',padding:'2.5rem 0',color:'var(--text-muted)' }}><ArrowUpCircle size={32} style={{ margin:'0 auto 10px',opacity:0.3 }} /><p style={{ fontSize:13 }}>Aucun retrait</p></div>
+            <div style={{ textAlign:'center',padding:'2.5rem 0',color:'var(--text-muted)' }}><ArrowUpCircle size={32} style={{ margin:'0 auto 10px',opacity:0.3 }} /><p style={{ fontSize:13 }}>No withdrawals yet</p></div>
           ) : (
             <div style={{ display:'flex',flexDirection:'column',gap:8 }}>
               {withdrawals.map(w => {
@@ -141,16 +141,14 @@ export default function Withdrawals() {
                     </div>
                     <div style={{ textAlign:'right',flexShrink:0 }}>
                       <p style={{ fontWeight:700,color:'var(--red)',fontSize:14 }}>-${w.amount?.toLocaleString()}</p>
-                      {w.netAmount && <p style={{ fontSize:10,color:'var(--green)', fontWeight:600 }}>Reçu : ${w.netAmount.toLocaleString()}</p>}
-                      <span className={'badge-'+w.status}>{w.status==='pending'?'En attente':w.status==='approved'?'Approuvé':'Rejeté'}</span>
+                      {w.netAmount && <p style={{ fontSize:10,color:'var(--green)', fontWeight:600 }}>Received: ${w.netAmount.toLocaleString()}</p>}
+                      <span className={'badge-'+w.status}>{w.status==='pending'?'Pending':w.status==='approved'?'Approved':'Rejected'}</span>
                     </div>
                   </div>
                 )
               })}
             </div>
           )}
-        </div>
-      )}
     </div>
   )
 }

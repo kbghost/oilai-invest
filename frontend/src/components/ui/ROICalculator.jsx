@@ -3,16 +3,16 @@ import { Link } from 'react-router-dom'
 import { Calculator, TrendingUp, ArrowRight, Zap } from 'lucide-react'
 
 const PLANS = {
-  bronze:   { name: 'Bronze',   price: 15,   roi: 5,  days: 30,  color: 'var(--text-muted)' },
-  argent:   { name: 'Argent',   price: 30,   roi: 8,  days: 45,  color: 'var(--blue)' },
-  or:       { name: 'Or',       price: 50,   roi: 10, days: 60,  color: '#eab308' },
-  platine:  { name: 'Platine',  price: 100,  roi: 12, days: 90,  color: '#94a3b8' },
-  vip_exec: { name: 'VIP Exec', price: 500,  roi: 15, days: 120, color: 'var(--accent)' },
-  king:     { name: 'King',     price: 1000, roi: 20, days: 180, color: 'var(--green)' },
+  bronze:   { name: 'Bronze',    price: 15,   roi: 5,  days: 30,  color: 'var(--text-muted)' },
+  silver:   { name: 'Silver',    price: 30,   roi: 8,  days: 45,  color: 'var(--blue)' },
+  gold:     { name: 'Gold',      price: 50,   roi: 10, days: 60,  color: '#eab308' },
+  platinum: { name: 'Platinum',  price: 100,  roi: 12, days: 90,  color: '#94a3b8' },
+  vip_exec: { name: 'VIP Exec',  price: 500,  roi: 15, days: 120, color: 'var(--accent)' },
+  king:     { name: 'King',      price: 1000, roi: 20, days: 180, color: 'var(--green)' },
 }
 
 export default function ROICalculator() {
-  const [plan, setPlan] = useState('or')
+  const [plan, setPlan] = useState('gold')
   const [result, setResult] = useState(null)
 
   const planData = PLANS[plan]
@@ -25,7 +25,7 @@ export default function ROICalculator() {
   }, [plan, planData])
 
   const speakText = result
-    ? `Si vous investissez ${planData.price} dollars dans le plan ${planData.name}, vous gagnerez ${result.dailyProfit.toFixed(2)} dollars chaque jour. Sur ${planData.days} jours, votre gain total sera de ${result.totalProfit.toFixed(2)} dollars, pour un capital final de ${result.total.toFixed(2)} dollars. Rejoignez OilAI Invest dès maintenant !`
+    ? `If you invest $${planData.price} in the ${planData.name} plan, you will earn $${result.dailyProfit.toFixed(2)} every day. Over ${planData.days} days, your total profit will be $${result.totalProfit.toFixed(2)}, for a final capital of $${result.total.toFixed(2)}. Join OilAI Invest now!`
     : ''
 
   return (
@@ -39,9 +39,9 @@ export default function ROICalculator() {
         </div>
         <div>
           <h3 style={{ fontFamily: '"Poppins", sans-serif', fontWeight: 700, color: 'var(--text-primary)', fontSize: '1.15rem', marginBottom: 2 }}>
-            Calculateur de Gains IA
+            AI Profit Calculator
           </h3>
-          <p style={{ fontSize: 12, color: 'var(--text-muted)' }}>Simulez vos profits en temps réel</p>
+          <p style={{ fontSize: 12, color: 'var(--text-muted)' }}>Simulate your returns in real time</p>
         </div>
       </div>
 
@@ -57,19 +57,19 @@ export default function ROICalculator() {
               color: plan === key ? p.color : 'var(--text-muted)',
             }}>
             {p.name}<br />
-            <span style={{ fontSize: 11, fontWeight: 400 }}>{p.roi}%/j</span>
+            <span style={{ fontSize: 11, fontWeight: 400 }}>{p.roi}%/day</span>
           </button>
         ))}
       </div>
 
       <div style={{ marginBottom: '1.25rem', padding:'1rem', background:'var(--bg-card2)', borderRadius:12 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
-          <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Montant investi</span>
+          <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Amount Invested</span>
           <span style={{ fontFamily: '"Poppins", sans-serif', fontWeight: 700, color: 'var(--text-primary)', fontSize: '1.1rem' }}>${planData.price.toLocaleString()}</span>
         </div>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Durée du plan</span>
-          <span style={{ fontFamily: '"Poppins", sans-serif', fontWeight: 700, color: 'var(--text-primary)', fontSize: '1.1rem' }}>{planData.days} jours</span>
+          <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Plan Duration</span>
+          <span style={{ fontFamily: '"Poppins", sans-serif', fontWeight: 700, color: 'var(--text-primary)', fontSize: '1.1rem' }}>{planData.days} days</span>
         </div>
       </div>
 
@@ -77,9 +77,9 @@ export default function ROICalculator() {
       {result && (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10, marginBottom: '1.25rem' }}>
           {[
-            { label: 'Profit / jour', value: `+$${result.dailyProfit.toFixed(2)}`, color: 'var(--green)' },
-            { label: `Profit / ${planData.days}j`, value: `+$${result.totalProfit.toFixed(0)}`, color: planData.color },
-            { label: 'Capital final', value: `$${result.total.toFixed(0)}`, color: 'var(--text-primary)' },
+            { label: 'Daily Profit',             value: `+$${result.dailyProfit.toFixed(2)}`, color: 'var(--green)' },
+            { label: `Profit / ${planData.days}d`, value: `+$${result.totalProfit.toFixed(0)}`, color: planData.color },
+            { label: 'Final Capital',              value: `$${result.total.toFixed(0)}`,        color: 'var(--text-primary)' },
           ].map(({ label, value, color }) => (
             <div key={label} style={{ padding: '0.875rem', background: 'var(--bg-card2)', borderRadius: 12, textAlign: 'center' }}>
               <p style={{ fontSize: 10, color: 'var(--text-muted)', marginBottom: 4, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{label}</p>
@@ -94,7 +94,7 @@ export default function ROICalculator() {
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '0.75rem', background: 'rgba(0,212,160,0.06)', border: '1px solid rgba(0,212,160,0.15)', borderRadius: 12, marginBottom: '1.25rem' }}>
           <Zap size={15} color="var(--green)" />
           <p style={{ fontSize: 13, color: 'var(--text-secondary)' }}>
-            Rendement de <span style={{ fontWeight: 700, color: 'var(--green)' }}>{result.roi.toFixed(1)}%</span> sur {planData.days} jours.
+            Return of <span style={{ fontWeight: 700, color: 'var(--green)' }}>{result.roi.toFixed(1)}%</span> over {planData.days} days.
           </p>
         </div>
       )}
@@ -106,7 +106,7 @@ export default function ROICalculator() {
           gap: 6, padding: '0.8rem 1.2rem', borderRadius: 14, fontWeight: 700, fontSize: 14,
           background: 'var(--bg-card2)', border: '1.5px solid var(--accent)', color: 'var(--accent)', textDecoration: 'none', transition: 'all 0.2s'
         }}>
-          Voir nos plans <ArrowRight size={16} />
+          View Our Plans <ArrowRight size={16} />
         </a>
         <Link to="/register" style={{
           flex: 1, minWidth: 140, display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
@@ -114,7 +114,7 @@ export default function ROICalculator() {
           background: 'var(--bg-card2)', border: '1.5px solid var(--accent)', color: 'var(--accent)',
           textDecoration: 'none', transition: 'all 0.2s'
         }}>
-          Investir maintenant <ArrowRight size={16} />
+          Invest Now <ArrowRight size={16} />
         </Link>
       </div>
     </div>

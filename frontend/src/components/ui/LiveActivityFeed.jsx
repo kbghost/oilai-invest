@@ -2,15 +2,15 @@ import { useState, useEffect, useCallback } from 'react'
 import { ArrowDownCircle, ArrowUpCircle, TrendingUp } from 'lucide-react'
 
 /**
- * LiveActivityFeed — Flux d'activité en temps réel (simulé)
+ * LiveActivityFeed — Real-time activity feed (simulated)
  *
- * Affiche des transactions récentes avec des horodatages variant
- * de "il y a 1 min" à "il y a 29 min" pour donner un rendu réaliste.
+ * Displays recent transactions with timestamps ranging
+ * from "just now" to "29 min ago" to give a realistic feel.
  *
- * Les timestamps bougent en temps réel (minute par minute).
- * Les nouvelles entrées arrivent toutes les 15-45 secondes.
+ * Timestamps update in real time (minute by minute).
+ * New entries arrive every 15-45 seconds.
  *
- * Pour personnaliser les montants et noms : modifiez le tableau POOL ci-dessous.
+ * To customize amounts and names: edit the POOL array below.
  */
 
 const CRYPTO_LABELS = {
@@ -45,9 +45,9 @@ const POOL = [
 ]
 
 function getLabel(tx) {
-  if (tx.type === 'deposit')  return `Dépôt ${CRYPTO_LABELS[tx.crypto]?.label || 'Crypto'}`
-  if (tx.type === 'withdraw') return `Retrait ${CRYPTO_LABELS[tx.crypto]?.label || 'Crypto'}`
-  return `Gain Plan ${tx.plan}`
+  if (tx.type === 'deposit')  return `Deposit ${CRYPTO_LABELS[tx.crypto]?.label || 'Crypto'}`
+  if (tx.type === 'withdraw') return `Withdrawal ${CRYPTO_LABELS[tx.crypto]?.label || 'Crypto'}`
+  return `Earnings — ${tx.plan} Plan`
 }
 
 function getIcon(type) {
@@ -75,15 +75,13 @@ function buildInitialList() {
 
 function formatAgo(timestamp) {
   const mins = Math.floor((Date.now() - timestamp) / 60000)
-  if (mins < 1)  return 'À l\'instant'
-  if (mins === 1) return 'il y a 1 min'
-  return `il y a ${mins} min`
+  if (mins < 1)  return 'Just now'
+  if (mins === 1) return '1 min ago'
+  return `${mins} min ago`
 }
 
 export default function LiveActivityFeed() {
   const [entries, setEntries] = useState(buildInitialList)
-  const [tick, setTick]       = useState(0) // force re-render pour MAJ timestamps
-
   // Ajouter une nouvelle transaction toutes les 15-45s
   const addNew = useCallback(() => {
     const tx = POOL[Math.floor(Math.random() * POOL.length)]
@@ -112,9 +110,9 @@ export default function LiveActivityFeed() {
       <div style={{ display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:'1rem' }}>
         <div>
           <p className="dash-card-title" style={{ color:'var(--text-primary)' }}>
-            Activité en direct
+            Live Activity
           </p>
-          <p style={{ fontSize:11,color:'var(--text-muted)' }}>Dépôts et retraits récents</p>
+          <p style={{ fontSize:11,color:'var(--text-muted)' }}>Recent deposits &amp; withdrawals</p>
         </div>
         <div style={{ display:'flex',alignItems:'center',gap:6,padding:'0.3rem 0.7rem',background:'rgba(34,197,94,0.1)',border:'1px solid rgba(34,197,94,0.2)',borderRadius:999 }}>
           <div className="live-dot" style={{ position:'relative',width:7,height:7 }} />
@@ -151,7 +149,7 @@ export default function LiveActivityFeed() {
                 </p>
               </div>
               <p style={{ fontWeight:800,fontSize:13,color: tx.type==='withdraw' ? 'var(--red)' : color,flexShrink:0 }}>
-                {getSign(tx.type)}${tx.amount.toLocaleString('fr-FR',{minimumFractionDigits:0,maximumFractionDigits:2})}
+                {getSign(tx.type)}${tx.amount.toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:2})}
               </p>
             </div>
           )
@@ -160,7 +158,7 @@ export default function LiveActivityFeed() {
 
       {/* Footer */}
       <p style={{ fontSize:10,color:'var(--text-muted)',textAlign:'center',marginTop:'0.75rem',paddingTop:'0.75rem',borderTop:'1px solid var(--border)' }}>
-        Activité des dernières 30 minutes · Mise à jour en continu
+        Activity from the last 30 minutes · Updated continuously
       </p>
     </div>
   )

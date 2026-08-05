@@ -14,9 +14,9 @@ export default function AdminDashboard() {
     adminAPI.getStats()
       .then(r => { setStats(r.data.stats); setRecent(r.data.recentUsers) })
       .catch(err => {
-        const msg = err.response?.data?.message || err.message || 'Erreur de chargement'
+        const msg = err.response?.data?.message || err.message || 'Failed to load stats'
         setLoadError(msg)
-        toast.error('Dashboard : ' + msg)
+        toast.error('Dashboard: ' + msg)
       })
       .finally(() => setLoading(false))
   }, [])
@@ -27,17 +27,17 @@ export default function AdminDashboard() {
       const r = await investmentAPI.processProfits()
       toast.success(r.data.message)
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Erreur traitement profits')
+      toast.error(err.response?.data?.message || 'Error processing profits')
     } finally { setProcessing(false) }
   }
 
   const cards = stats ? [
-    { label: 'Utilisateurs total',     value: stats.totalUsers,         icon: Users,           color: 'var(--blue)' },
-    { label: 'Investissements actifs', value: stats.activeInvestments,  icon: TrendingUp,      color: 'var(--accent)' },
-    { label: 'Dépôts en attente',      value: stats.pendingDeposits,    icon: ArrowDownCircle, color: '#FFCC00' },
-    { label: 'Retraits en attente',    value: stats.pendingWithdrawals, icon: ArrowUpCircle,   color: 'var(--red)' },
-    { label: 'Total déposé',           value: `$${(stats.totalDeposits||0).toLocaleString('fr-FR')}`,    icon: DollarSign, color: 'var(--green)' },
-    { label: 'Total retiré',           value: `$${(stats.totalWithdrawals||0).toLocaleString('fr-FR')}`, icon: Activity,   color: '#a78bfa' },
+    { label: 'Total Users',           value: stats.totalUsers,         icon: Users,           color: 'var(--blue)' },
+    { label: 'Active Investments',    value: stats.activeInvestments,  icon: TrendingUp,      color: 'var(--accent)' },
+    { label: 'Pending Deposits',      value: stats.pendingDeposits,    icon: ArrowDownCircle, color: '#FFCC00' },
+    { label: 'Pending Withdrawals',   value: stats.pendingWithdrawals, icon: ArrowUpCircle,   color: 'var(--red)' },
+    { label: 'Total Deposited',       value: `$${(stats.totalDeposits||0).toLocaleString('en-US')}`,    icon: DollarSign, color: 'var(--green)' },
+    { label: 'Total Withdrawn',       value: `$${(stats.totalWithdrawals||0).toLocaleString('en-US')}`, icon: Activity,   color: '#a78bfa' },
   ] : []
 
   if (loading) return (
@@ -49,9 +49,9 @@ export default function AdminDashboard() {
   if (loadError) return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: 300, gap: 12 }}>
       <AlertCircle size={40} color="var(--red)" />
-      <p style={{ fontWeight: 700, color: 'var(--text-primary)', fontSize: '1rem' }}>Impossible de charger les stats</p>
+      <p style={{ fontWeight: 700, color: 'var(--text-primary)', fontSize: '1rem' }}>Unable to load statistics</p>
       <p style={{ color: 'var(--text-muted)', fontSize: 13, textAlign: 'center', maxWidth: 400 }}>{loadError}</p>
-      <p style={{ color: 'var(--text-muted)', fontSize: 12, textAlign: 'center' }}>Vérifiez que le backend est démarré (<code>node server.js</code>) et que le <code>MONGODB_URI</code> dans <code>.env</code> est correct (remplacez &lt;db_password&gt; par votre vrai mot de passe Atlas).</p>
+      <p style={{ color: 'var(--text-muted)', fontSize: 12, textAlign: 'center' }}>Make sure the backend is running (<code>node server.js</code>) and that <code>MONGODB_URI</code> in <code>.env</code> is correct (replace &lt;db_password&gt; with your actual Atlas password).</p>
     </div>
   )
 
@@ -61,11 +61,11 @@ export default function AdminDashboard() {
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
         <div>
           <h1 style={{ fontFamily: '"Poppins", sans-serif', fontSize: '1.8rem', fontWeight: 700, color: 'var(--text-primary)', marginBottom: 4 }}>Admin Dashboard</h1>
-          <p style={{ color: 'var(--text-secondary)', fontSize: 14 }}>Vue globale de la plateforme</p>
+          <p style={{ color: 'var(--text-secondary)', fontSize: 14 }}>Platform overview</p>
         </div>
         <button onClick={processProfit} disabled={processing} className="btn-primary" style={{ fontSize: 13 }}>
           <RefreshCw size={15} style={{ animation: processing ? 'spin 0.8s linear infinite' : 'none' }} />
-          {processing ? 'Traitement...' : 'Générer profits du jour'}
+          {processing ? 'Processing...' : "Generate Today's Profits"}
         </button>
       </div>
 
@@ -84,9 +84,9 @@ export default function AdminDashboard() {
 
       {/* Recent users */}
       <div className="card">
-        <h3 style={{ fontFamily: '"Poppins", sans-serif', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '1.25rem' }}>Inscriptions récentes</h3>
+        <h3 style={{ fontFamily: '"Poppins", sans-serif', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '1.25rem' }}>Recent Registrations</h3>
         {recent.length === 0 ? (
-          <p style={{ color: 'var(--text-muted)', fontSize: 13, textAlign: 'center', padding: '2rem 0' }}>Aucun utilisateur</p>
+          <p style={{ color: 'var(--text-muted)', fontSize: 13, textAlign: 'center', padding: '2rem 0' }}>No users yet</p>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             {recent.map((u, i) => (
@@ -100,7 +100,7 @@ export default function AdminDashboard() {
                 </div>
                 <div style={{ textAlign: 'right', flexShrink: 0 }}>
                   <p style={{ fontWeight: 700, color: 'var(--accent)', fontSize: 14 }}>${(u.balance||0).toFixed(2)}</p>
-                  <p style={{ fontSize: 11, color: 'var(--text-muted)' }}>{new Date(u.createdAt).toLocaleDateString('fr-FR')}</p>
+                  <p style={{ fontSize: 11, color: 'var(--text-muted)' }}>{new Date(u.createdAt).toLocaleDateString('en-US')}</p>
                 </div>
               </div>
             ))}

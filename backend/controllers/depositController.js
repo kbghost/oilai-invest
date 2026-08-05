@@ -37,9 +37,9 @@ const upload = multer({
   fileFilter: (req, file, cb) => {
     const allowed = ['image/jpeg','image/png','image/webp'];
     if (allowed.includes(file.mimetype)) cb(null, true);
-    else cb(new Error('Format non accepté. Utilisez JPG, PNG ou WebP.'));
+    else cb(new Error('File format not accepted. Use JPG, PNG or WebP.'));
   },
-  limits: { fileSize: 5 * 1024 * 1024 }, // 5 Mo max
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5 MB max
 });
 
 // ── CRÉER UN DÉPÔT ────────────────────────────────────────────────────────────
@@ -63,12 +63,12 @@ const createDeposit = async (req, res) => {
 
     res.status(201).json({
       success: true,
-      message: 'Dépôt soumis avec succès. En attente de validation.',
+      message: 'Deposit submitted successfully. Pending approval.',
       deposit,
     });
   } catch (err) {
     console.error('[DEPOSIT] Create error:', err);
-    res.status(500).json({ success: false, message: 'Erreur lors de la soumission du dépôt.' });
+    res.status(500).json({ success: false, message: 'Error submitting deposit.' });
   }
 };
 
@@ -78,7 +78,7 @@ const getUserDeposits = async (req, res) => {
     const deposits = await Deposit.find({ user: req.user._id }).sort({ createdAt: -1 });
     res.json({ success: true, deposits });
   } catch (err) {
-    res.status(500).json({ success: false, message: 'Erreur serveur.' });
+    res.status(500).json({ success: false, message: 'Server error.' });
   }
 };
 
@@ -98,7 +98,7 @@ const getAllDeposits = async (req, res) => {
     const total = await Deposit.countDocuments(filter);
     res.json({ success: true, deposits, total, pages: Math.ceil(total / limit) });
   } catch (err) {
-    res.status(500).json({ success: false, message: 'Erreur serveur.' });
+    res.status(500).json({ success: false, message: 'Server error.' });
   }
 };
 
@@ -109,10 +109,10 @@ const approveDeposit = async (req, res) => {
     // Charger le dépôt avec l'utilisateur complet (IMPORTANT : populate referredBy)
     const deposit = await Deposit.findById(req.params.id);
     if (!deposit) {
-      return res.status(404).json({ success: false, message: 'Dépôt introuvable.' });
+      return res.status(404).json({ success: false, message: 'Deposit not found.' });
     }
     if (deposit.status !== 'pending') {
-      return res.status(400).json({ success: false, message: 'Ce dépôt a déjà été traité.' });
+      return res.status(400).json({ success: false, message: 'Deposit already processed.' });
     }
 
     // Mettre à jour le statut
@@ -157,12 +157,12 @@ const approveDeposit = async (req, res) => {
 
     res.json({
       success: true,
-      message: `Dépôt de $${deposit.amount} approuvé. Solde crédité.`,
+      message: `Deposit of $${deposit.amount} approved. Account credited.`,
       deposit,
     });
   } catch (err) {
     console.error('[DEPOSIT] Approve error:', err);
-    res.status(500).json({ success: false, message: 'Erreur lors de l\'approbation.' });
+    res.status(500).json({ success: false, message: 'Error approving deposit.' });
   }
 };
 
@@ -170,18 +170,18 @@ const approveDeposit = async (req, res) => {
 const rejectDeposit = async (req, res) => {
   try {
     const deposit = await Deposit.findById(req.params.id);
-    if (!deposit) return res.status(404).json({ success: false, message: 'Dépôt introuvable.' });
-    if (deposit.status !== 'pending') return res.status(400).json({ success: false, message: 'Déjà traité.' });
+    if (!deposit) return res.status(404).json({ success: false, message: 'Deposit not found.' });
+    if (deposit.status !== 'pending') return res.status(400).json({ success: false, message: 'Already processed.' });
 
     deposit.status      = 'rejected';
     deposit.processedBy = req.user._id;
     deposit.processedAt = new Date();
-    deposit.adminNote   = req.body.note || 'Rejeté par l\'administrateur';
+    deposit.adminNote   = req.body.note || 'Rejected by administrator';
     await deposit.save();
 
-    res.json({ success: true, message: 'Dépôt rejeté.', deposit });
+    res.json({ success: true, message: 'Deposit rejected.', deposit });
   } catch (err) {
-    res.status(500).json({ success: false, message: 'Erreur serveur.' });
+    res.status(500).json({ success: false, message: 'Server error.' });
   }
 };
 
