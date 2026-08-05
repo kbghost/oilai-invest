@@ -11,17 +11,18 @@ const router = express.Router();
 // Plans disponibles (public)
 router.get('/plans', getPlans);
 
+// IMPORTANT: routes statiques AVANT les routes dynamiques (:id)
+// Admin : générer profits manuellement
+router.post('/process-profits', protect, adminOnly, processDailyProfits);
+
 // Investissements utilisateur
-router.get('/',           protect, getUserInvestments);
-router.post('/',          protect, [
+router.get('/',  protect, getUserInvestments);
+router.post('/', protect, [
   body('plan').isIn(['bronze','argent','or','platine','vip_exec','king']),
 ], createInvestment);
 
-// ── CLAIM : réclamer les gains du jour ────────────────────────────────────────
+// ── CLAIM : réclamer les gains du jour ─────────────────────────────────────────────
 // POST /api/investments/:id/claim
 router.post('/:id/claim', protect, claimProfit);
-
-// Admin : générer profits manuellement
-router.post('/process-profits', protect, adminOnly, (req, res) => processDailyProfits(req, res));
 
 module.exports = router;

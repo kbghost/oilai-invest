@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { adminAPI } from '../../services/api'
-import { Search, UserCheck, UserX, DollarSign, X } from 'lucide-react'
+import { Search, UserCheck, UserX, DollarSign, X, AlertCircle } from 'lucide-react'
 import toast from 'react-hot-toast'
 
 export default function AdminUsers() {
@@ -11,11 +11,18 @@ export default function AdminUsers() {
   const [modal, setModal]     = useState(null)
   const [adjustForm, setAdjustForm] = useState({ amount: '', type: 'credit', note: '' })
 
+  const [loadError, setLoadError]   = useState(null)
+
   const load = async () => {
     setLoading(true)
+    setLoadError(null)
     try {
       const r = await adminAPI.getUsers({ search })
       setUsers(r.data.users); setTotal(r.data.total)
+    } catch (err) {
+      const msg = err.response?.data?.message || err.message || 'Erreur de chargement'
+      setLoadError(msg)
+      toast.error('Utilisateurs : ' + msg)
     } finally { setLoading(false) }
   }
 
@@ -44,6 +51,13 @@ export default function AdminUsers() {
         <h1 style={{ fontFamily: '"Poppins", sans-serif', fontSize: '1.8rem', fontWeight: 700, color: 'var(--text-primary)', marginBottom: 4 }}>Utilisateurs</h1>
         <p style={{ color: 'var(--text-secondary)', fontSize: 14 }}>{total} utilisateurs enregistrés</p>
       </div>
+
+      {loadError && (
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '0.875rem 1rem', background: 'rgba(255,75,110,0.08)', border: '1px solid rgba(255,75,110,0.2)', borderRadius: 12, color: 'var(--red)', fontSize: 13 }}>
+          <AlertCircle size={16} />
+          <span><strong>Erreur :</strong> {loadError} — Vérifiez que le serveur backend tourne et que vous êtes bien connecté en tant qu'Admin.</span>
+        </div>
+      )}
 
       {/* Search */}
       <div style={{ position: 'relative', maxWidth: 320 }}>

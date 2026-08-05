@@ -352,7 +352,7 @@ const getUserInvestments = async (req, res) => {
 // ADMIN : GÉNÉRER LES PROFITS MANUELLEMENT
 // (aussi appelé par le cron job)
 // ══════════════════════════════════════════════════════════════
-const processDailyProfits = async (res = null) => {
+const processDailyProfits = async (req = null, res = null) => {
   const active = await Investment.find({ status: 'active' });
   let count = 0;
   let totalGenerated = 0;

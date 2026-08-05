@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { withdrawalAPI } from '../../services/api'
-import { Check, X } from 'lucide-react'
+import { Check, X, AlertCircle } from 'lucide-react'
 import toast from 'react-hot-toast'
 
 const PAYMENT_EMOJIS = { bitcoin:'₿', ethereum:'Ξ', usdt:'₮', bnb:'◆' }
@@ -13,11 +13,19 @@ export default function AdminWithdrawals() {
   const [modal, setModal]             = useState(null)
   const [action, setAction]           = useState('')
   const [form, setForm]               = useState({ note: '', txHash: '' })
+  const [loadError, setLoadError]     = useState(null)
 
   const load = async () => {
     setLoading(true)
-    try { const r = await withdrawalAPI.adminGetAll({ status }); setWithdrawals(r.data.withdrawals) }
-    finally { setLoading(false) }
+    setLoadError(null)
+    try {
+      const r = await withdrawalAPI.adminGetAll({ status })
+      setWithdrawals(r.data.withdrawals)
+    } catch (err) {
+      const msg = err.response?.data?.message || err.message || 'Erreur de chargement'
+      setLoadError(msg)
+      toast.error('Retraits : ' + msg)
+    } finally { setLoading(false) }
   }
   useEffect(() => { load() }, [status])
 
@@ -25,9 +33,13 @@ export default function AdminWithdrawals() {
     try {
       if (action === 'approve') await withdrawalAPI.approve(modal._id, form)
       else await withdrawalAPI.reject(modal._id, form)
-      toast.success('Retrait ' + (action === 'approve' ? 'approuvé' : 'rejeté'))
-      setModal(null); setForm({ note: '', txHash: '' }); load()
-    } catch (err) { toast.error(err.response?.data?.message || 'Erreur') }
+      toast.success('Retrait ' + (action === 'approve' ? 'approuvé ✅' : 'rejeté ❌'))
+      setModal(null); setForm({ note: '', txHash: '' })
+      await load()
+    } catch (err) {
+      const msg = err.response?.data?.message || err.message || 'Erreur'
+      toast.error(msg)
+    }
   }
 
   return (
@@ -36,6 +48,13 @@ export default function AdminWithdrawals() {
         <h1 style={{ fontFamily: '"Poppins", sans-serif', fontSize: '1.8rem', fontWeight: 700, color: 'var(--text-primary)', marginBottom: 4 }}>Retraits</h1>
         <p style={{ color: 'var(--text-secondary)', fontSize: 14 }}>Valider et traiter les demandes de retrait</p>
       </div>
+
+      {loadError && (
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '0.875rem 1rem', background: 'rgba(255,75,110,0.08)', border: '1px solid rgba(255,75,110,0.2)', borderRadius: 12, color: 'var(--red)', fontSize: 13 }}>
+          <AlertCircle size={16} />
+          <span><strong>Erreur :</strong> {loadError} — Vérifiez que le backend est démarré et que MongoDB est connecté.</span>
+        </div>
+      )}
 
       <div className="tab-bar" style={{ width: 'fit-content' }}>
         {[['pending','En attente'],['approved','Approuvés'],['rejected','Rejetés']].map(([val,label]) => (

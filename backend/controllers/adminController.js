@@ -43,15 +43,16 @@ const getDashboardStats = async (req, res) => {
       recentUsers
     });
   } catch (error) {
-    res.status(500).json({ success: false, message: 'Server error.' });
+    console.error('[ADMIN STATS ERROR]', error);
+    res.status(500).json({ success: false, message: error.message || 'Erreur serveur.' });
   }
 };
 
 // ─── GET ALL USERS ────────────────────────────────────────────────────────────
 const getAllUsers = async (req, res) => {
   try {
-    const { page = 1, limit = 20, search } = req.query;
-    const filter = { role: 'user' };
+    const { page = 1, limit = 50, search } = req.query;
+    const filter = { role: { $ne: 'admin' } };
     if (search) {
       filter.$or = [
         { firstName: { $regex: search, $options: 'i' } },
@@ -62,33 +63,38 @@ const getAllUsers = async (req, res) => {
 
     const users = await User.find(filter)
       .sort({ createdAt: -1 })
-      .skip((page - 1) * limit)
+      .skip((parseInt(page) - 1) * parseInt(limit))
       .limit(parseInt(limit));
 
     const total = await User.countDocuments(filter);
 
-    res.json({ success: true, users, total, pages: Math.ceil(total / limit) });
+    res.json({ success: true, users, total, pages: Math.ceil(total / parseInt(limit)) });
   } catch (error) {
-    res.status(500).json({ success: false, message: 'Server error.' });
+    console.error('[ADMIN GET USERS ERROR]', error);
+    res.status(500).json({ success: false, message: error.message || 'Erreur serveur.' });
   }
 };
 
 // ─── TOGGLE USER ACTIVE STATUS ────────────────────────────────────────────────
 const toggleUserStatus = async (req, res) => {
   try {
+    if (req.user._id.toString() === req.params.id) {
+      return res.status(400).json({ success: false, message: 'Vous ne pouvez pas désactiver votre propre compte administrateur.' });
+    }
     const user = await User.findById(req.params.id);
-    if (!user) return res.status(404).json({ success: false, message: 'User not found.' });
+    if (!user) return res.status(404).json({ success: false, message: 'Utilisateur introuvable.' });
 
     user.isActive = !user.isActive;
     await user.save({ validateBeforeSave: false });
 
     res.json({
       success: true,
-      message: `User ${user.isActive ? 'activated' : 'deactivated'} successfully.`,
+      message: `Utilisateur ${user.isActive ? 'activé' : 'banni'} avec succès.`,
       user
     });
   } catch (error) {
-    res.status(500).json({ success: false, message: 'Server error.' });
+    console.error('[ADMIN TOGGLE USER ERROR]', error);
+    res.status(500).json({ success: false, message: error.message || 'Erreur serveur.' });
   }
 };
 
@@ -96,22 +102,29 @@ const toggleUserStatus = async (req, res) => {
 const adjustBalance = async (req, res) => {
   try {
     const { amount, type, note } = req.body; // type: 'credit' | 'debit'
+    const numAmount = parseFloat(amount);
+
+    if (isNaN(numAmount) || numAmount <= 0) {
+      return res.status(400).json({ success: false, message: 'Veuillez saisir un montant valide supérieur à 0.' });
+    }
+
     const user = await User.findById(req.params.id);
-    if (!user) return res.status(404).json({ success: false, message: 'User not found.' });
+    if (!user) return res.status(404).json({ success: false, message: 'Utilisateur introuvable.' });
 
     if (type === 'credit') {
-      user.balance += parseFloat(amount);
+      user.balance = parseFloat(((user.balance || 0) + numAmount).toFixed(2));
     } else {
-      if (user.balance < amount) {
-        return res.status(400).json({ success: false, message: 'Insufficient user balance.' });
+      if ((user.balance || 0) < numAmount) {
+        return res.status(400).json({ success: false, message: 'Solde utilisateur insuffisant pour ce débit.' });
       }
-      user.balance -= parseFloat(amount);
+      user.balance = parseFloat(((user.balance || 0) - numAmount).toFixed(2));
     }
 
     await user.save({ validateBeforeSave: false });
-    res.json({ success: true, message: 'Balance adjusted.', user });
+    res.json({ success: true, message: `Solde ${type === 'credit' ? 'crédité' : 'débité'} avec succès.`, user });
   } catch (error) {
-    res.status(500).json({ success: false, message: 'Server error.' });
+    console.error('[ADMIN ADJUST BALANCE ERROR]', error);
+    res.status(500).json({ success: false, message: error.message || 'Erreur serveur.' });
   }
 };
 

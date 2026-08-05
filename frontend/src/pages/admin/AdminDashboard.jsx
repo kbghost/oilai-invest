@@ -1,17 +1,23 @@
 import { useEffect, useState } from 'react'
 import { adminAPI, investmentAPI } from '../../services/api'
-import { Users, TrendingUp, ArrowDownCircle, ArrowUpCircle, RefreshCw, DollarSign, Activity } from 'lucide-react'
+import { Users, TrendingUp, ArrowDownCircle, ArrowUpCircle, RefreshCw, DollarSign, Activity, AlertCircle } from 'lucide-react'
 import toast from 'react-hot-toast'
 
 export default function AdminDashboard() {
   const [stats, setStats]       = useState(null)
   const [recent, setRecent]     = useState([])
   const [loading, setLoading]   = useState(true)
+  const [loadError, setLoadError] = useState(null)
   const [processing, setProcessing] = useState(false)
 
   useEffect(() => {
     adminAPI.getStats()
       .then(r => { setStats(r.data.stats); setRecent(r.data.recentUsers) })
+      .catch(err => {
+        const msg = err.response?.data?.message || err.message || 'Erreur de chargement'
+        setLoadError(msg)
+        toast.error('Dashboard : ' + msg)
+      })
       .finally(() => setLoading(false))
   }, [])
 
@@ -37,6 +43,15 @@ export default function AdminDashboard() {
   if (loading) return (
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: 400 }}>
       <div style={{ width: 32, height: 32, border: '2px solid var(--border)', borderTopColor: 'var(--accent)', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
+    </div>
+  )
+
+  if (loadError) return (
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: 300, gap: 12 }}>
+      <AlertCircle size={40} color="var(--red)" />
+      <p style={{ fontWeight: 700, color: 'var(--text-primary)', fontSize: '1rem' }}>Impossible de charger les stats</p>
+      <p style={{ color: 'var(--text-muted)', fontSize: 13, textAlign: 'center', maxWidth: 400 }}>{loadError}</p>
+      <p style={{ color: 'var(--text-muted)', fontSize: 12, textAlign: 'center' }}>Vérifiez que le backend est démarré (<code>node server.js</code>) et que le <code>MONGODB_URI</code> dans <code>.env</code> est correct (remplacez &lt;db_password&gt; par votre vrai mot de passe Atlas).</p>
     </div>
   )
 

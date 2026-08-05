@@ -1,7 +1,12 @@
 import { useEffect, useState } from 'react'
 import { depositAPI } from '../../services/api'
-import { Check, X, Eye } from 'lucide-react'
+import { Check, X, Eye, AlertCircle } from 'lucide-react'
 import toast from 'react-hot-toast'
+
+// URL de base du backend pour afficher les preuves de paiement
+const API_BASE = import.meta.env.VITE_API_URL
+  ? import.meta.env.VITE_API_URL.replace('/api', '')
+  : 'http://localhost:5000'
 
 const PAYMENT_EMOJIS = { bitcoin:'₿', ethereum:'Ξ', usdt:'₮', bnb:'◆' }
 const METHOD_LABELS  = { bitcoin:'Bitcoin', ethereum:'Ethereum', usdt:'USDT TRC20', bnb:'BNB' }
@@ -14,10 +19,19 @@ export default function AdminDeposits() {
   const [action, setAction]     = useState('')
   const [note, setNote]         = useState('')
 
+  const [loadError, setLoadError] = useState(null)
+
   const load = async () => {
     setLoading(true)
-    try { const r = await depositAPI.adminGetAll({ status }); setDeposits(r.data.deposits) }
-    finally { setLoading(false) }
+    setLoadError(null)
+    try {
+      const r = await depositAPI.adminGetAll({ status })
+      setDeposits(r.data.deposits)
+    } catch (err) {
+      const msg = err.response?.data?.message || err.message || 'Erreur de chargement'
+      setLoadError(msg)
+      toast.error('Dépôts : ' + msg)
+    } finally { setLoading(false) }
   }
 
   useEffect(() => { load() }, [status])
@@ -26,9 +40,13 @@ export default function AdminDeposits() {
     try {
       if (action === 'approve') await depositAPI.approve(modal._id, { note })
       else await depositAPI.reject(modal._id, { note })
-      toast.success(`Dépôt ${action === 'approve' ? 'approuvé' : 'rejeté'}`)
-      setModal(null); setNote(''); load()
-    } catch (err) { toast.error(err.response?.data?.message || 'Erreur') }
+      toast.success(`Dépôt ${action === 'approve' ? 'approuvé ✅' : 'rejeté ❌'}`)
+      setModal(null); setNote('')
+      await load()
+    } catch (err) {
+      const msg = err.response?.data?.message || err.message || 'Erreur'
+      toast.error(msg)
+    }
   }
 
   const STATUS_TABS = [
@@ -43,6 +61,13 @@ export default function AdminDeposits() {
         <h1 style={{ fontFamily: '"Poppins", sans-serif', fontSize: '1.8rem', fontWeight: 700, color: 'var(--text-primary)', marginBottom: 4 }}>Dépôts</h1>
         <p style={{ color: 'var(--text-secondary)', fontSize: 14 }}>Valider et gérer les demandes de dépôt</p>
       </div>
+
+      {loadError && (
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '0.875rem 1rem', background: 'rgba(255,75,110,0.08)', border: '1px solid rgba(255,75,110,0.2)', borderRadius: 12, color: 'var(--red)', fontSize: 13 }}>
+          <AlertCircle size={16} />
+          <span><strong>Erreur :</strong> {loadError} — Vérifiez que le backend est démarré et que MongoDB est connecté.</span>
+        </div>
+      )}
 
       <div className="tab-bar" style={{ width: 'fit-content' }}>
         {STATUS_TABS.map(({ val, label }) => (
@@ -86,7 +111,7 @@ export default function AdminDeposits() {
                   <td style={{ textAlign: 'center', paddingRight: '1.5rem' }}>
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
                       {d.proofImage && (
-                        <a href={'/' + d.proofImage} target="_blank" rel="noreferrer"
+                        <a href={`${API_BASE}/${d.proofImage.replace(/\\/g, '/')}`} target="_blank" rel="noreferrer"
                           style={{ width: 30, height: 30, borderRadius: 8, background: 'rgba(59,142,255,0.1)', border: '1px solid rgba(59,142,255,0.2)', color: 'var(--blue)', display: 'flex', alignItems: 'center', justifyContent: 'center', textDecoration: 'none' }}>
                           <Eye size={13} />
                         </a>

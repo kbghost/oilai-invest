@@ -61,7 +61,7 @@ const getUserWithdrawals = async (req, res) => {
 // ─── ADMIN: GET ALL WITHDRAWALS ───────────────────────────────────────────────
 const getAllWithdrawals = async (req, res) => {
   try {
-    const { status, page = 1, limit = 20 } = req.query;
+    const { status, page = 1, limit = 100 } = req.query;
     const filter = {};
     if (status) filter.status = status;
 

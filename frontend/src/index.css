@@ -1116,6 +1116,12 @@ input[type=range]::-webkit-slider-runnable-track {
     backdrop-filter: blur(20px);
 }
 
+@media (min-width: 1024px) {
+    .mobile-topbar-compact {
+        display: none;
+    }
+}
+
 
 /* ─── PROGRESS RING ─── */
 
@@ -1470,6 +1476,9 @@ body,
     #admin-sb {
         display: flex !important;
         flex-direction: column !important;
+    }
+    #admin-main {
+        margin-left: 230px !important;
     }
     #login-left {
         display: flex !important;

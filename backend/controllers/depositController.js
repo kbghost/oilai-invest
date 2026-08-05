@@ -56,7 +56,8 @@ const createDeposit = async (req, res) => {
       amount:     parseFloat(amount),
       method,
       reference:  reference || '',
-      proofImage: req.file ? req.file.path : null,
+      // Normalize path: replace Windows backslashes with forward slashes
+      proofImage: req.file ? req.file.path.replace(/\\/g, '/') : null,
       status:     'pending',
     });
 
@@ -84,7 +85,7 @@ const getUserDeposits = async (req, res) => {
 // ── ADMIN : TOUS LES DÉPÔTS ───────────────────────────────────────────────────
 const getAllDeposits = async (req, res) => {
   try {
-    const { status, page = 1, limit = 20 } = req.query;
+    const { status, page = 1, limit = 100 } = req.query;
     const filter = {};
     if (status) filter.status = status;
 
