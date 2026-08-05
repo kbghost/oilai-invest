@@ -31,7 +31,7 @@ export default function Register() {
   const [searchParams] = useSearchParams()
 
   const [form, setForm] = useState({
-    firstName: '', lastName: '', email: '', password: '',
+    firstName: '', lastName: '', email: '', password: '', confirmPassword: '',
     phone: WEST_AFRICAN_COUNTRIES[0].dialCode, country: WEST_AFRICAN_COUNTRIES[0].name,
     referralCode: searchParams.get('ref') || '',
   })
@@ -83,11 +83,12 @@ export default function Register() {
   const submit = async e => {
     e.preventDefault()
     if (form.password.length < 6) return toast.error('Password: 6 characters minimum')
+    if (form.password !== form.confirmPassword) return toast.error('Passwords do not match')
     if (refStatus && refStatus !== 'checking' && refStatus.valid === false)
       return toast.error('Invalid referral code')
     setLoading(true)
     try {
-      const payload = { ...form }
+      const { confirmPassword, ...payload } = form
       if (payload.referralCode) payload.referralCode = payload.referralCode.trim().toUpperCase()
       else delete payload.referralCode
       await register(payload)
@@ -172,10 +173,46 @@ export default function Register() {
               <input name="email" type="email" required value={form.email} onChange={handle} className="input" placeholder="e.g. john.doe@example.com" />
             </div>
 
+            <div className="auth-grid">
+              <div>
+                <label className="label">Country</label>
+                <select name="country" value={form.country} onChange={handleCountryChange} className="input" style={{ appearance: 'auto' }}>
+                  {WEST_AFRICAN_COUNTRIES.map(country => (
+                    <option key={country.code} value={country.name}>{country.name}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="label">Phone Number</label>
+                <input
+                  name="phone"
+                  value={form.phone}
+                  onChange={handlePhoneChange}
+                  className="input"
+                  inputMode="numeric"
+                  placeholder={`${selectedCountry.dialCode} 12345678`}
+                  style={{ fontFamily: 'monospace' }}
+                />
+                <p style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 6 }}>
+                  Auto code: {selectedCountry.dialCode} · max {selectedCountry.maxDigits} digits
+                </p>
+              </div>
+            </div>
+
             <div>
               <label className="label">Password</label>
               <div style={{ position: 'relative' }}>
                 <input name="password" type={show ? 'text' : 'password'} required value={form.password} onChange={handle} className="input" style={{ paddingRight: 48 }} placeholder="Min. 6 characters" />
+                <button type="button" onClick={() => setShow(!show)} style={{ position: 'absolute', right: 14, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)', display: 'flex', padding: 4 }}>
+                  {show ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
+            </div>
+
+            <div>
+              <label className="label">Confirm Password</label>
+              <div style={{ position: 'relative' }}>
+                <input name="confirmPassword" type={show ? 'text' : 'password'} required value={form.confirmPassword} onChange={handle} className="input" style={{ paddingRight: 48 }} placeholder="Re-enter your password" />
                 <button type="button" onClick={() => setShow(!show)} style={{ position: 'absolute', right: 14, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)', display: 'flex', padding: 4 }}>
                   {show ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
