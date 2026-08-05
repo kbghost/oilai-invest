@@ -153,6 +153,8 @@ export default function Deposits() {
               })}
             </div>
           )}
+        </div>
+      )}
     </div>
   )
 }
