@@ -128,7 +128,7 @@ npm run dev
 
 | Rôle  | Email               | Mot de passe |
 |-------|---------------------|--------------|
-| Admin | admin@oilai.com     | Admin@1234   |
+| Admin | admin@oilai.com     | (Admin@1234 )  |
 | User  | demo@oilai.com      | Demo@1234    |
 
 ---

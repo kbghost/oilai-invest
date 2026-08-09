@@ -25,6 +25,7 @@ const allowedOrigins = [
   'http://localhost:5173',
   'http://localhost:3000',
   'https://oilai-invest.vercel.app',
+  'https://oilai-invest.online',
   process.env.FRONTEND_URL,
 ].filter(Boolean)
 

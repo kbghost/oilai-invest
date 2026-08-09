@@ -40,7 +40,7 @@ MONGODB_URI=mongodb+srv://oilai_admin:<password>@cluster0.xxxxx.mongodb.net/oila
 JWT_SECRET=une_chaine_tres_longue_et_aleatoire_minimum_32_caracteres
 JWT_EXPIRES_IN=7d
 PORT=10000
-FRONTEND_URL=https://oilai-invest.vercel.app
+FRONTEND_URL=https://oilai-invest.online
 NODE_ENV=production
 ```
 
@@ -102,7 +102,8 @@ Dans `backend/server.js`, vérifier/modifier la liste des origines autorisées :
 // ← MODIFIER avec vos vraies URLs de production
 const allowedOrigins = [
   'http://localhost:5173',          // dev local
-  'https://oilai-invest.vercel.app', // ← votre URL Vercel
+  'https://oilai-invest.vercel.app', // ancienne URL Vercel (conserve si besoin)
+  'https://oilai-invest.online', // ← votre domaine personnalisé
   process.env.FRONTEND_URL,         // depuis la variable d'environnement
 ]
 ```
