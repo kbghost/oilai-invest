@@ -26,6 +26,7 @@ const allowedOrigins = [
     'http://localhost:3000',
     'https://oilai-invest.vercel.app',
     'https://oilai-invest.online',
+    'https://www.oilai-invest.online',
     'https://oilai-invest.onrender.com',
     process.env.FRONTEND_URL,
     ...(process.env.CORS_ORIGINS || '').split(',').map(origin => origin.trim()).filter(Boolean),
