@@ -22,34 +22,40 @@ app.use(helmet());
 // ─── CORS ─────────────────────────────────────────────────────────────────────
 // Pour la production: ajouter votre URL Vercel dans FRONTEND_URL (.env)
 const allowedOrigins = [
-  'http://localhost:5173',
-  'http://localhost:3000',
-  'https://oilai-invest.vercel.app',
-  'https://oilai-invest.online',
-  process.env.FRONTEND_URL,
+    'http://localhost:5173',
+    'http://localhost:3000',
+    'https://oilai-invest.vercel.app',
+    'https://oilai-invest.online',
+    'https://oilai-invest.onrender.com',
+    process.env.FRONTEND_URL,
+    ...(process.env.CORS_ORIGINS || '').split(',').map(origin => origin.trim()).filter(Boolean),
 ].filter(Boolean)
 
+console.log('[CORS] allowed origins:', allowedOrigins)
+
 app.use(cors({
-  origin: (origin, callback) => {
-    // Autoriser les requêtes sans origine (mobile apps, Postman)
-    if (!origin) return callback(null, true)
-    if (allowedOrigins.includes(origin)) return callback(null, true)
-    callback(new Error('Not allowed by CORS'))
-  },
-  credentials: true
+    origin: (origin, callback) => {
+        // Autoriser les requêtes sans origine (mobile apps, Postman)
+        if (!origin) return callback(null, true)
+        if (allowedOrigins.includes(origin)) return callback(null, true)
+        console.warn('[CORS] Rejected origin:', origin, 'allowed:', allowedOrigins)
+        callback(new Error('Not allowed by CORS'))
+    },
+    credentials: true,
+    optionsSuccessStatus: 200,
 }));
 
 // ─── Rate Limiting ───────────────────────────────────────────────────────────
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100,
-  message: { success: false, message: 'Too many requests, please try again later.' }
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100,
+    message: { success: false, message: 'Too many requests, please try again later.' }
 });
 
 const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 10,
-  message: { success: false, message: 'Too many auth attempts, please try again later.' }
+    windowMs: 15 * 60 * 1000,
+    max: 10,
+    message: { success: false, message: 'Too many auth attempts, please try again later.' }
 });
 
 app.use('/api/', limiter);
@@ -61,7 +67,7 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // ─── Logging ─────────────────────────────────────────────────────────────────
 if (process.env.NODE_ENV === 'development') {
-  app.use(morgan('dev'));
+    app.use(morgan('dev'));
 }
 
 // ─── Static Files ────────────────────────────────────────────────────────────
@@ -78,38 +84,38 @@ app.use('/api/oil', oilRoutes);
 
 // ─── Health Check ────────────────────────────────────────────────────────────
 app.get('/api/health', (req, res) => {
-  res.json({ success: true, message: 'OilAI Invest API is running', timestamp: new Date() });
+    res.json({ success: true, message: 'OilAI Invest API is running', timestamp: new Date() });
 });
 
 // ─── Global Error Handler ─────────────────────────────────────────────────────
 app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(err.statusCode || 500).json({
-    success: false,
-    message: err.message || 'Internal Server Error'
-  });
+    console.error(err.stack);
+    res.status(err.statusCode || 500).json({
+        success: false,
+        message: err.message || 'Internal Server Error'
+    });
 });
 
 // ─── 404 Handler ─────────────────────────────────────────────────────────────
 app.use((req, res) => {
-  res.status(404).json({ success: false, message: 'Route not found' });
+    res.status(404).json({ success: false, message: 'Route not found' });
 });
 
 // ─── Database Connection & Server Start ──────────────────────────────────────
 const PORT = process.env.PORT || 5000;
 
 mongoose.connect(process.env.MONGODB_URI)
-  .then(() => {
-    console.log('✅ MongoDB connected successfully');
-    startCronJobs();
-    app.listen(PORT, () => {
-      console.log(`🚀 Server running on port ${PORT}`);
-      console.log(`🌍 Environment: ${process.env.NODE_ENV}`);
+    .then(() => {
+        console.log('✅ MongoDB connected successfully');
+        startCronJobs();
+        app.listen(PORT, () => {
+            console.log(`🚀 Server running on port ${PORT}`);
+            console.log(`🌍 Environment: ${process.env.NODE_ENV}`);
+        });
+    })
+    .catch((err) => {
+        console.error('❌ MongoDB connection error:', err.message);
+        process.exit(1);
     });
-  })
-  .catch((err) => {
-    console.error('❌ MongoDB connection error:', err.message);
-    process.exit(1);
-  });
 
 module.exports = app;
