@@ -1,18 +1,8 @@
 import { useEffect, useState, useRef } from 'react'
 import { depositAPI } from '../services/api'
+import { PAYMENT_METHODS, getPaymentMethod } from '../config/paymentMethods'
 import { Upload, ArrowDownCircle, Check, Copy } from 'lucide-react'
 import toast from 'react-hot-toast'
-
-/**
- * 💳 MÉTHODES DE DÉPÔT — 100% Cryptomonnaies
- * Pour modifier une adresse de portefeuille, éditez le champ `number` ci-dessous.
- */
-const METHODS = [
-  { value:'bitcoin',  label:'Bitcoin (BTC)',   logo:'https://raw.githubusercontent.com/spothq/cryptocurrency-icons/master/128/color/btc.png', number:'bc1qs57elyrscvxmjp2qnaje4kmelvmcevfew64e4w', name:'Wallet BTC OilAI', instructions:'Native Bitcoin network. 2 confirmations required.', network:'BTC' },
-  { value:'ethereum', label:'Ethereum (ETH)',  logo:'https://raw.githubusercontent.com/spothq/cryptocurrency-icons/master/128/color/eth.png', number:'0x2C4bb9f9a2978E9dd2FB942c6f7B77ab2603AB7D', name:'Wallet ETH OilAI', instructions:'ERC20 network only. Verify address before sending.', network:'ERC20' },
-  { value:'usdt',     label:'USDT',            logo:'https://raw.githubusercontent.com/spothq/cryptocurrency-icons/master/128/color/usdt.png', number:'TEQqn2RvN3mVTZwyeyPEWxF21zHrqhFUKt', name:'Wallet USDT OilAI', instructions:'TRC20 network only. Avoid ERC20 — funds will be lost.', network:'TRC20' },
-  { value:'bnb',      label:'BNB',             logo:'https://raw.githubusercontent.com/spothq/cryptocurrency-icons/master/128/color/bnb.png', number:'0x2C4bb9f9a2978E9dd2FB942c6f7B77ab2603AB7D', name:'Wallet BNB OilAI', instructions:'BNB Smart Chain (BEP20) network only.', network:'BEP20' },
-]
 
 function copyToClipboard(text) { navigator.clipboard.writeText(text).then(() => toast.success('Copied!')) }
 
@@ -27,7 +17,7 @@ export default function Deposits() {
   const fileRef = useRef()
 
   useEffect(() => { depositAPI.getAll().then(r => setDeposits(r.data.deposits)).catch(()=>{}) }, [])
-  const selectedMethod = METHODS.find(m => m.value === method)
+  const selectedMethod = getPaymentMethod(method)
 
   const submit = async e => {
     e.preventDefault()
@@ -65,7 +55,7 @@ export default function Deposits() {
           <div className="card">
             <p style={{ fontSize:11,fontWeight:700,color:'var(--text-secondary)',textTransform:'uppercase',letterSpacing:'0.06em',marginBottom:'0.75rem' }}>1 · Select Cryptocurrency</p>
             <div style={{ display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(120px,1fr))',gap:8 }}>
-              {METHODS.map(m => (
+              {PAYMENT_METHODS.map(m => (
                 <div key={m.value} className={'payment-card'+(method===m.value?' selected':'')} onClick={()=>setMethod(m.value)} style={{ padding:'0.75rem 0.5rem' }}>
                   <img src={m.logo} alt={m.label} style={{ width:32,height:32,objectFit:'contain',margin:'0 auto 4px' }} />
                   <p style={{ fontSize:11,fontWeight:700,color:'var(--text-primary)' }}>{m.label}</p>
@@ -79,10 +69,10 @@ export default function Deposits() {
                 <p style={{ fontSize:10,fontWeight:700,color:'var(--text-muted)',textTransform:'uppercase',letterSpacing:'0.06em',marginBottom:8 }}>Send to this address:</p>
                 <div style={{ display:'flex',alignItems:'center',justifyContent:'space-between',gap:8,marginBottom:8 }}>
                   <div style={{ minWidth:0 }}>
-                    <p style={{ fontWeight:700,color:'var(--text-primary)',fontSize:12.5,fontFamily:'monospace',wordBreak:'break-all' }}>{selectedMethod.number}</p>
+                    <p style={{ fontWeight:700,color:'var(--text-primary)',fontSize:12.5,fontFamily:'monospace',wordBreak:'break-all' }}>{selectedMethod.address}</p>
                     <p style={{ fontSize:11,color:'var(--text-secondary)' }}>{selectedMethod.name} · {selectedMethod.network} Network</p>
                   </div>
-                  <button type="button" onClick={()=>copyToClipboard(selectedMethod.number)} style={{ flexShrink:0,padding:'0.35rem 0.65rem',background:'var(--accent-glow)',border:'1px solid var(--accent-glow)',borderRadius:9,color:'var(--accent)',fontSize:11,fontWeight:700,cursor:'pointer',display:'flex',alignItems:'center',gap:4,fontFamily:'inherit' }}>
+                  <button type="button" onClick={()=>copyToClipboard(selectedMethod.address)} style={{ flexShrink:0,padding:'0.35rem 0.65rem',background:'var(--accent-glow)',border:'1px solid var(--accent-glow)',borderRadius:9,color:'var(--accent)',fontSize:11,fontWeight:700,cursor:'pointer',display:'flex',alignItems:'center',gap:4,fontFamily:'inherit' }}>
                     <Copy size={12}/> Copy
                   </button>
                 </div>
@@ -136,10 +126,10 @@ export default function Deposits() {
           ) : (
             <div style={{ display:'flex',flexDirection:'column',gap:8 }}>
               {deposits.map(d => {
-                const m = METHODS.find(x => x.value === d.method)
+                const m = getPaymentMethod(d.method)
                 return (
                   <div key={d._id} className="mobile-list-item">
-                    <div style={{ width:36,height:36,borderRadius:11,background:d.status==='approved'?'rgba(45,212,191,0.1)':d.status==='rejected'?'rgba(255,92,122,0.1)':'var(--accent-glow)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:16,fontWeight:700,flexShrink:0,color:'var(--text-primary)' }}>{m?.emoji||'₿'}</div>
+                    <div style={{ width:36,height:36,borderRadius:11,background:d.status==='approved'?'rgba(45,212,191,0.1)':d.status==='rejected'?'rgba(255,92,122,0.1)':'var(--accent-glow)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:16,fontWeight:700,flexShrink:0,color:'var(--text-primary)' }}>{m?.depositIcon || '₿'}</div>
                     <div style={{ flex:1,minWidth:0 }}>
                       <p style={{ fontWeight:600,color:'var(--text-primary)',fontSize:13 }}>{m?.label||d.method}</p>
                       <p style={{ fontSize:11,color:'var(--text-muted)' }}>{new Date(d.createdAt).toLocaleDateString('en-US')}</p>

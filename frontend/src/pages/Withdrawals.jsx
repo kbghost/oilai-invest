@@ -1,15 +1,9 @@
 import { useEffect, useState } from 'react'
 import { withdrawalAPI } from '../services/api'
 import { useAuth } from '../context/AuthContext'
+import { PAYMENT_METHODS, getPaymentMethod } from '../config/paymentMethods'
 import { ArrowUpCircle, AlertCircle } from 'lucide-react'
 import toast from 'react-hot-toast'
-
-const METHODS = [
-  { value:'bitcoin',  label:'Bitcoin (BTC)',  logo:'https://raw.githubusercontent.com/spothq/cryptocurrency-icons/master/128/color/btc.png', placeholder:'bc1q... or 1A1zP1...', hint:'Valid Bitcoin address. Verify before sending.', network:'BTC', delay:'45 min' },
-  { value:'ethereum', label:'Ethereum (ETH)', logo:'https://raw.githubusercontent.com/spothq/cryptocurrency-icons/master/128/color/eth.png', placeholder:'0x...', hint:'Valid ERC20 address only.', network:'ERC20', delay:'45 min' },
-  { value:'usdt',     label:'USDT',           logo:'https://raw.githubusercontent.com/spothq/cryptocurrency-icons/master/128/color/usdt.png', placeholder:'T...', hint:'TRC20 network only.', network:'TRC20', delay:'45 min' },
-  { value:'bnb',      label:'BNB',            logo:'https://raw.githubusercontent.com/spothq/cryptocurrency-icons/master/128/color/bnb.png', placeholder:'bnb1...', hint:'BNB Smart Chain (BEP20) network.', network:'BEP20', delay:'45 min' },
-]
 
 export default function Withdrawals() {
   const { user, updateUser } = useAuth()
@@ -20,7 +14,7 @@ export default function Withdrawals() {
 
   useEffect(() => { withdrawalAPI.getAll().then(r => setWithdrawals(r.data.withdrawals)).catch(()=>{}) }, [])
   const handle = e => setForm(p => ({ ...p, [e.target.name]: e.target.value }))
-  const selectedMethod = METHODS.find(m => m.value === form.method)
+  const selectedMethod = getPaymentMethod(form.method)
 
   const submit = async e => {
     e.preventDefault()
@@ -62,7 +56,7 @@ export default function Withdrawals() {
           <div className="card">
             <p style={{ fontSize:11,fontWeight:700,color:'var(--text-secondary)',textTransform:'uppercase',letterSpacing:'0.06em',marginBottom:'0.75rem' }}>Withdrawal Cryptocurrency</p>
             <div style={{ display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(110px,1fr))',gap:8 }}>
-              {METHODS.map(m => (
+              {PAYMENT_METHODS.map(m => (
                 <div key={m.value} className={'payment-card'+(form.method===m.value?' selected':'')} onClick={()=>setForm(p=>({...p,method:m.value,walletAddress:''}))} style={{ padding:'0.65rem 0.4rem' }}>
                   <img src={m.logo} alt={m.label} style={{ width:28,height:28,objectFit:'contain',margin:'0 auto 4px' }} />
                   <p style={{ fontSize:10,fontWeight:700,color:'var(--text-primary)' }}>{m.label}</p>
@@ -129,7 +123,7 @@ export default function Withdrawals() {
           ) : (
             <div style={{ display:'flex',flexDirection:'column',gap:8 }}>
               {withdrawals.map(w => {
-                const m = METHODS.find(x => x.value === w.method)
+                const m = getPaymentMethod(w.method)
                 return (
                   <div key={w._id} className="mobile-list-item">
                     <div style={{ width:36,height:36,borderRadius:11,background:w.status==='approved'?'rgba(45,212,191,0.1)':w.status==='rejected'?'rgba(255,92,122,0.1)':'var(--accent-glow)',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0 }}>
