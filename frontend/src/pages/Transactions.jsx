@@ -11,8 +11,17 @@ export default function Transactions() {
   const [filter, setFilter]           = useState('all')
 
   useEffect(() => {
-    Promise.all([depositAPI.getAll(), withdrawalAPI.getAll(), investmentAPI.getAll()])
-      .then(([d, w, i]) => { setDeposits(d.data.deposits); setWithdrawals(w.data.withdrawals); setInvestments(i.data.investments) })
+    Promise.all([
+      depositAPI.getAll().catch(() => ({ data: { deposits: [] } })),
+      withdrawalAPI.getAll().catch(() => ({ data: { withdrawals: [] } })),
+      investmentAPI.getAll().catch(() => ({ data: { investments: [] } })),
+    ])
+      .then(([d, w, i]) => {
+        setDeposits(d.data?.deposits || [])
+        setWithdrawals(w.data?.withdrawals || [])
+        setInvestments(i.data?.investments || [])
+      })
+      .catch(() => {})
   }, [])
 
   const all = [

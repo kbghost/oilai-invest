@@ -60,12 +60,27 @@ export default function Dashboard() {
   const [loading, setLoading]         = useState(true)
 
   useEffect(() => {
-    Promise.all([investmentAPI.getAll(), oilAPI.getPrice()])
-      .then(([inv, oil]) => {
+    const fetchData = async () => {
+      try {
+        // Fetch investments
+        const inv = await investmentAPI.getAll().catch(() => ({ data: { investments: [] } }))
         setInvestments(inv.data?.investments || [])
+      } catch {
+        setInvestments([])
+      }
+
+      try {
+        // Fetch oil data separately so a failure doesn't block investments
+        const oil = await oilAPI.getPrice().catch(() => ({ data: null }))
         setOilData(oil.data || null)
-      })
-      .finally(() => setLoading(false))
+      } catch {
+        setOilData(null)
+      }
+
+      setLoading(false)
+    }
+
+    fetchData()
   }, [])
 
   const activeInvs    = (investments || []).filter(i => i && i.status === 'active')

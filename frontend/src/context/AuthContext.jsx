@@ -22,7 +22,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser]       = useState(null)
   const [loading, setLoading] = useState(true)
 
-  // ── Restaurer la session au montage ───────────────────────────────────────
+  // ── Restore session on mount ────────────────────────────────────────────────
   useEffect(() => {
     const restore = async () => {
       const token = localStorage.getItem('token')
@@ -33,23 +33,27 @@ export const AuthProvider = ({ children }) => {
         return
       }
 
-      // Restaurer depuis localStorage immédiatement (évite le flash de déconnexion)
+      // Restore from localStorage immediately (avoid disconnect flash)
       if (saved) {
         try { setUser(JSON.parse(saved)) } catch {}
       }
 
-      // Rafraîchir depuis l'API pour avoir des données à jour (solde, etc.)
+      // Refresh from API to get fresh data (balance, etc.)
       try {
         const { data } = await authAPI.getMe()
         if (data.success) {
           setUser(data.user)
           localStorage.setItem('user', JSON.stringify(data.user))
         }
-      } catch {
-        // Token expiré ou invalide → déconnecter
-        localStorage.removeItem('token')
-        localStorage.removeItem('user')
-        setUser(null)
+      } catch (err) {
+        // Only log out on explicit 401 (token expired/invalid)
+        // Network errors (backend down, timeout) keep the existing session
+        if (err.response?.status === 401) {
+          localStorage.removeItem('token')
+          localStorage.removeItem('user')
+          setUser(null)
+        }
+        // Otherwise: keep user from localStorage — don't force logout
       }
 
       setLoading(false)

@@ -3,14 +3,16 @@ import ReactDOM from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
 import { ThemeProvider } from './context/ThemeContext'
+import ErrorBoundary from './components/ui/ErrorBoundary'
 import App from './App'
 import './index.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <ThemeProvider>
-      <BrowserRouter>
-        <App />
+    <ErrorBoundary>
+      <ThemeProvider>
+        <BrowserRouter>
+          <App />
         <Toaster
           position="top-right"
           toastOptions={{
@@ -26,7 +28,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             error:   { iconTheme: { primary: '#FF5C7A', secondary: '#060B0F' } }
           }}
         />
-      </BrowserRouter>
-    </ThemeProvider>
+        </BrowserRouter>
+      </ThemeProvider>
+    </ErrorBoundary>
   </React.StrictMode>
 )
