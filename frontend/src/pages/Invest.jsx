@@ -35,9 +35,107 @@ const getPlanColor = (planKey) => {
   return PLAN_COLORS[key] || DEFAULT_PLAN_COLOR;
 }
 
+const DEFAULT_PLANS = {
+  decouverte: {
+    name:         'Découverte',
+    price:        100,
+    dailyROI:     3.0,
+    durationDays: 30,
+    dailyGain:    3.00,
+    totalProfit:  90.00,
+    thresholdDays:'17 days',
+    features: [
+      'Daily Gain: €3.00',
+      'Total Net Profit: €90.00',
+      'Threshold (€50) in 17 days',
+      '24h Claim Cycle',
+      'Instant Withdrawal',
+    ],
+  },
+  standard: {
+    name:         'Standard',
+    price:        250,
+    dailyROI:     4.5,
+    durationDays: 45,
+    dailyGain:    11.25,
+    totalProfit:  506.25,
+    thresholdDays:'5 days',
+    features: [
+      'Daily Gain: €11.25',
+      'Total Net Profit: €506.25',
+      'Threshold (€50) in 5 days',
+      '24h Claim Cycle',
+      'Priority Support',
+    ],
+  },
+  performance: {
+    name:         'Performance',
+    price:        500,
+    dailyROI:     6.0,
+    durationDays: 60,
+    dailyGain:    30.00,
+    totalProfit:  1800.00,
+    thresholdDays:'2 days',
+    features: [
+      'Daily Gain: €30.00',
+      'Total Net Profit: €1,800.00',
+      'Threshold (€50) in 2 days',
+      'Express Withdrawal',
+      'AI Market Signals',
+    ],
+  },
+  patrimoine: {
+    name:         'Patrimoine',
+    price:        1000,
+    dailyROI:     8.0,
+    durationDays: 90,
+    dailyGain:    80.00,
+    totalProfit:  7200.00,
+    thresholdDays:'1 day',
+    features: [
+      'Daily Gain: €80.00',
+      'Total Net Profit: €7,200.00',
+      'Threshold (€50) in 1 day',
+      'Dedicated Advisor',
+    ],
+  },
+  vip_exec: {
+    name:         'VIP Exec',
+    price:        2500,
+    dailyROI:     10.0,
+    durationDays: 120,
+    dailyGain:    250.00,
+    totalProfit:  30000.00,
+    thresholdDays:'Every day',
+    features: [
+      'Daily Gain: €250.00',
+      'Total Net Profit: €30,000.00',
+      'Threshold (€50) Every day',
+      'VIP Priority Express',
+      'Dedicated VIP Advisor',
+    ],
+  },
+  club_prive: {
+    name:         'Club Privé',
+    price:        5000,
+    dailyROI:     12.0,
+    durationDays: 180,
+    dailyGain:    600.00,
+    totalProfit:  108000.00,
+    thresholdDays:'Every day',
+    features: [
+      'Daily Gain: €600.00',
+      'Total Net Profit: €108,000.00',
+      'Threshold (€50) Every day',
+      'Dedicated VIP Advisor',
+      'Exclusive Arbitrage & Trading',
+    ],
+  },
+};
+
 export default function Invest() {
   const { user } = useAuth()
-  const [plans, setPlans]             = useState({})
+  const [plans, setPlans]             = useState(DEFAULT_PLANS)
   const [investments, setInvestments] = useState([])
   const [selected, setSelected]       = useState(null)
   const [loading, setLoading]         = useState(false)
