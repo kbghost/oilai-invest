@@ -1,20 +1,20 @@
 /**
- * Invest.jsx — Page d'investissement
- *
- * MODIFIER LES PLANS AFFICHÉS :
- *   Les plans viennent du backend (investmentController.js → PLANS)
- *   Le frontend les affiche dynamiquement via l'API.
- *
- * MODIFIER LE MINIMUM DE DÉPÔT AFFICHÉ :
- *   Automatique → minAmount dans PLANS côté backend
+ * Invest.jsx — Investment Plans Page
+ * Complete English UI with robust error boundaries and safe fallbacks.
  */
 import { useEffect, useState } from 'react'
 import { useAuth } from '../context/AuthContext'
 import { investmentAPI } from '../services/api'
 import ClaimButton from '../components/ui/ClaimButton'
 import AnimatedCounter from '../components/ui/AnimatedCounter'
-import { TrendingUp, Zap, Clock, CheckCircle, ChevronDown, ChevronUp } from 'lucide-react'
+import { TrendingUp, Zap, Clock, CheckCircle, ChevronDown, ChevronUp, ShieldCheck } from 'lucide-react'
 import toast from 'react-hot-toast'
+
+const DEFAULT_PLAN_COLOR = {
+  accent: 'var(--accent)',
+  bg: 'var(--accent-glow)',
+  border: 'rgba(34,197,94,0.25)',
+}
 
 const PLAN_COLORS = {
   decouverte:  { accent: '#3b82f6', bg: 'rgba(59,130,246,0.08)',  border: 'rgba(59,130,246,0.25)' },
@@ -23,6 +23,16 @@ const PLAN_COLORS = {
   patrimoine:  { accent: '#94a3b8', bg: 'rgba(148,163,184,0.08)', border: 'rgba(148,163,184,0.25)' },
   vip_exec:    { accent: 'var(--accent)', bg: 'var(--accent-glow)', border: 'rgba(34,197,94,0.25)' },
   club_prive:  { accent: 'var(--green)', bg: 'rgba(45,212,191,0.08)', border: 'rgba(45,212,191,0.25)' },
+  // Compatibility aliases
+  starter:     { accent: '#3b82f6', bg: 'rgba(59,130,246,0.08)',  border: 'rgba(59,130,246,0.25)' },
+  pro:         { accent: '#eab308', bg: 'rgba(234,179,8,0.08)',  border: 'rgba(234,179,8,0.25)' },
+  vip:         { accent: 'var(--accent)', bg: 'var(--accent-glow)', border: 'rgba(34,197,94,0.25)' },
+}
+
+const getPlanColor = (planKey) => {
+  if (!planKey) return DEFAULT_PLAN_COLOR;
+  const key = String(planKey).toLowerCase();
+  return PLAN_COLORS[key] || DEFAULT_PLAN_COLOR;
 }
 
 export default function Invest() {
@@ -30,32 +40,36 @@ export default function Invest() {
   const [plans, setPlans]             = useState({})
   const [investments, setInvestments] = useState([])
   const [selected, setSelected]       = useState(null)
-  const [amount, setAmount]           = useState('')
   const [loading, setLoading]         = useState(false)
   const [expanded, setExpanded]       = useState({})
 
   const load = async () => {
     try {
       const [p, i] = await Promise.all([investmentAPI.getPlans(), investmentAPI.getAll()])
-      setPlans(p.data.plans)
-      setInvestments(i.data.investments)
-    } catch { toast.error('Error loading plans') }
+      if (p.data && p.data.plans) setPlans(p.data.plans)
+      if (i.data && i.data.investments) setInvestments(i.data.investments)
+    } catch (err) {
+      console.error('Error loading plans:', err)
+      toast.error('Error loading investment plans')
+    }
   }
 
   useEffect(() => { load() }, [])
 
-  const activeInvs    = investments.filter(i => i.status === 'active')
-  const completedInvs = investments.filter(i => i.status === 'completed')
+  const activeInvs    = Array.isArray(investments) ? investments.filter(i => i && i.status === 'active') : []
+  const completedInvs = Array.isArray(investments) ? investments.filter(i => i && i.status === 'completed') : []
 
   const handleInvest = async e => {
     e.preventDefault()
-    if (!selected) return toast.error('Please choose a plan')
+    if (!selected) return toast.error('Please select an investment plan')
     const plan = plans[selected]
-    if ((user?.balance || 0) < plan.price) return toast.error('Insufficient balance')
+    if (!plan) return toast.error('Selected plan is invalid')
+    if ((user?.balance || 0) < plan.price) return toast.error(`Insufficient balance. Minimum required: €${plan.price}`)
+    
     setLoading(true)
     try {
       await investmentAPI.create({ plan: selected })
-      toast.success('Investment started! Claim your earnings every 24 hours.')
+      toast.success('Investment plan activated! First profit already available.')
       setSelected(null)
       await load()
     } catch (err) {
@@ -68,9 +82,11 @@ export default function Invest() {
 
       {/* Header */}
       <div>
-        <h1 style={{ fontFamily:'"Poppins",sans-serif', fontSize:'1.5rem', fontWeight:700, color:'var(--text-primary)', marginBottom:3 }}>Invest</h1>
+        <h1 style={{ fontFamily:'"Poppins",sans-serif', fontSize:'1.5rem', fontWeight:700, color:'var(--text-primary)', marginBottom:3 }}>
+          Investment Plans
+        </h1>
         <p style={{ color:'var(--text-secondary)', fontSize:13 }}>
-          Available Balance: <span style={{ fontWeight:700, color:'var(--accent)' }}>${(user?.balance || 0).toFixed(2)}</span>
+          Available Balance: <span style={{ fontWeight:700, color:'var(--accent)' }}>€{(user?.balance || 0).toFixed(2)}</span>
         </p>
       </div>
 
@@ -81,8 +97,8 @@ export default function Invest() {
             My Active Plans ({activeInvs.length})
           </p>
           {activeInvs.map(inv => {
-            const col = PLAN_COLORS[inv.plan] || PLAN_COLORS.starter
-            const pct = Math.min((inv.daysCompleted / inv.durationDays) * 100, 100)
+            const col = getPlanColor(inv.plan)
+            const pct = Math.min(((inv.daysCompleted || 0) / (inv.durationDays || 30)) * 100, 100)
             return (
               <div key={inv._id} className="float-card" style={{ border:`1px solid ${col.border}` }}>
                 {/* Header plan */}
@@ -94,13 +110,13 @@ export default function Invest() {
                     <div>
                       <p style={{ fontWeight:800, color:'var(--text-primary)', fontSize:14, textTransform:'capitalize' }}>{inv.plan}</p>
                       <p style={{ fontSize:11, color:'var(--text-muted)', display:'flex', alignItems:'center', gap:3 }}>
-                        <Clock size={10} /> {inv.daysCompleted}/{inv.durationDays} days
+                        <Clock size={10} /> {inv.daysCompleted || 0}/{inv.durationDays || 30} days
                       </p>
                     </div>
                   </div>
                   <div style={{ textAlign:'right' }}>
                     <p style={{ fontSize:12, color:'var(--text-muted)' }}>Capital</p>
-                    <p style={{ fontWeight:800, color:'var(--text-primary)', fontSize:14 }}>${inv.amount.toLocaleString()}</p>
+                    <p style={{ fontWeight:800, color:'var(--text-primary)', fontSize:14 }}>€{(inv.amount || 0).toLocaleString()}</p>
                   </div>
                 </div>
 
@@ -112,9 +128,9 @@ export default function Invest() {
                 {/* Stats */}
                 <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr 1fr', gap:8, marginBottom:'1rem' }}>
                   {[
-                    { l:'Daily ROI',      v:`${inv.dailyROI}%`,            c:col.accent },
-                    { l:'Total Earnings',v:`$${inv.totalEarned.toFixed(2)}`, c:'var(--green)' },
-                    { l:'Pending',        v:`$${(inv.pendingProfit||0).toFixed(2)}`, c:'var(--text-primary)' },
+                    { l:'Daily ROI',      v:`${inv.dailyROI || 0}%`,            c:col.accent },
+                    { l:'Total Earnings',v:`€${(inv.totalEarned || 0).toFixed(2)}`, c:'var(--green)' },
+                    { l:'Pending',        v:`€${(inv.pendingProfit || 0).toFixed(2)}`, c:'var(--text-primary)' },
                   ].map(({ l, v, c }) => (
                     <div key={l} style={{ padding:'0.6rem 0.5rem', background:'var(--bg-card2)', borderRadius:10, textAlign:'center' }}>
                       <p style={{ fontWeight:800, color:c, fontSize:13, marginBottom:1 }}>{v}</p>
@@ -141,7 +157,7 @@ export default function Invest() {
                         {inv.profitHistory.map((h, i) => (
                           <div key={i} style={{ display:'flex', justifyContent:'space-between', padding:'0.4rem', borderBottom: i === inv.profitHistory.length - 1 ? 'none' : '1px solid var(--border)' }}>
                             <span style={{ fontSize:11, color:'var(--text-muted)' }}>{new Date(h.date).toLocaleDateString()} {new Date(h.date).toLocaleTimeString()}</span>
-                            <span style={{ fontSize:12, fontWeight:700, color:'var(--green)' }}>+${h.profit.toFixed(2)}</span>
+                            <span style={{ fontSize:12, fontWeight:700, color:'var(--green)' }}>+€{(h.profit || 0).toFixed(2)}</span>
                           </div>
                         ))}
                       </div>
@@ -157,13 +173,13 @@ export default function Invest() {
       {/* ── Choose Plan Form ── */}
       <div className="float-card">
         <p className="dash-card-title" style={{ color:'var(--text-primary)', marginBottom:'1rem' }}>
-          Choose a Plan
+          Choose an Investment Plan
         </p>
 
         <div style={{ display:'flex', flexDirection:'column', gap:'0.75rem' }}>
-          {Object.entries(plans).map(([key, plan], idx) => {
+          {Object.entries(plans || {}).map(([key, plan], idx) => {
             const isSelected = selected === key
-            const col = PLAN_COLORS[key] || PLAN_COLORS.starter
+            const col = getPlanColor(key)
             return (
               <div
                 key={key}
@@ -180,16 +196,17 @@ export default function Invest() {
                   <div>
                     <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:4 }}>
                       <p style={{ fontFamily:'"Poppins",sans-serif', fontWeight:700, fontSize:'1rem', color:'var(--text-primary)', textTransform:'capitalize' }}>{plan.name}</p>
-                      {key === 'pro' && <span style={{ fontSize:9, fontWeight:700, padding:'2px 7px', background:'var(--accent)', color:'#fff', borderRadius:999 }}>POPULAR</span>}
+                      {key === 'standard' && <span style={{ fontSize:9, fontWeight:700, padding:'2px 7px', background:'var(--accent)', color:'#fff', borderRadius:999 }}>POPULAR</span>}
+                      {key === 'club_prive' && <span style={{ fontSize:9, fontWeight:700, padding:'2px 7px', background:'var(--green)', color:'#000', borderRadius:999 }}>VIP</span>}
                     </div>
                     <p style={{ fontSize:22, fontWeight:900, color:col.accent, fontFamily:'"Poppins",sans-serif' }}>{plan.dailyROI}%<span style={{ fontSize:12, color:'var(--text-muted)', fontWeight:400 }}>/day</span></p>
                     <p style={{ fontSize:11, color:'var(--text-muted)', marginTop:2 }}>
-                      {plan.durationDays} days · Price: ${plan.price.toLocaleString()}
+                      {plan.durationDays} days · Price: €{(plan.price || 0).toLocaleString()}
                     </p>
                   </div>
                   <div style={{ textAlign:'right' }}>
                     <p style={{ fontSize:11, color:'var(--text-muted)', marginBottom:4 }}>Total ROI</p>
-                    <p style={{ fontWeight:800, color:col.accent, fontSize:18 }}>{plan.dailyROI * plan.durationDays}%</p>
+                    <p style={{ fontWeight:800, color:col.accent, fontSize:18 }}>{(plan.dailyROI * plan.durationDays).toFixed(0)}%</p>
                     {isSelected ? <ChevronUp size={16} color={col.accent} style={{ marginTop:6 }} /> : <ChevronDown size={16} color="var(--text-muted)" style={{ marginTop:6 }} />}
                   </div>
                 </div>
@@ -207,18 +224,18 @@ export default function Invest() {
                       <div style={{ padding:'0.75rem', background:col.bg, borderRadius:10, marginBottom:'0.75rem', fontSize:12 }}>
                         <div style={{ display:'flex', justifyContent:'space-between', marginBottom:3 }}>
                           <span style={{ color:'var(--text-muted)' }}>Est. daily profit</span>
-                          <span style={{ fontWeight:700, color:col.accent }}>+${(plan.price*plan.dailyROI/100).toFixed(2)}</span>
+                          <span style={{ fontWeight:700, color:col.accent }}>+€{(plan.price * plan.dailyROI / 100).toFixed(2)}</span>
                         </div>
                         <div style={{ display:'flex', justifyContent:'space-between' }}>
                           <span style={{ color:'var(--text-muted)' }}>Est. net total profit</span>
-                          <span style={{ fontWeight:700, color:'var(--green)' }}>+${(plan.price*plan.dailyROI/100*plan.durationDays).toFixed(2)}</span>
+                          <span style={{ fontWeight:700, color:'var(--green)' }}>+€{(plan.price * plan.dailyROI / 100 * plan.durationDays).toFixed(2)}</span>
                         </div>
                       </div>
                       <button type="submit" disabled={loading} className="btn-primary" style={{ width:'100%', justifyContent:'center' }}
                         onClick={e=>e.stopPropagation()}>
                         {loading
                           ? <div style={{ width:17, height:17, border:'2px solid rgba(255,255,255,0.3)', borderTopColor:'#fff', borderRadius:'50%', animation:'spin 0.8s linear infinite' }}/>
-                          : <><TrendingUp size={15}/> Invest ${plan.price}</>}
+                          : <><TrendingUp size={15}/> Invest €{plan.price}</>}
                       </button>
                     </form>
                   </div>
@@ -241,10 +258,10 @@ export default function Invest() {
                 </div>
                 <div style={{ flex:1, minWidth:0 }}>
                   <p style={{ fontWeight:700, color:'var(--text-primary)', fontSize:13, textTransform:'capitalize' }}>{inv.plan}</p>
-                  <p style={{ fontSize:11, color:'var(--text-muted)' }}>{inv.durationDays} days · ${inv.amount.toLocaleString()}</p>
+                  <p style={{ fontSize:11, color:'var(--text-muted)' }}>{inv.durationDays} days · €{(inv.amount || 0).toLocaleString()}</p>
                 </div>
                 <div style={{ textAlign:'right', flexShrink:0 }}>
-                  <p style={{ fontWeight:800, color:'var(--green)', fontSize:13 }}>+${inv.totalEarned.toFixed(2)}</p>
+                  <p style={{ fontWeight:800, color:'var(--green)', fontSize:13 }}>+€{(inv.totalEarned || 0).toFixed(2)}</p>
                   <span className="badge-completed">Completed</span>
                 </div>
               </div>

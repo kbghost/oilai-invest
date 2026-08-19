@@ -62,21 +62,21 @@ export default function Dashboard() {
   useEffect(() => {
     Promise.all([investmentAPI.getAll(), oilAPI.getPrice()])
       .then(([inv, oil]) => {
-        setInvestments(inv.data.investments)
-        setOilData(oil.data)
+        setInvestments(inv.data?.investments || [])
+        setOilData(oil.data || null)
       })
       .finally(() => setLoading(false))
   }, [])
 
-  const activeInvs    = investments.filter(i => i.status === 'active')
-  const totalInvested = activeInvs.reduce((s, i) => s + i.amount, 0)
-  const totalEarned   = investments.reduce((s, i) => s + i.totalEarned, 0)
+  const activeInvs    = (investments || []).filter(i => i && i.status === 'active')
+  const totalInvested = activeInvs.reduce((s, i) => s + (i.amount || 0), 0)
+  const totalEarned   = (investments || []).reduce((s, i) => s + (i.totalEarned || 0), 0)
 
   const chartData = (() => {
     const map = {}
-    investments.forEach(inv => inv.profitHistory?.forEach(({ date, profit }) => {
+    (investments || []).forEach(inv => inv?.profitHistory?.forEach(({ date, profit }) => {
       const d = new Date(date).toLocaleDateString('fr-FR', { day:'2-digit', month:'short' })
-      map[d] = (map[d] || 0) + profit
+      map[d] = (map[d] || 0) + (profit || 0)
     }))
     return Object.entries(map).slice(-14).map(([date, profit]) => ({ date, profit }))
   })()
