@@ -226,9 +226,13 @@ export default function Invest() {
                           <span style={{ color:'var(--text-muted)' }}>Est. daily profit</span>
                           <span style={{ fontWeight:700, color:col.accent }}>+€{(plan.price * plan.dailyROI / 100).toFixed(2)}</span>
                         </div>
-                        <div style={{ display:'flex', justifyContent:'space-between' }}>
+                        <div style={{ display:'flex', justifyContent:'space-between', marginBottom:3 }}>
                           <span style={{ color:'var(--text-muted)' }}>Est. net total profit</span>
                           <span style={{ fontWeight:700, color:'var(--green)' }}>+€{(plan.price * plan.dailyROI / 100 * plan.durationDays).toFixed(2)}</span>
+                        </div>
+                        <div style={{ display:'flex', justifyContent:'space-between' }}>
+                          <span style={{ color:'var(--text-muted)' }}>Threshold (€50)</span>
+                          <span style={{ fontWeight:700, color:'var(--text-primary)' }}>{plan.thresholdDays || 'N/A'}</span>
                         </div>
                       </div>
                       <button type="submit" disabled={loading} className="btn-primary" style={{ width:'100%', justifyContent:'center' }}

@@ -7,8 +7,8 @@ const PLANS = {
   standard:    { name: 'Standard',    price: 250,  roi: 4.5,  days: 45,  threshold: '5 days',    color: 'var(--blue)' },
   performance: { name: 'Performance', price: 500,  roi: 6.0,  days: 60,  threshold: '2 days',    color: '#eab308' },
   patrimoine:  { name: 'Patrimoine',  price: 1000, roi: 8.0,  days: 90,  threshold: '1 day',     color: '#94a3b8' },
-  vip_exec:    { name: 'VIP Exec',    price: 2500, roi: 10.0, days: 120, threshold: 'Daily',       color: 'var(--accent)' },
-  club_prive:  { name: 'Club Privé',  price: 5000, roi: 12.0, days: 180, threshold: 'Daily',       color: 'var(--green)' },
+  vip_exec:    { name: 'VIP Exec',    price: 2500, roi: 10.0, days: 120, threshold: 'Every day', color: 'var(--accent)' },
+  club_prive:  { name: 'Club Privé',  price: 5000, roi: 12.0, days: 180, threshold: 'Every day', color: 'var(--green)' },
 }
 
 export default function ROICalculator() {

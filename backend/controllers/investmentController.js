@@ -44,13 +44,13 @@ const PLANS = {
     durationDays: 30,
     dailyGain:    3.00,
     totalProfit:  90.00,
-    thresholdDays:'17 jours',
+    thresholdDays:'17 days',
     features: [
-      'Gain par Jour : 3,00 €',
-      'Total Profit Net : 90,00 €',
-      'Seuil (50 €) en 17 jours',
-      'Gains réclamables chaque 24h',
-      'Retrait à tout moment',
+      'Daily Gain: €3.00',
+      'Total Net Profit: €90.00',
+      'Threshold (€50) in 17 days',
+      '24h Claim Cycle',
+      'Instant Withdrawal',
     ],
   },
   standard: {
@@ -60,13 +60,13 @@ const PLANS = {
     durationDays: 45,
     dailyGain:    11.25,
     totalProfit:  506.25,
-    thresholdDays:'5 jours',
+    thresholdDays:'5 days',
     features: [
-      'Gain par Jour : 11,25 €',
-      'Total Profit Net : 506,25 €',
-      'Seuil (50 €) en 5 jours',
-      'Gains réclamables chaque 24h',
-      'Support prioritaire',
+      'Daily Gain: €11.25',
+      'Total Net Profit: €506.25',
+      'Threshold (€50) in 5 days',
+      '24h Claim Cycle',
+      'Priority Support',
     ],
   },
   performance: {
@@ -76,13 +76,13 @@ const PLANS = {
     durationDays: 60,
     dailyGain:    30.00,
     totalProfit:  1800.00,
-    thresholdDays:'2 jours',
+    thresholdDays:'2 days',
     features: [
-      'Gain par Jour : 30,00 €',
-      'Total Profit Net : 1 800,00 €',
-      'Seuil (50 €) en 2 jours',
-      'Retrait express',
-      'Alertes marché IA',
+      'Daily Gain: €30.00',
+      'Total Net Profit: €1,800.00',
+      'Threshold (€50) in 2 days',
+      'Express Withdrawal',
+      'AI Market Signals',
     ],
   },
   patrimoine: {
@@ -92,12 +92,12 @@ const PLANS = {
     durationDays: 90,
     dailyGain:    80.00,
     totalProfit:  7200.00,
-    thresholdDays:'1 jour',
+    thresholdDays:'1 day',
     features: [
-      'Gain par Jour : 80,00 €',
-      'Total Profit Net : 7 200,00 €',
-      'Seuil (50 €) en 1 jour',
-      'Conseiller dédié',
+      'Daily Gain: €80.00',
+      'Total Net Profit: €7,200.00',
+      'Threshold (€50) in 1 day',
+      'Dedicated Advisor',
     ],
   },
   vip_exec: {
@@ -107,13 +107,13 @@ const PLANS = {
     durationDays: 120,
     dailyGain:    250.00,
     totalProfit:  30000.00,
-    thresholdDays:'Chaque jour',
+    thresholdDays:'Every day',
     features: [
-      'Gain par Jour : 250,00 €',
-      'Total Profit Net : 30 000,00 €',
-      'Seuil (50 €) Chaque jour',
-      'Retrait express prioritaire',
-      'Conseiller VIP dédié',
+      'Daily Gain: €250.00',
+      'Total Net Profit: €30,000.00',
+      'Threshold (€50) Every day',
+      'VIP Priority Express',
+      'Dedicated VIP Advisor',
     ],
   },
   club_prive: {
@@ -123,13 +123,13 @@ const PLANS = {
     durationDays: 180,
     dailyGain:    600.00,
     totalProfit:  108000.00,
-    thresholdDays:'Chaque jour',
+    thresholdDays:'Every day',
     features: [
-      'Gain par Jour : 600,00 €',
-      'Total Profit Net : 108 000,00 €',
-      'Seuil (50 €) Chaque jour',
-      'Conseiller VIP dédié',
-      'Analyses exclusives & Arbitrages',
+      'Daily Gain: €600.00',
+      'Total Net Profit: €108,000.00',
+      'Threshold (€50) Every day',
+      'Dedicated VIP Advisor',
+      'Exclusive Arbitrage & Trading',
     ],
   },
 };
@@ -289,11 +289,12 @@ const claimProfit = async (req, res) => {
     }
 
     const profitToClaim = parseFloat(investment.pendingProfit.toFixed(2));
+    const dailyGain     = parseFloat(((investment.amount * investment.dailyROI) / 100).toFixed(2));
+    const daysCredited  = dailyGain > 0 ? Math.max(1, Math.round(profitToClaim / dailyGain)) : 1;
     const now           = new Date();
 
     // ── Calculer le prochain profit (pour demain / prochain cycle) ───────
-    const nextVariation = getOilVariation();
-    const nextProfit    = calculateDailyProfit(investment.amount, investment.dailyROI, nextVariation);
+    const nextProfit = dailyGain;
 
     // ── Mise à jour de l'investissement ──────────────────────────────────
     investment.profitHistory.push({
@@ -302,7 +303,7 @@ const claimProfit = async (req, res) => {
       claimedAt: now,
     });
     investment.totalEarned   = parseFloat((investment.totalEarned + profitToClaim).toFixed(2));
-    investment.daysCompleted += 1;
+    investment.daysCompleted += daysCredited;
     investment.lastClaimDate  = now;
     investment.lastProfitDate = now;
 
@@ -326,7 +327,7 @@ const claimProfit = async (req, res) => {
       return res.json({
         success:      true,
         completed:    true,
-        message:      `🎉 Plan completed! $${profitToClaim.toFixed(2)} in earnings + $${investment.amount.toFixed(2)} capital returned to your balance.`,
+        message:      `🎉 Plan completed! €${profitToClaim.toFixed(2)} in earnings + €${investment.amount.toFixed(2)} capital returned to your balance.`,
         profitClaimed: profitToClaim,
         capitalReturned: investment.amount,
         nextProfit:   0,
@@ -334,7 +335,7 @@ const claimProfit = async (req, res) => {
       });
     }
 
-    // ── Plan non terminé : mettre à jour pendingProfit pour demain ───────
+    // ── Plan non terminé : mettre à jour pendingProfit pour le cycle suivant ──
     investment.pendingProfit = nextProfit;
     await investment.save();
 
