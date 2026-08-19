@@ -88,7 +88,7 @@ export default function Dashboard() {
   const totalEarned   = (investments || []).reduce((s, i) => s + (i.totalEarned || 0), 0)
 
   const chartData = (() => {
-    const map = {}
+    const map = {};
     (investments || []).forEach(inv => inv?.profitHistory?.forEach(({ date, profit }) => {
       const d = new Date(date).toLocaleDateString('fr-FR', { day:'2-digit', month:'short' })
       map[d] = (map[d] || 0) + (profit || 0)
