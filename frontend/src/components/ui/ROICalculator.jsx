@@ -3,16 +3,16 @@ import { Link } from 'react-router-dom'
 import { Calculator, TrendingUp, ArrowRight, Zap } from 'lucide-react'
 
 const PLANS = {
-  bronze:   { name: 'Bronze',    price: 15,   roi: 5,  days: 30,  color: 'var(--text-muted)' },
-  silver:   { name: 'Silver',    price: 30,   roi: 8,  days: 45,  color: 'var(--blue)' },
-  gold:     { name: 'Gold',      price: 50,   roi: 10, days: 60,  color: '#eab308' },
-  platinum: { name: 'Platinum',  price: 100,  roi: 12, days: 90,  color: '#94a3b8' },
-  vip_exec: { name: 'VIP Exec',  price: 500,  roi: 15, days: 120, color: 'var(--accent)' },
-  king:     { name: 'King',      price: 1000, roi: 20, days: 180, color: 'var(--green)' },
+  decouverte:  { name: 'Découverte',  price: 100,  roi: 3.0,  days: 30,  threshold: '17 jours',   color: '#3b82f6' },
+  standard:    { name: 'Standard',    price: 250,  roi: 4.5,  days: 45,  threshold: '5 jours',    color: 'var(--blue)' },
+  performance: { name: 'Performance', price: 500,  roi: 6.0,  days: 60,  threshold: '2 jours',    color: '#eab308' },
+  patrimoine:  { name: 'Patrimoine',  price: 1000, roi: 8.0,  days: 90,  threshold: '1 jour',     color: '#94a3b8' },
+  vip_exec:    { name: 'VIP Exec',    price: 2500, roi: 10.0, days: 120, threshold: 'Chaque jour', color: 'var(--accent)' },
+  club_prive:  { name: 'Club Privé',  price: 5000, roi: 12.0, days: 180, threshold: 'Chaque jour', color: 'var(--green)' },
 }
 
 export default function ROICalculator() {
-  const [plan, setPlan] = useState('gold')
+  const [plan, setPlan] = useState('performance')
   const [result, setResult] = useState(null)
 
   const planData = PLANS[plan]

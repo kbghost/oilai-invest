@@ -17,9 +17,12 @@ import { TrendingUp, Zap, Clock, CheckCircle, ChevronDown, ChevronUp } from 'luc
 import toast from 'react-hot-toast'
 
 const PLAN_COLORS = {
-  starter: { accent:'var(--blue)',   bg:'rgba(59,142,255,0.08)',  border:'rgba(59,142,255,0.2)' },
-  pro:     { accent:'var(--accent)', bg:'var(--accent-glow)',      border:'rgba(34,197,94,0.25)' },
-  premium: { accent:'#a78bfa',       bg:'rgba(167,139,250,0.08)', border:'rgba(167,139,250,0.25)' },
+  decouverte:  { accent: '#3b82f6', bg: 'rgba(59,130,246,0.08)',  border: 'rgba(59,130,246,0.25)' },
+  standard:    { accent: 'var(--blue)', bg: 'rgba(59,142,255,0.08)', border: 'rgba(59,142,255,0.25)' },
+  performance: { accent: '#eab308', bg: 'rgba(234,179,8,0.08)',  border: 'rgba(234,179,8,0.25)' },
+  patrimoine:  { accent: '#94a3b8', bg: 'rgba(148,163,184,0.08)', border: 'rgba(148,163,184,0.25)' },
+  vip_exec:    { accent: 'var(--accent)', bg: 'var(--accent-glow)', border: 'rgba(34,197,94,0.25)' },
+  club_prive:  { accent: 'var(--green)', bg: 'rgba(45,212,191,0.08)', border: 'rgba(45,212,191,0.25)' },
 }
 
 export default function Invest() {

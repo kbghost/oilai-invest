@@ -3,21 +3,21 @@ import { TrendingUp, ArrowDownCircle } from 'lucide-react'
 
 // ─── Pool d'activités simulées (sans indexation de pays) ──────────────────────
 const ACTIVITIES = [
-  { type:'earn',    name:'Koffi A.',     amount:47.50,  plan:'Pro' },
+  { type:'earn',    name:'Koffi A.',     amount:30.00,  plan:'Performance' },
   { type:'deposit', name:'Fatou D.',     amount:500,    plan:null },
-  { type:'earn',    name:'Ibrahim S.',   amount:112.30, plan:'Premium' },
-  { type:'earn',    name:'Adama K.',     amount:22.80,  plan:'Starter' },
+  { type:'earn',    name:'Ibrahim S.',   amount:80.00,  plan:'Patrimoine' },
+  { type:'earn',    name:'Adama K.',     amount:3.00,   plan:'Découverte' },
   { type:'deposit', name:'Marie C.',     amount:1000,   plan:null },
-  { type:'earn',    name:'Moussa B.',    amount:87.15,  plan:'Pro' },
-  { type:'deposit', name:'Afi T.',       amount:200,    plan:null },
-  { type:'earn',    name:'Serge N.',     amount:315.00, plan:'Premium' },
-  { type:'earn',    name:'Aminata L.',   amount:63.40,  plan:'Pro' },
-  { type:'deposit', name:'Jean-Paul M.', amount:2000,   plan:null },
-  { type:'earn',    name:'Christelle R.',amount:28.90,  plan:'Starter' },
-  { type:'earn',    name:'Oumar D.',     amount:198.60, plan:'Premium' },
-  { type:'deposit', name:'Adjoua K.',    amount:500,    plan:null },
-  { type:'earn',    name:'Éric F.',      amount:54.20,  plan:'Pro' },
-  { type:'deposit', name:'Bénédicte A.', amount:300,    plan:null },
+  { type:'earn',    name:'Moussa B.',    amount:11.25,  plan:'Standard' },
+  { type:'deposit', name:'Afi T.',       amount:250,    plan:null },
+  { type:'earn',    name:'Serge N.',     amount:250.00, plan:'VIP Exec' },
+  { type:'earn',    name:'Aminata L.',   amount:30.00,  plan:'Performance' },
+  { type:'deposit', name:'Jean-Paul M.', amount:2500,   plan:null },
+  { type:'earn',    name:'Christelle R.',amount:3.00,   plan:'Découverte' },
+  { type:'earn',    name:'Oumar D.',     amount:600.00, plan:'Club Privé' },
+  { type:'deposit', name:'Adjoua K.',    amount:5000,   plan:null },
+  { type:'earn',    name:'Éric F.',      amount:11.25,  plan:'Standard' },
+  { type:'deposit', name:'Bénédicte A.', amount:500,    plan:null },
 ]
 
 const MIN_INTERVAL = 4500

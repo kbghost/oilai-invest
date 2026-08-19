@@ -23,6 +23,8 @@ const generateToken = (userId) =>
     expiresIn: process.env.JWT_EXPIRES_IN || '7d',
   });
 
+const { parsePhoneNumberFromString } = require('libphonenumber-js');
+
 // ── Objet user sécurisé renvoyé au client ─────────────────────────────────────
 // IMPORTANT : referralCode DOIT être inclus pour que la page Parrainage fonctionne
 const safeUser = (user) => ({
@@ -32,6 +34,7 @@ const safeUser = (user) => ({
   lastName:         user.lastName,
   email:            user.email,
   phone:            user.phone,
+  phoneCountry:     user.phoneCountry,
   country:          user.country,
   role:             user.role,
   balance:          user.balance,
@@ -54,11 +57,30 @@ const register = async (req, res) => {
       return res.status(400).json({ success: false, errors: errors.array() });
     }
 
-    const { firstName, lastName, email, password, phone, country, referralCode } = req.body;
+    const { firstName, lastName, email, password, phone, phoneCountry, country, referralCode } = req.body;
 
     // Verify unique email
     if (await User.findOne({ email })) {
       return res.status(409).json({ success: false, message: 'This email is already in use.' });
+    }
+
+    // Validation & Normalisation du numéro de téléphone au format E.164
+    let formattedPhone = phone || '';
+    let isoCountry = phoneCountry || '';
+
+    if (phone && phone.trim()) {
+      try {
+        const parsed = phone.startsWith('+')
+          ? parsePhoneNumberFromString(phone.trim())
+          : parsePhoneNumberFromString(phone.trim(), isoCountry || undefined);
+
+        if (parsed && parsed.isValid()) {
+          formattedPhone = parsed.format('E.164');
+          if (parsed.country) isoCountry = parsed.country;
+        }
+      } catch (err) {
+        // En cas d'erreur de parsing, garder la valeur reçue
+      }
     }
 
     // Vérifier le code de parrainage si fourni
@@ -77,9 +99,10 @@ const register = async (req, res) => {
       lastName,
       email,
       password,
-      phone:     phone || '',
-      country:   country || '',
-      referredBy: referrer ? referrer._id : null,
+      phone:        formattedPhone,
+      phoneCountry: isoCountry,
+      country:      country || '',
+      referredBy:   referrer ? referrer._id : null,
     });
 
     // Incrémenter le compteur de filleuls du parrain

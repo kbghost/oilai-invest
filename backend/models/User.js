@@ -22,8 +22,9 @@ const userSchema = new mongoose.Schema({
   lastName:  { type: String, required: [true,'Nom requis'],    trim: true, minlength: 2, maxlength: 50 },
   email:     { type: String, required: [true,'Email requis'], unique: true, lowercase: true, trim: true, match: [/^\S+@\S+\.\S+$/,'Email invalide'] },
   password:  { type: String, required: [true,'Mot de passe requis'], minlength: 6, select: false },
-  phone:     { type: String, trim: true, default: '' },
-  country:   { type: String, trim: true, default: '' },
+  phone:        { type: String, trim: true, default: '' },
+  phoneCountry: { type: String, trim: true, default: '' },
+  country:      { type: String, trim: true, default: '' },
 
   // ── Finances ──────────────────────────────────────────────────────────────
   balance:       { type: Number, default: 0, min: 0 },
