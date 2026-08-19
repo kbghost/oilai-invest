@@ -43,7 +43,7 @@ export default function Login() {
 
           <div className="animate-fade-up">
             <p style={{ fontSize: 11, fontWeight: 800, color: '#000', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: 12 }}>
-              🌍 West Africa's #1 Platform
+              🌍 Plateforme d'Investissement IA Mondiale
             </p>
             <h2 style={{ fontFamily: '"Poppins",sans-serif', fontSize: '2.4rem', fontWeight: 800, color: '#000', lineHeight: 1.15, marginBottom: '1.5rem', letterSpacing: '-0.02em' }}>
               Your money works,<br />even while you sleep.

@@ -116,6 +116,7 @@ export default function PhoneInput({
           border: phoneError ? '1.5px solid var(--red)' : isValidPhone ? '1.5px solid var(--green)' : '1px solid var(--border)',
           background: 'var(--bg-card2)',
           overflow: 'hidden',
+          minHeight: 48,
           transition: 'all 0.2s ease',
           boxShadow: isModalOpen ? '0 0 0 3px var(--accent-glow)' : 'none',
         }}
@@ -129,12 +130,13 @@ export default function PhoneInput({
             alignItems: 'center',
             gap: 8,
             padding: '0.75rem 0.875rem',
+            minHeight: 48,
             background: 'rgba(255,255,255,0.04)',
             border: 'none',
             borderRight: '1px solid var(--border)',
             color: 'var(--text-primary)',
             cursor: 'pointer',
-            fontSize: '0.95rem',
+            fontSize: '1rem',
             fontWeight: 700,
             fontFamily: 'inherit',
             whiteSpace: 'nowrap',
@@ -164,7 +166,8 @@ export default function PhoneInput({
               paddingLeft: '0.875rem',
               paddingRight: isValidPhone || phoneError ? '2.5rem' : '0.875rem',
               width: '100%',
-              fontSize: '0.95rem',
+              minHeight: 48,
+              fontSize: '1rem', // 16px empèche le zoom auto sur Safari iOS
               fontFamily: 'monospace',
             }}
           />
