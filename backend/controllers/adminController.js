@@ -37,8 +37,8 @@ const getDashboardStats = async(req, res) => {
                 activeInvestments,
                 pendingDeposits,
                 pendingWithdrawals,
-                totalDeposits: totalDepositsAgg[0] ? .total || 0,
-                totalWithdrawals: totalWithdrawalsAgg[0] ? .total || 0
+                totalDeposits: totalDepositsAgg[0]?.total || 0,
+                totalWithdrawals: totalWithdrawalsAgg[0]?.total || 0
             },
             recentUsers
         });
