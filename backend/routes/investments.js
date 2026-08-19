@@ -18,7 +18,7 @@ router.post('/process-profits', protect, adminOnly, processDailyProfits);
 // Investissements utilisateur
 router.get('/',  protect, getUserInvestments);
 router.post('/', protect, [
-  body('plan').isIn(['bronze','argent','or','platine','vip_exec','king']),
+  body('plan').isIn(['decouverte', 'standard', 'performance', 'patrimoine', 'vip_exec', 'club_prive', 'starter', 'pro', 'premium', 'bronze', 'argent', 'or', 'platine', 'king']),
 ], createInvestment);
 
 // ── CLAIM : réclamer les gains du jour ─────────────────────────────────────────────
