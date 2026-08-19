@@ -3,12 +3,12 @@ import { Link } from 'react-router-dom'
 import { Calculator, TrendingUp, ArrowRight, Zap } from 'lucide-react'
 
 const PLANS = {
-  decouverte:  { name: 'Découverte',  price: 100,  roi: 3.0,  days: 30,  threshold: '17 jours',   color: '#3b82f6' },
-  standard:    { name: 'Standard',    price: 250,  roi: 4.5,  days: 45,  threshold: '5 jours',    color: 'var(--blue)' },
-  performance: { name: 'Performance', price: 500,  roi: 6.0,  days: 60,  threshold: '2 jours',    color: '#eab308' },
-  patrimoine:  { name: 'Patrimoine',  price: 1000, roi: 8.0,  days: 90,  threshold: '1 jour',     color: '#94a3b8' },
-  vip_exec:    { name: 'VIP Exec',    price: 2500, roi: 10.0, days: 120, threshold: 'Chaque jour', color: 'var(--accent)' },
-  club_prive:  { name: 'Club Privé',  price: 5000, roi: 12.0, days: 180, threshold: 'Chaque jour', color: 'var(--green)' },
+  decouverte:  { name: 'Découverte',  price: 100,  roi: 3.0,  days: 30,  threshold: '17 days',   color: '#3b82f6' },
+  standard:    { name: 'Standard',    price: 250,  roi: 4.5,  days: 45,  threshold: '5 days',    color: 'var(--blue)' },
+  performance: { name: 'Performance', price: 500,  roi: 6.0,  days: 60,  threshold: '2 days',    color: '#eab308' },
+  patrimoine:  { name: 'Patrimoine',  price: 1000, roi: 8.0,  days: 90,  threshold: '1 day',     color: '#94a3b8' },
+  vip_exec:    { name: 'VIP Exec',    price: 2500, roi: 10.0, days: 120, threshold: 'Daily',       color: 'var(--accent)' },
+  club_prive:  { name: 'Club Privé',  price: 5000, roi: 12.0, days: 180, threshold: 'Daily',       color: 'var(--green)' },
 }
 
 export default function ROICalculator() {
@@ -23,10 +23,6 @@ export default function ROICalculator() {
     const total = planData.price + totalProfit
     setResult({ dailyProfit, totalProfit, total, roi: (totalProfit / planData.price * 100) })
   }, [plan, planData])
-
-  const speakText = result
-    ? `If you invest $${planData.price} in the ${planData.name} plan, you will earn $${result.dailyProfit.toFixed(2)} every day. Over ${planData.days} days, your total profit will be $${result.totalProfit.toFixed(2)}, for a final capital of $${result.total.toFixed(2)}. Join OilAI Invest now!`
-    : ''
 
   return (
     <div className="card reveal" style={{ border: '1px solid var(--border)', position: 'relative', overflow: 'hidden' }}>
@@ -45,16 +41,18 @@ export default function ROICalculator() {
         </div>
       </div>
 
-      {/* Plan selector */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8, marginBottom: '1.5rem' }}>
+      {/* Plan selector grid (Responsive, no overflow) */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(105px, 1fr))', gap: 6, marginBottom: '1.5rem' }}>
         {Object.entries(PLANS).map(([key, p]) => (
           <button key={key} onClick={() => setPlan(key)}
+            title={`${p.name} - ${p.roi}%/day`}
             style={{
-              padding: '0.75rem', borderRadius: 12, cursor: 'pointer', fontFamily: 'inherit',
-              fontWeight: 700, fontSize: 13, transition: 'all 0.2s', border: '1.5px solid',
+              padding: '0.65rem 0.35rem', borderRadius: 12, cursor: 'pointer', fontFamily: 'inherit',
+              fontWeight: 700, fontSize: 12, transition: 'all 0.2s', border: '1.5px solid',
               borderColor: plan === key ? p.color : 'var(--border)',
               background: plan === key ? p.color + '15' : 'var(--bg-card2)',
               color: plan === key ? p.color : 'var(--text-muted)',
+              overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', width: '100%',
             }}>
             {p.name}<br />
             <span style={{ fontSize: 11, fontWeight: 400 }}>{p.roi}%/day</span>
@@ -64,26 +62,26 @@ export default function ROICalculator() {
 
       <div style={{ marginBottom: '1.25rem', padding:'1rem', background:'var(--bg-card2)', borderRadius:12 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
-          <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Amount Invested</span>
-          <span style={{ fontFamily: '"Poppins", sans-serif', fontWeight: 700, color: 'var(--text-primary)', fontSize: '1.1rem' }}>${planData.price.toLocaleString()}</span>
+          <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Fixed Price</span>
+          <span style={{ fontFamily: '"Poppins", sans-serif', fontWeight: 700, color: 'var(--text-primary)', fontSize: '1.1rem' }}>€{planData.price.toLocaleString()}</span>
         </div>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Plan Duration</span>
-          <span style={{ fontFamily: '"Poppins", sans-serif', fontWeight: 700, color: 'var(--text-primary)', fontSize: '1.1rem' }}>{planData.days} days</span>
+          <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Contract Duration</span>
+          <span style={{ fontFamily: '"Poppins", sans-serif', fontWeight: 700, color: 'var(--text-primary)', fontSize: '1.1rem' }}>{planData.days} Days</span>
         </div>
       </div>
 
       {/* Result */}
       {result && (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10, marginBottom: '1.25rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8, marginBottom: '1.25rem' }}>
           {[
-            { label: 'Daily Profit',             value: `+$${result.dailyProfit.toFixed(2)}`, color: 'var(--green)' },
-            { label: `Profit / ${planData.days}d`, value: `+$${result.totalProfit.toFixed(0)}`, color: planData.color },
-            { label: 'Final Capital',              value: `$${result.total.toFixed(0)}`,        color: 'var(--text-primary)' },
+            { label: 'Daily Gain',              value: `+€${result.dailyProfit.toFixed(2)}`, color: 'var(--green)' },
+            { label: `Net Profit (${planData.days}d)`, value: `+€${result.totalProfit.toFixed(0)}`, color: planData.color },
+            { label: 'Threshold (€50)',          value: planData.threshold,                  color: 'var(--text-primary)' },
           ].map(({ label, value, color }) => (
-            <div key={label} style={{ padding: '0.875rem', background: 'var(--bg-card2)', borderRadius: 12, textAlign: 'center' }}>
-              <p style={{ fontSize: 10, color: 'var(--text-muted)', marginBottom: 4, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{label}</p>
-              <p style={{ fontFamily: '"Poppins", sans-serif', fontWeight: 700, color, fontSize: '1rem' }}>{value}</p>
+            <div key={label} style={{ padding: '0.75rem 0.5rem', background: 'var(--bg-card2)', borderRadius: 12, textAlign: 'center' }}>
+              <p style={{ fontSize: 10, color: 'var(--text-muted)', marginBottom: 4, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em' }}>{label}</p>
+              <p style={{ fontFamily: '"Poppins", sans-serif', fontWeight: 700, color, fontSize: '0.95rem' }}>{value}</p>
             </div>
           ))}
         </div>
@@ -94,7 +92,7 @@ export default function ROICalculator() {
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '0.75rem', background: 'rgba(0,212,160,0.06)', border: '1px solid rgba(0,212,160,0.15)', borderRadius: 12, marginBottom: '1.25rem' }}>
           <Zap size={15} color="var(--green)" />
           <p style={{ fontSize: 13, color: 'var(--text-secondary)' }}>
-            Return of <span style={{ fontWeight: 700, color: 'var(--green)' }}>{result.roi.toFixed(1)}%</span> over {planData.days} days.
+            Net return of <span style={{ fontWeight: 700, color: 'var(--green)' }}>{result.roi.toFixed(1)}%</span> over {planData.days} days contract.
           </p>
         </div>
       )}
@@ -102,15 +100,15 @@ export default function ROICalculator() {
       {/* CTA buttons */}
       <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
         <a href="#plans" style={{
-          flex: 1, minWidth: 140, display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-          gap: 6, padding: '0.8rem 1.2rem', borderRadius: 14, fontWeight: 700, fontSize: 14,
+          flex: 1, minWidth: 130, display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+          gap: 6, padding: '0.8rem 1rem', borderRadius: 14, fontWeight: 700, fontSize: 14,
           background: 'var(--bg-card2)', border: '1.5px solid var(--accent)', color: 'var(--accent)', textDecoration: 'none', transition: 'all 0.2s'
         }}>
-          View Our Plans <ArrowRight size={16} />
+          Our Plans <ArrowRight size={16} />
         </a>
         <Link to="/register" style={{
-          flex: 1, minWidth: 140, display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-          gap: 6, padding: '0.8rem 1.2rem', borderRadius: 14, fontWeight: 700, fontSize: 14,
+          flex: 1, minWidth: 130, display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+          gap: 6, padding: '0.8rem 1rem', borderRadius: 14, fontWeight: 700, fontSize: 14,
           background: 'var(--bg-card2)', border: '1.5px solid var(--accent)', color: 'var(--accent)',
           textDecoration: 'none', transition: 'all 0.2s'
         }}>

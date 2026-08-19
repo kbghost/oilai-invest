@@ -14,27 +14,38 @@ const { protect } = require('../middleware/auth');
 
 const router = express.Router();
 
-const { parsePhoneNumberFromString } = require('libphonenumber-js');
+const { parsePhoneNumberFromString, isPossiblePhoneNumber } = require('libphonenumber-js/max');
 
-// Validation inscription
+// Registration validation
 const registerValidation = [
-  body('firstName').trim().notEmpty().withMessage('Prénom requis').isLength({ min: 2 }),
-  body('lastName').trim().notEmpty().withMessage('Nom requis').isLength({ min: 2 }),
-  body('email').isEmail().withMessage('Email invalide').normalizeEmail(),
-  body('password').isLength({ min: 6 }).withMessage('Mot de passe : 6 caractères minimum'),
+  body('firstName').trim().notEmpty().withMessage('First name is required').isLength({ min: 2 }),
+  body('lastName').trim().notEmpty().withMessage('Last name is required').isLength({ min: 2 }),
+  body('email').isEmail().withMessage('Invalid email address').normalizeEmail(),
+  body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters'),
   body('phone')
-    .notEmpty().withMessage('Numéro de téléphone requis')
+    .notEmpty().withMessage('Phone number is required')
     .custom((value, { req }) => {
+      if (!value || !value.trim()) return true;
+      const clean = value.trim();
       const countryCode = req.body.phoneCountry || undefined;
-      const phoneNumber = value.startsWith('+')
-        ? parsePhoneNumberFromString(value.trim())
-        : parsePhoneNumberFromString(value.trim(), countryCode);
-      if (!phoneNumber || !phoneNumber.isValid()) {
-        throw new Error('Numéro de téléphone invalide pour le pays sélectionné.');
+      let phoneNumber = null;
+      try {
+        phoneNumber = clean.startsWith('+')
+          ? parsePhoneNumberFromString(clean)
+          : parsePhoneNumberFromString(clean, countryCode);
+      } catch (e) {}
+
+      const digitsOnly = clean.replace(/\D/g, '');
+      const isPossible =
+        (phoneNumber && (phoneNumber.isValid() || phoneNumber.isPossible())) ||
+        (clean.startsWith('+') ? isPossiblePhoneNumber(clean) : digitsOnly.length >= 7 && digitsOnly.length <= 15);
+
+      if (!isPossible) {
+        throw new Error('Invalid phone number for the selected country.');
       }
       return true;
     }),
-  // referralCode est OPTIONNEL — pas de validation obligatoire
+  // referralCode is optional
 ];
 
 // Validation connexion

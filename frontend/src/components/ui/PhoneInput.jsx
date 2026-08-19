@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { parsePhoneNumberFromString } from 'libphonenumber-js';
+import { parsePhoneNumberFromString, isPossiblePhoneNumber } from 'libphonenumber-js/max';
 import { WORLD_COUNTRIES, searchCountries } from '../../data/countries';
 import { Search, ChevronDown, Check, X, Globe } from 'lucide-react';
 
@@ -18,12 +18,12 @@ export default function PhoneInput({
   const [isValidPhone, setIsValidPhone] = useState(false);
   const searchInputRef = useRef(null);
 
-  // Filtrer la liste des pays en fonction de la recherche
+  // Filter country list on search query change
   useEffect(() => {
     setFilteredCountries(searchCountries(searchQuery));
   }, [searchQuery]);
 
-  // Focus sur le champ de recherche à l'ouverture du modal
+  // Focus search input on modal open
   useEffect(() => {
     if (isModalOpen) {
       setTimeout(() => searchInputRef.current?.focus(), 100);
@@ -32,7 +32,7 @@ export default function PhoneInput({
     }
   }, [isModalOpen]);
 
-  // Fermeture sur la touche Echap
+  // Close modal on Escape key
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'Escape' && isModalOpen) {
@@ -43,7 +43,7 @@ export default function PhoneInput({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isModalOpen]);
 
-  // Validation du numéro avec libphonenumber-js dès que le numéro ou le pays change
+  // Validate phone number with libphonenumber-js (isValid or isPossible fallback)
   useEffect(() => {
     if (!phoneValue || phoneValue.trim() === '') {
       setPhoneError(null);
@@ -65,25 +65,33 @@ export default function PhoneInput({
       phoneNumber = null;
     }
 
-    if (phoneNumber && phoneNumber.isValid()) {
+    const digitsOnly = cleanInput.replace(/\D/g, '');
+    const isPossible =
+      (phoneNumber && (phoneNumber.isValid() || phoneNumber.isPossible())) ||
+      (cleanInput.startsWith('+') ? isPossiblePhoneNumber(cleanInput) : digitsOnly.length >= 7 && digitsOnly.length <= 15);
+
+    if (isPossible) {
       setPhoneError(null);
       setIsValidPhone(true);
-      const e164 = phoneNumber.format('E.164');
+      const e164 = phoneNumber && phoneNumber.format('E.164')
+        ? phoneNumber.format('E.164')
+        : cleanInput.startsWith('+') ? `+${digitsOnly}` : `${selectedCountry.dialCode}${digitsOnly}`;
+
       if (onValidationChange) {
         onValidationChange({
           isValid: true,
           e164: e164,
-          countryCode: phoneNumber.country || selectedCountry.code,
+          countryCode: (phoneNumber && phoneNumber.country) || selectedCountry.code,
         });
       }
     } else {
       setIsValidPhone(false);
-      const errorMsg = `Numéro de téléphone invalide pour : ${selectedCountry.name}`;
+      const errorMsg = `Invalid phone number for: ${selectedCountry.name}`;
       setPhoneError(errorMsg);
       if (onValidationChange) {
         onValidationChange({
           isValid: false,
-          e164: cleanInput.startsWith('+') ? cleanInput : `${selectedCountry.dialCode}${cleanInput.replace(/\D/g, '')}`,
+          e164: cleanInput.startsWith('+') ? cleanInput : `${selectedCountry.dialCode}${digitsOnly}`,
           countryCode: selectedCountry.code,
         });
       }
@@ -97,17 +105,17 @@ export default function PhoneInput({
 
   return (
     <div style={{ width: '100%' }}>
-      {/* Label du champ */}
+      {/* Field Label */}
       <label className="label" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <span>Numéro de Téléphone</span>
+        <span>Phone Number</span>
         {isValidPhone && (
           <span style={{ fontSize: 11, color: 'var(--green)', fontWeight: 700, display: 'flex', alignItems: 'center', gap: 4 }}>
-            <Check size={13} strokeWidth={3} /> Numéro valide
+            <Check size={13} strokeWidth={3} /> Valid number
           </span>
         )}
       </label>
 
-      {/* Bloc principal du champ téléphone */}
+      {/* Main Phone Input Container */}
       <div
         style={{
           display: 'flex',
@@ -121,7 +129,7 @@ export default function PhoneInput({
           boxShadow: isModalOpen ? '0 0 0 3px var(--accent-glow)' : 'none',
         }}
       >
-        {/* Partie 1 : Bouton du pays (Drapeau + Indicatif + Flèche) */}
+        {/* Part 1: Country Button (Flag + Dial Code + Arrow) */}
         <button
           type="button"
           onClick={() => setIsModalOpen(true)}
@@ -143,21 +151,21 @@ export default function PhoneInput({
             userSelect: 'none',
             transition: 'background 0.15s ease',
           }}
-          title={`Pays actuel : ${selectedCountry.name} (${selectedCountry.dialCode})`}
+          title={`Selected country: ${selectedCountry.name} (${selectedCountry.dialCode})`}
         >
           <span style={{ fontSize: '1.25rem', lineHeight: 1 }}>{selectedCountry.flag}</span>
           <span style={{ fontFamily: 'monospace', letterSpacing: '-0.02em' }}>{selectedCountry.dialCode}</span>
           <ChevronDown size={15} style={{ color: 'var(--text-muted)', marginLeft: 2 }} />
         </button>
 
-        {/* Partie 2 : Champ de saisie du numéro */}
+        {/* Part 2: Phone Input Field */}
         <div style={{ flex: 1, position: 'relative', display: 'flex', alignItems: 'center' }}>
           <input
             type="tel"
             inputMode="tel"
             value={phoneValue}
             onChange={(e) => onPhoneChange(e.target.value)}
-            placeholder="Votre numéro de téléphone"
+            placeholder="Enter your phone number"
             className="input"
             style={{
               border: 'none',
@@ -167,7 +175,7 @@ export default function PhoneInput({
               paddingRight: isValidPhone || phoneError ? '2.5rem' : '0.875rem',
               width: '100%',
               minHeight: 48,
-              fontSize: '1rem', // 16px empèche le zoom auto sur Safari iOS
+              fontSize: '1rem',
               fontFamily: 'monospace',
             }}
           />
@@ -184,14 +192,14 @@ export default function PhoneInput({
         </div>
       </div>
 
-      {/* Message d'erreur de validation si invalide */}
+      {/* Error Message */}
       {phoneError && (
         <p style={{ fontSize: 11, color: 'var(--red)', marginTop: 6, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 4 }}>
           ❌ {phoneError}
         </p>
       )}
 
-      {/* ── MODAL SÉLECTEUR MONDIAL DE PAYS ── */}
+      {/* ── WORLDWIDE COUNTRY SELECTOR MODAL ── */}
       {isModalOpen && (
         <div
           style={{
@@ -212,7 +220,7 @@ export default function PhoneInput({
             style={{
               width: '100%',
               maxWidth: 480,
-              maxHeight: '85vh',
+              maxHeight: '82vh',
               background: 'var(--bg-card)',
               border: '1px solid var(--border)',
               borderRadius: 20,
@@ -244,10 +252,10 @@ export default function PhoneInput({
                     margin: 0,
                   }}
                 >
-                  Sélectionner votre pays
+                  Select your country
                 </h3>
                 <p style={{ fontSize: 11, color: 'var(--text-muted)', margin: '2px 0 0' }}>
-                  Tous les pays du monde ({WORLD_COUNTRIES.length}) · Triés par ordre alphabétique
+                  All world countries ({WORLD_COUNTRIES.length}) · Sorted alphabetically
                 </p>
               </div>
               <button
@@ -279,7 +287,7 @@ export default function PhoneInput({
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="🔎 Rechercher un pays (ex: France, +229, BJ, Nigeria)..."
+                  placeholder="🔎 Search country (e.g. France, +229, BJ, Nigeria)..."
                   className="input"
                   style={{
                     paddingLeft: 38,
@@ -314,12 +322,13 @@ export default function PhoneInput({
                 overflowY: 'auto',
                 padding: '0.5rem',
                 maxHeight: 380,
+                WebkitOverflowScrolling: 'touch',
               }}
             >
               {filteredCountries.length === 0 ? (
                 <div style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-muted)', fontSize: 13 }}>
                   <Globe size={28} style={{ opacity: 0.5, marginBottom: 8 }} />
-                  <p>Aucun pays trouvé pour « {searchQuery} »</p>
+                  <p>No country found for "{searchQuery}"</p>
                 </div>
               ) : (
                 filteredCountries.map((c) => {

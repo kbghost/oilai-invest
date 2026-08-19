@@ -32,7 +32,7 @@ export default function Register() {
   const [loading, setLoading] = useState(false);
   const [refStatus, setRefStatus] = useState(null); // null | 'checking' | {valid, name} | {valid:false}
 
-  // Détection automatique intelligente du pays probable au chargement
+  // Automatic country detection on load
   useEffect(() => {
     let isMounted = true;
     detectUserCountry().then(({ country, method }) => {
@@ -56,7 +56,7 @@ export default function Register() {
     setPhoneRaw(val);
   };
 
-  // Validation du code de parrainage en temps réel avec debounce
+  // Referral code real-time verification with debounce
   useEffect(() => {
     const code = form.referralCode.trim().toUpperCase();
     if (!code || code.length < 6) {
@@ -79,16 +79,16 @@ export default function Register() {
     e.preventDefault();
 
     if (!phoneRaw || phoneRaw.trim() === '') {
-      return toast.error('Veuillez saisir votre numéro de téléphone.');
+      return toast.error('Please enter your phone number.');
     }
 
     if (!phoneValidation.isValid) {
-      return toast.error(`Numéro de téléphone invalide pour : ${selectedCountry.name}`);
+      return toast.error(`Invalid phone number for: ${selectedCountry.name}`);
     }
 
-    if (form.password.length < 6) return toast.error('Mot de passe : 6 caractères minimum');
-    if (form.password !== form.confirmPassword) return toast.error('Les mots de passe ne correspondent pas');
-    if (refStatus && refStatus !== 'checking' && refStatus.valid === false) return toast.error('Code de parrainage invalide');
+    if (form.password.length < 6) return toast.error('Password: Minimum 6 characters required');
+    if (form.password !== form.confirmPassword) return toast.error('Passwords do not match');
+    if (refStatus && refStatus !== 'checking' && refStatus.valid === false) return toast.error('Invalid referral code');
 
     setLoading(true);
     try {
@@ -96,16 +96,16 @@ export default function Register() {
       if (payload.referralCode) payload.referralCode = payload.referralCode.trim().toUpperCase();
       else delete payload.referralCode;
 
-      // Stockage E.164 et Pays du numéro
-      payload.phone = phoneValidation.e164;
+      // E.164 phone format and country code
+      payload.phone = phoneValidation.e164 || phoneRaw;
       payload.phoneCountry = selectedCountry.code;
       payload.country = selectedCountry.name;
 
       await register(payload);
-      toast.success('Compte créé avec succès !');
+      toast.success('Account created successfully!');
       navigate('/dashboard');
     } catch (err) {
-      toast.error(err.response?.data?.message || err.response?.data?.errors?.[0]?.msg || 'Échec de l\'inscription');
+      toast.error(err.response?.data?.message || err.response?.data?.errors?.[0]?.msg || 'Registration failed');
     } finally {
       setLoading(false);
     }
@@ -139,16 +139,16 @@ export default function Register() {
                 letterSpacing: '-0.02em',
               }}
             >
-              Rejoignez<br />
-              <span className="gradient-text">18 000+ investisseurs</span><br />
-              dans le monde entier
+              Join<br />
+              <span className="gradient-text">18,000+ investors</span><br />
+              worldwide
             </h2>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', maxWidth: 320 }}>
               {[
-                ['$124M+', 'Actifs Gérés'],
-                ['12%/jour', 'ROI Max'],
-                ['190+', 'Pays Pris en Charge'],
-                ['24/7', 'Support IA'],
+                ['$124M+', 'Assets Managed'],
+                ['12%/day', 'Max ROI'],
+                ['190+', 'Countries Supported'],
+                ['24/7', 'AI Support'],
               ].map(([v, l], i) => (
                 <div
                   key={l}
@@ -201,17 +201,17 @@ export default function Register() {
                 letterSpacing: '-0.02em',
               }}
             >
-              Créer un compte
+              Create an Account
             </h1>
             <div style={{ display: 'none' }} className="desktop-theme-toggle">
               <ThemeToggle compact />
             </div>
           </div>
           <p style={{ color: 'var(--text-secondary)', fontSize: 13, marginBottom: '1.25rem' }}>
-            Inscription gratuite et rapide en moins de 2 minutes
+            Free registration — ready in 2 minutes
           </p>
 
-          {/* ── BANNIÈRE DISCRÈTE DE DÉTECTION AUTOMATIQUE DU PAYS ── */}
+          {/* ── DISCREET AUTOMATIC COUNTRY DETECTION BANNER ── */}
           {detectedCountryInfo && (
             <div
               style={{
@@ -230,29 +230,29 @@ export default function Register() {
             >
               <Globe size={16} color="var(--accent)" style={{ flexShrink: 0 }} />
               <div>
-                <span>🌍 Pays détecté automatiquement : </span>
+                <span>🌍 Automatically detected country: </span>
                 <strong style={{ color: 'var(--text-primary)' }}>
                   {detectedCountryInfo.country.name} {detectedCountryInfo.country.flag}
                 </strong>
-                . Vous pouvez modifier ce choix si nécessaire.
+                . You can change this selection if needed.
               </div>
             </div>
           )}
 
-          <form onSubmit={submit} style={{ display: 'flex', flexDirection: 'column', gap: '1.15rem' }}>
+          <form onSubmit={submit} style={{ display: 'flex', flexDirection: 'column', gap: '1.4rem' }}>
             <div className="auth-grid">
               <div>
-                <label className="label">Prénom</label>
-                <input name="firstName" required value={form.firstName} onChange={handle} className="input" placeholder="ex: Jean" />
+                <label className="label">First Name</label>
+                <input name="firstName" required value={form.firstName} onChange={handle} className="input" placeholder="e.g. John" />
               </div>
               <div>
-                <label className="label">Nom</label>
-                <input name="lastName" required value={form.lastName} onChange={handle} className="input" placeholder="ex: Dupont" />
+                <label className="label">Last Name</label>
+                <input name="lastName" required value={form.lastName} onChange={handle} className="input" placeholder="e.g. Doe" />
               </div>
             </div>
 
             <div>
-              <label className="label">Adresse Email</label>
+              <label className="label">Email Address</label>
               <input
                 name="email"
                 type="email"
@@ -260,11 +260,11 @@ export default function Register() {
                 value={form.email}
                 onChange={handle}
                 className="input"
-                placeholder="ex: jean.dupont@example.com"
+                placeholder="e.g. john.doe@example.com"
               />
             </div>
 
-            {/* ── COMPOSANT TÉLÉPHONE MONDIAL INTELLIGENT ── */}
+            {/* ── WORLDWIDE PHONE INPUT ── */}
             <div>
               <PhoneInput
                 selectedCountry={selectedCountry}
@@ -277,7 +277,7 @@ export default function Register() {
             </div>
 
             <div>
-              <label className="label">Mot de passe</label>
+              <label className="label">Password</label>
               <div style={{ position: 'relative' }}>
                 <input
                   name="password"
@@ -287,7 +287,7 @@ export default function Register() {
                   onChange={handle}
                   className="input"
                   style={{ paddingRight: 48 }}
-                  placeholder="6 caractères minimum"
+                  placeholder="Min. 6 characters"
                 />
                 <button
                   type="button"
@@ -311,7 +311,7 @@ export default function Register() {
             </div>
 
             <div>
-              <label className="label">Confirmer le mot de passe</label>
+              <label className="label">Confirm Password</label>
               <div style={{ position: 'relative' }}>
                 <input
                   name="confirmPassword"
@@ -321,7 +321,7 @@ export default function Register() {
                   onChange={handle}
                   className="input"
                   style={{ paddingRight: 48 }}
-                  placeholder="Répétez le mot de passe"
+                  placeholder="Re-enter your password"
                 />
                 <button
                   type="button"
@@ -344,12 +344,12 @@ export default function Register() {
               </div>
             </div>
 
-            {/* Code de parrainage */}
+            {/* Referral code */}
             <div>
               <label className="label" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                🎁 Code de parrainage
+                🎁 Referral Code
                 <span style={{ fontSize: 9, fontWeight: 500, color: 'var(--text-muted)', textTransform: 'none', letterSpacing: 0 }}>
-                  (optionnel)
+                  (optional)
                 </span>
               </label>
               <div style={{ position: 'relative' }}>
@@ -358,7 +358,7 @@ export default function Register() {
                   value={form.referralCode}
                   onChange={handle}
                   className="input"
-                  placeholder="ex: OILAI-XXXXXX"
+                  placeholder="e.g. OILAI-XXXXXX"
                   maxLength={12}
                   style={{
                     paddingRight: 44,
@@ -441,18 +441,18 @@ export default function Register() {
                     gap: 6,
                   }}
                 >
-                  <Check size={14} strokeWidth={3} /> Parrain valide : {refStatus.name}
+                  <Check size={14} strokeWidth={3} /> Valid referrer: {refStatus.name}
                 </div>
               )}
               {refStatus && !refStatus.valid && refStatus !== 'checking' && (
                 <p className="animate-fade-up" style={{ marginTop: 6, fontSize: 11, color: 'var(--red)' }}>
-                  Code de parrainage non trouvé
+                  Referral code not found
                 </p>
               )}
             </div>
 
             <p style={{ fontSize: 11, color: 'var(--text-muted)', lineHeight: 1.5, marginTop: 4 }}>
-              En vous inscrivant, vous acceptez nos Conditions d'Utilisation et notre Politique de Confidentialité.
+              By registering, you agree to our Terms of Service and Privacy Policy.
             </p>
 
             <button
@@ -474,7 +474,7 @@ export default function Register() {
                 />
               ) : (
                 <>
-                  <span>Créer mon compte</span>
+                  <span>Create My Account</span>
                   <ArrowRight size={18} />
                 </>
               )}
@@ -483,9 +483,9 @@ export default function Register() {
 
           <div style={{ textAlign: 'center', marginTop: '1.75rem' }}>
             <p style={{ color: 'var(--text-muted)', fontSize: 13 }}>
-              Vous avez déjà un compte ?{' '}
+              Already have an account?{' '}
               <Link to="/login" style={{ color: 'var(--accent)', fontWeight: 700, textDecoration: 'none', marginLeft: 4 }}>
-                Se connecter
+                Sign In
               </Link>
             </p>
           </div>

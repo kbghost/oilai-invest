@@ -23,7 +23,7 @@ const generateToken = (userId) =>
     expiresIn: process.env.JWT_EXPIRES_IN || '7d',
   });
 
-const { parsePhoneNumberFromString } = require('libphonenumber-js');
+const { parsePhoneNumberFromString } = require('libphonenumber-js/max');
 
 // ── Objet user sécurisé renvoyé au client ─────────────────────────────────────
 // IMPORTANT : referralCode DOIT être inclus pour que la page Parrainage fonctionne

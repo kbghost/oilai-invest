@@ -13,12 +13,12 @@ import { useScrollReveal } from '../hooks/index.js'
 import { Zap, Clock } from 'lucide-react'
 
 const PLANS = [
-  { key:'decouverte',  name:'Découverte',  price:'100 €',  roi:'3,0%',  duration:30, dailyGain:'3,00 €',   totalProfit:'90,00 €',    threshold:'17 jours',   color:'#3b82f6', badge:'Débutant' },
-  { key:'standard',    name:'Standard',    price:'250 €',  roi:'4,5%',  duration:45, dailyGain:'11,25 €',  totalProfit:'506,25 €',   threshold:'5 jours',    color:'var(--blue)', badge:'Populaire' },
-  { key:'performance', name:'Performance', price:'500 €',  roi:'6,0%',  duration:60, dailyGain:'30,00 €',  totalProfit:'1 800,00 €', threshold:'2 jours',    color:'#eab308', badge:'Performance' },
-  { key:'patrimoine',  name:'Patrimoine',  price:'1 000 €',roi:'8,0%',  duration:90, dailyGain:'80,00 €',  totalProfit:'7 200,00 €', threshold:'1 jour',     color:'#94a3b8', badge:'Patrimoine' },
-  { key:'vip_exec',    name:'VIP Exec',    price:'2 500 €',roi:'10,0%', duration:120,dailyGain:'250,00 €', totalProfit:'30 000,00 €',threshold:'Chaque jour', color:'var(--accent)', badge:'VIP' },
-  { key:'club_prive',  name:'Club Privé',  price:'5 000 €',roi:'12,0%', duration:180,dailyGain:'600,00 €', totalProfit:'108 000,00 €',threshold:'Chaque jour',color:'var(--green)', badge:'Prestige' },
+  { key:'decouverte',  name:'Découverte',  price:'100 €',  roi:'3.0%',  duration:30, dailyGain:'3.00 €',   totalProfit:'90.00 €',    threshold:'17 days',   color:'#3b82f6', badge:'Beginner' },
+  { key:'standard',    name:'Standard',    price:'250 €',  roi:'4.5%',  duration:45, dailyGain:'11.25 €',  totalProfit:'506.25 €',   threshold:'5 days',    color:'var(--blue)', badge:'Popular' },
+  { key:'performance', name:'Performance', price:'500 €',  roi:'6.0%',  duration:60, dailyGain:'30.00 €',  totalProfit:'1,800.00 €', threshold:'2 days',    color:'#eab308', badge:'Performance' },
+  { key:'patrimoine',  name:'Patrimoine',  price:'1,000 €',roi:'8.0%',  duration:90, dailyGain:'80.00 €',  totalProfit:'7,200.00 €', threshold:'1 day',     color:'#94a3b8', badge:'Patrimoine' },
+  { key:'vip_exec',    name:'VIP Exec',    price:'2,500 €',roi:'10.0%', duration:120,dailyGain:'250.00 €', totalProfit:'30,000.00 €',threshold:'Daily',      color:'var(--accent)', badge:'VIP' },
+  { key:'club_prive',  name:'Club Privé',  price:'5,000 €',roi:'12.0%', duration:180,dailyGain:'600.00 €', totalProfit:'108,000.00 €',threshold:'Daily',    color:'var(--green)', badge:'Prestige' },
 ]
 
 const PAYMENTS = [
@@ -29,10 +29,10 @@ const PAYMENTS = [
 ]
 
 const STATS = [
-  { val:124, suffix:'M€+', label:'Actifs Gérés' },
-  { val:18432, suffix:'+', label:'Investisseurs' },
-  { val:12, suffix:'%/jour', label:'ROI Quotidien Max', decimals:0 },
-  { val:190, suffix:'+', label:'Pays Pris en Charge' },
+  { val:124, suffix:'M€+', label:'Assets Managed' },
+  { val:18432, suffix:'+', label:'Investors' },
+  { val:12, suffix:'%/day', label:'Maximum Daily ROI', decimals:0 },
+  { val:190, suffix:'+', label:'Supported Countries' },
 ]
 
 export default function Landing() {
@@ -130,13 +130,13 @@ export default function Landing() {
                   <h3 style={{ fontFamily:'"Poppins",sans-serif',fontSize:'1.3rem',fontWeight:700,color:'var(--text-primary)' }}>{plan.name}</h3>
                   <span style={{ padding:'0.15rem 0.6rem',borderRadius:999,fontSize:10,fontWeight:700,background:plan.color+'18',color:plan.color,border:`1px solid ${plan.color}35`,whiteSpace:'nowrap' }}>{plan.badge}</span>
                 </div>
-                <p style={{ fontFamily:'"Poppins",sans-serif',fontSize:'2.2rem',fontWeight:800,color:plan.color,lineHeight:1,marginBottom:4 }}>{plan.roi}<span style={{ fontSize:12, fontWeight:500, color:'var(--text-muted)' }}> / jour</span></p>
-                <p style={{ fontSize:13,fontWeight:700,color:'var(--text-primary)',marginBottom:'0.75rem' }}>Tarif : {plan.price} · {plan.duration} Jours</p>
+                <p style={{ fontFamily:'"Poppins",sans-serif',fontSize:'2.2rem',fontWeight:800,color:plan.color,lineHeight:1,marginBottom:4 }}>{plan.roi}<span style={{ fontSize:12, fontWeight:500, color:'var(--text-muted)' }}> / day</span></p>
+                <p style={{ fontSize:13,fontWeight:700,color:'var(--text-primary)',marginBottom:'0.75rem' }}>Price: {plan.price} · {plan.duration} Days</p>
 
                 <div style={{ background:'var(--bg-card2)', borderRadius:10, padding:'0.6rem 0.75rem', marginBottom:'1rem', fontSize:11, display:'flex', flexDirection:'column', gap:3 }}>
-                  <div style={{ display:'flex', justifyContent:'space-between' }}><span style={{ color:'var(--text-muted)' }}>Gain par jour :</span><strong style={{ color:'var(--green)' }}>+{plan.dailyGain}</strong></div>
-                  <div style={{ display:'flex', justifyContent:'space-between' }}><span style={{ color:'var(--text-muted)' }}>Profit net total :</span><strong style={{ color:plan.color }}>+{plan.totalProfit}</strong></div>
-                  <div style={{ display:'flex', justifyContent:'space-between' }}><span style={{ color:'var(--text-muted)' }}>Seuil (50 €) :</span><strong style={{ color:'var(--text-primary)' }}>{plan.threshold}</strong></div>
+                  <div style={{ display:'flex', justifyContent:'space-between' }}><span style={{ color:'var(--text-muted)' }}>Daily Gain:</span><strong style={{ color:'var(--green)' }}>+{plan.dailyGain}</strong></div>
+                  <div style={{ display:'flex', justifyContent:'space-between' }}><span style={{ color:'var(--text-muted)' }}>Net Total Profit:</span><strong style={{ color:plan.color }}>+{plan.totalProfit}</strong></div>
+                  <div style={{ display:'flex', justifyContent:'space-between' }}><span style={{ color:'var(--text-muted)' }}>Threshold (€50):</span><strong style={{ color:'var(--text-primary)' }}>{plan.threshold}</strong></div>
                 </div>
 
                 <Link
@@ -150,7 +150,7 @@ export default function Landing() {
                     transition:'all 0.2s',
                     whiteSpace:'nowrap',
                   }}>
-                  Investir maintenant
+                  Invest Now
                 </Link>
               </div>
             ))}
