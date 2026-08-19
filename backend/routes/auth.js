@@ -14,34 +14,22 @@ const { protect } = require('../middleware/auth');
 
 const router = express.Router();
 
-const { parsePhoneNumberFromString, isPossiblePhoneNumber } = require('libphonenumber-js/max');
+const { parsePhoneNumberFromString } = require('libphonenumber-js/max');
 
-// Registration validation
+// Registration validation — Phone is PERMISSIVE (format is enforced in controller)
 const registerValidation = [
   body('firstName').trim().notEmpty().withMessage('First name is required').isLength({ min: 2 }),
   body('lastName').trim().notEmpty().withMessage('Last name is required').isLength({ min: 2 }),
   body('email').isEmail().withMessage('Invalid email address').normalizeEmail(),
   body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters'),
   body('phone')
-    .notEmpty().withMessage('Phone number is required')
-    .custom((value, { req }) => {
-      if (!value || !value.trim()) return true;
-      const clean = value.trim();
-      const countryCode = req.body.phoneCountry || undefined;
-      let phoneNumber = null;
-      try {
-        phoneNumber = clean.startsWith('+')
-          ? parsePhoneNumberFromString(clean)
-          : parsePhoneNumberFromString(clean, countryCode);
-      } catch (e) {}
-
-      const digitsOnly = clean.replace(/\D/g, '');
-      const isPossible =
-        (phoneNumber && (phoneNumber.isValid() || phoneNumber.isPossible())) ||
-        (clean.startsWith('+') ? isPossiblePhoneNumber(clean) : digitsOnly.length >= 7 && digitsOnly.length <= 15);
-
-      if (!isPossible) {
-        throw new Error('Invalid phone number for the selected country.');
+    .optional({ nullable: true, checkFalsy: false })
+    .custom((value) => {
+      if (!value || !value.trim()) return true; // Phone is optional at validation level
+      const digitsOnly = String(value).replace(/\D/g, '');
+      // Accept any number with 7–15 digits (international standard)
+      if (digitsOnly.length < 7 || digitsOnly.length > 15) {
+        throw new Error('Phone number must be between 7 and 15 digits.');
       }
       return true;
     }),

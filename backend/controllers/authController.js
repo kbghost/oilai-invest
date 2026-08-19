@@ -64,22 +64,35 @@ const register = async (req, res) => {
       return res.status(409).json({ success: false, message: 'This email is already in use.' });
     }
 
-    // Validation & Normalisation du numéro de téléphone au format E.164
-    let formattedPhone = phone || '';
+    // Normalize phone number to E.164 format (best effort — never blocks registration)
+    let formattedPhone = phone ? phone.trim() : '';
     let isoCountry = phoneCountry || '';
 
-    if (phone && phone.trim()) {
+    if (formattedPhone) {
       try {
-        const parsed = phone.startsWith('+')
-          ? parsePhoneNumberFromString(phone.trim())
-          : parsePhoneNumberFromString(phone.trim(), isoCountry || undefined);
+        const clean = formattedPhone;
+        const parsed = clean.startsWith('+')
+          ? parsePhoneNumberFromString(clean)
+          : parsePhoneNumberFromString(clean, isoCountry || undefined);
 
-        if (parsed && parsed.isValid()) {
+        if (parsed && (parsed.isValid() || parsed.isPossible())) {
           formattedPhone = parsed.format('E.164');
           if (parsed.country) isoCountry = parsed.country;
+        } else if (!clean.startsWith('+') && isoCountry) {
+          // Try prepending the country dial code as a last resort
+          const dialCodes = { BJ:'+229',FR:'+33',US:'+1',GB:'+44',DE:'+49',NG:'+234',SN:'+221',CI:'+225',GH:'+233',CM:'+237',TG:'+228',BF:'+226',ML:'+223',NE:'+227',GN:'+224',CD:'+243',CG:'+242',GA:'+241',MA:'+212',DZ:'+213',TN:'+216',EG:'+20',ZA:'+27',KE:'+254',TZ:'+255',UG:'+256',RW:'+250',ET:'+251',MZ:'+258',ZM:'+260',ZW:'+263',MG:'+261',MU:'+230',SC:'+248',SD:'+249' };
+          const prefix = dialCodes[isoCountry];
+          if (prefix) {
+            const withPrefix = `${prefix}${clean.replace(/\D/g,'').replace(/^0+/,'')}`;
+            const reparsed = parsePhoneNumberFromString(withPrefix);
+            if (reparsed && (reparsed.isValid() || reparsed.isPossible())) {
+              formattedPhone = reparsed.format('E.164');
+              if (reparsed.country) isoCountry = reparsed.country;
+            }
+          }
         }
       } catch (err) {
-        // En cas d'erreur de parsing, garder la valeur reçue
+        // Keep original value — do not block registration
       }
     }
 
