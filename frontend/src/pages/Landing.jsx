@@ -22,10 +22,10 @@ const PLANS = [
 ]
 
 const PAYMENTS = [
-  { name:'Bitcoin',  logo:'₿' },
-  { name:'Ethereum', logo:'Ξ' },
-  { name:'USDT',     logo:'₮' },
-  { name:'BNB',      logo:'◆' },
+  { name:'Bitcoin',  symbol:'BTC',  network:'Native BTC', logo:'https://raw.githubusercontent.com/spothq/cryptocurrency-icons/master/128/color/btc.png',  color:'#f7931a' },
+  { name:'Ethereum', symbol:'ETH',  network:'ERC20',      logo:'https://raw.githubusercontent.com/spothq/cryptocurrency-icons/master/128/color/eth.png',  color:'#627eea' },
+  { name:'Tether',   symbol:'USDT', network:'TRC20',      logo:'https://raw.githubusercontent.com/spothq/cryptocurrency-icons/master/128/color/usdt.png', color:'#26a17b' },
+  { name:'BNB',      symbol:'BNB',  network:'BEP20',      logo:'https://raw.githubusercontent.com/spothq/cryptocurrency-icons/master/128/color/bnb.png',  color:'#f3ba2f' },
 ]
 
 const STATS = [
@@ -184,11 +184,16 @@ export default function Landing() {
               Deposit and withdraw seamlessly with Bitcoin, Ethereum, USDT, or BNB. Fast, secure, with zero banking delays.
             </p>
           </div>
-          <div style={{ display:'flex',justifyContent:'center',gap:'0.75rem',flexWrap:'wrap' }}>
+          <div style={{ display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(160px,1fr))',gap:'0.875rem',maxWidth:760,margin:'0 auto' }}>
             {PAYMENTS.map((p, i) => (
-              <div key={p.name} className={`reveal stagger-${i+1}`} style={{ display:'flex',alignItems:'center',gap:8,padding:'0.75rem 1.1rem',background:'var(--bg-card)',border:'1px solid var(--border)',borderRadius:14,transition:'all 0.25s' }}>
-                <span style={{ fontSize:22 }}>{p.logo}</span>
-                <span style={{ fontWeight:700,color:'var(--text-primary)',fontSize:13 }}>{p.name}</span>
+              <div key={p.name} className={`reveal stagger-${i+1} float-card`} style={{ display:'flex',alignItems:'center',gap:12,padding:'0.875rem 1.1rem',background:'var(--bg-card)',border:'1px solid var(--border)',borderRadius:16,transition:'all 0.25s' }}>
+                <div style={{ width:38,height:38,borderRadius:12,background:p.color+'15',border:`1px solid ${p.color}35`,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0 }}>
+                  <img src={p.logo} alt={p.name} width="24" height="24" style={{ objectFit:'contain' }} decoding="async" loading="lazy" />
+                </div>
+                <div style={{ textAlign:'left',minWidth:0 }}>
+                  <span style={{ fontWeight:700,color:'var(--text-primary)',fontSize:14,display:'block',lineHeight:1.2 }}>{p.name}</span>
+                  <span style={{ fontSize:10,fontWeight:600,color:p.color,letterSpacing:'0.04em',textTransform:'uppercase' }}>{p.symbol} · {p.network}</span>
+                </div>
               </div>
             ))}
           </div>

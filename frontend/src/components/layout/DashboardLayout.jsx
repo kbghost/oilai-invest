@@ -33,7 +33,7 @@ function SidebarContent({ mobile, setOpen }) {
           </div>
           <div>
             <p style={{ fontFamily:'"Poppins",sans-serif',fontWeight:700,fontSize:'1rem',color:'var(--text-primary)',lineHeight:1 }}>OilAI Invest</p>
-            <p style={{ fontSize:10,color:'var(--text-muted)',marginTop:2 }}>AI Investment · West Africa</p>
+            <p style={{ fontSize:10,color:'var(--text-muted)',marginTop:2 }}>AI Investment · Global Platform</p>
           </div>
         </div>
       </div>

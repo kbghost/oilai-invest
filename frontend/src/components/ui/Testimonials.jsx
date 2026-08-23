@@ -2,42 +2,42 @@ import AnimatedCounter from './AnimatedCounter'
 
 const TESTIMONIALS = [
   {
-    name: 'Kofi Mensah',
+    name: 'Alex Morgan',
     role: 'Verified Investor',
     plan: 'Premium Plan',
     earned: 4820,
     text: 'OilAI Invest has changed my life. In just 3 months, I earned more than my annual salary. Profits arrive every single day without me having to do anything!',
-    avatar: 'KM',
+    avatar: 'AM',
     color: 'var(--accent)',
     stars: 5,
   },
   {
-    name: 'Fatou Diallo',
+    name: 'Sarah Jenkins',
     role: 'Verified Investor',
     plan: 'Pro Plan',
     earned: 1850,
     text: 'I was skeptical at first, but after my first successful crypto withdrawal, I doubled my stake. The support team is responsive and everything is completely transparent.',
-    avatar: 'FD',
+    avatar: 'SJ',
     color: 'var(--blue)',
     stars: 5,
   },
   {
-    name: 'Ibrahim Touré',
+    name: 'David Schmidt',
     role: 'Verified Investor',
     plan: 'Starter Plan',
     earned: 520,
-    text: 'I started with only $200 and within a month I had already earned $130 in profits. This is the best investment platform I have ever tried in West Africa.',
-    avatar: 'IT',
+    text: 'I started with only $200 and within a month I had already earned $130 in profits. This is the best investment platform I have ever tried globally.',
+    avatar: 'DS',
     color: 'var(--green)',
     stars: 5,
   },
   {
-    name: 'Adjoua Koné',
+    name: 'Elena Rostova',
     role: 'Verified Investor',
     plan: 'Premium Plan',
     earned: 9400,
     text: 'I recommend OilAI to all my family members. The AI is incredibly accurate at predicting oil markets. My passive income has skyrocketed since I joined the platform.',
-    avatar: 'AK',
+    avatar: 'ER',
     color: '#a78bfa',
     stars: 5,
   },
@@ -56,7 +56,7 @@ export default function Testimonials() {
           <span className="gradient-text">investors say</span>
         </h2>
         <p style={{ color: 'var(--text-secondary)', maxWidth: 500, margin: '0 auto', fontSize: 14, lineHeight: 1.7 }}>
-          Investors trust us every day across West Africa and beyond.
+          Investors trust us every day across 190+ countries worldwide.
         </p>
       </div>
 

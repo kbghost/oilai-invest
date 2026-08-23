@@ -4,8 +4,8 @@ import { Shield, Lock, Award, Globe, Clock, CheckCircle } from 'lucide-react'
 const BADGES = [
   { icon: Shield,       label: 'AES-256 Security',      desc: 'Bank-grade encryption',        color: 'var(--blue)' },
   { icon: Lock,         label: 'SSL Certified',          desc: 'Secure connection',             color: 'var(--green)' },
-  { icon: Award,        label: '#1 Platform',            desc: 'West Africa',                   color: 'var(--accent)' },
-  { icon: Globe,        label: '70+ Countries',          desc: 'Global coverage',               color: '#a78bfa' },
+  { icon: Award,        label: '#1 Platform',            desc: 'Global Platform',               color: 'var(--accent)' },
+  { icon: Globe,        label: '190+ Countries',         desc: 'Global coverage',               color: '#a78bfa' },
   { icon: Clock,        label: '24/7 Profits',           desc: 'AI always active',              color: 'var(--accent)' },
   { icon: CheckCircle,  label: 'Guaranteed Withdrawals', desc: 'Processed within 24-48h',       color: 'var(--green)' },
 ]
@@ -38,18 +38,18 @@ export function TrustBadges() {
 
 // LiveTicker.jsx — Scrolling activity banner
 const TICKER_ITEMS = [
-  '🟢 Kofi just earned +$47.50',
+  '🟢 Alex M. just earned +$47.50',
   '📈 WTI Price: $81.42 ↑ +1.82%',
-  '🔵 Fatou deposited $500 in Bitcoin',
+  '🔵 Sarah K. deposited $500 in Bitcoin',
   '🤖 AI Signal: STRONG BUY — Confidence 87%',
-  '🟢 Ibrahim just earned +$112.30',
+  '🟢 David L. just earned +$112.30',
   '💰 Automated high-yield investments 24/7',
   '📊 Average daily ROI: +2.8%',
-  '✅ Serge successfully withdrew $315',
+  '✅ Carlos R. successfully withdrew $315',
   '🛢️ OPEC+ maintains production cuts',
-  '⚡ Adjoua just joined OilAI',
+  '⚡ Elena V. just joined OilAI',
   '💹 Total profits generated today: $48,320',
-  '🟢 Jean deposited $2,000 in USDT',
+  '🟢 Jean-Paul M. deposited $2,000 in USDT',
 ]
 
 export function LiveTicker() {
