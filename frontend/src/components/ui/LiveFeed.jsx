@@ -41,8 +41,11 @@ export default function LiveFeed() {
   }, [])
 
   useEffect(() => {
+    if (document.hidden) return
     const rand = MIN_INTERVAL + Math.random() * (MAX_INTERVAL - MIN_INTERVAL)
-    const timer = setTimeout(() => addNotif(), rand)
+    const timer = setTimeout(() => {
+      if (!document.hidden) addNotif()
+    }, rand)
     return () => clearTimeout(timer)
   }, [idx])
 

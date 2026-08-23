@@ -28,31 +28,31 @@ const INTERVAL_MS = 7000 // 7 secondes
 // ═══════════════════════════════════════════════════════════
 export const SLIDES = [
   {
-    image: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=1400&q=80',
+    image: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&auto=format&fit=crop&q=75',
     badge: '🤖 Predictive AI',
     title: 'Invest in Oil\nwith Artificial Intelligence',
     sub: 'Our AI analyzes global oil markets in real time to maximize your daily returns.',
   },
   {
-    image: 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1400&q=80',
+    image: 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&auto=format&fit=crop&q=75',
     badge: '🛢️ Oil Market',
     title: 'Oil, the Engine of\nYour Financial Growth',
     sub: 'Access global energy market opportunities directly from your phone, anywhere in the world.',
   },
   {
-    image: 'https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=1400&q=80',
+    image: 'https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=800&auto=format&fit=crop&q=75',
     badge: '📈 High Daily Yields',
     title: 'Up to 20% Profit\nEvery Single Day',
     sub: 'Flexible investment plans tailored for every budget. Start with as little as $15 and grow your capital.',
   },
   {
-    image: 'https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=1400&q=80',
+    image: 'https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=800&auto=format&fit=crop&q=75',
     badge: '🌍 Crypto-Powered',
     title: 'Instant Deposits & Withdrawals\n100% Crypto',
     sub: 'Bitcoin, Ethereum, USDT, BNB — deposit and withdraw effortlessly with total security.',
   },
   {
-    image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1400&q=80',
+    image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop&q=75',
     badge: '🔒 100% Secure',
     title: 'Your Capital is\nProtected 24/7',
     sub: 'Institutional-grade security, AES-256 encryption, and dedicated AI support. Invest with complete peace of mind.',
@@ -77,8 +77,27 @@ export default function ImageSlider({ height = '520px', showText = true }) {
   const next = useCallback(() => go((current + 1) % SLIDES.length), [current, go])
 
   useEffect(() => {
-    const timer = setInterval(next, INTERVAL_MS)
-    return () => clearInterval(timer)
+    let timer = null
+    const startTimer = () => {
+      if (!document.hidden) {
+        timer = setInterval(next, INTERVAL_MS)
+      }
+    }
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        if (timer) clearInterval(timer)
+      } else {
+        if (timer) clearInterval(timer)
+        startTimer()
+      }
+    }
+
+    startTimer()
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+    return () => {
+      if (timer) clearInterval(timer)
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
+    }
   }, [next])
 
   const slide = SLIDES[current]
@@ -96,6 +115,7 @@ export default function ImageSlider({ height = '520px', showText = true }) {
           alt={slide.title}
           style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center' }}
           loading="eager"
+          decoding="async"
         />
         {/* Gradient overlay */}
         <div style={{

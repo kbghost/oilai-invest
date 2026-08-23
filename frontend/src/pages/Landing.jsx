@@ -229,7 +229,7 @@ export default function Landing() {
 
       {/* ── FINAL CTA ── */}
       <section style={{ margin:'2rem 1.25rem',borderRadius:20,overflow:'hidden',position:'relative',minHeight:260,display:'flex',alignItems:'center',justifyContent:'center' }}>
-        <img src="https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=1400&q=80" alt="" style={{ position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'cover',opacity:0.1 }} />
+        <img src="https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=600&auto=format&q=75" alt="" loading="lazy" decoding="async" style={{ position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'cover',opacity:0.1 }} />
         <div style={{ position:'absolute',inset:0,background:'linear-gradient(135deg,var(--bg-base),rgba(5,10,20,0.85))' }} />
         <FloatingParticles count={10} />
         <div style={{ position:'relative',textAlign:'center',padding:'3rem 1.5rem',zIndex:1 }}>
@@ -280,7 +280,7 @@ export default function Landing() {
           </div>
 
           <div style={{ borderRadius:24, overflow:"hidden", marginBottom:"3rem", position:"relative", height:320 }}>
-            <img src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=1400&q=80" alt="OilAI Invest"
+            <img src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=800&auto=format&q=75" alt="OilAI Invest" loading="lazy" decoding="async"
               style={{ width:"100%", height:"100%", objectFit:"cover" }}/>
             <div style={{ position:"absolute", inset:0, background:"linear-gradient(to right,rgba(6,11,15,0.85) 40%,transparent 100%)" }}/>
             <div style={{ position:"absolute", top:"50%", left:"2rem", transform:"translateY(-50%)", maxWidth:360 }}>
@@ -295,13 +295,13 @@ export default function Landing() {
 
           <div style={{ display:"grid", gap:"1.5rem", gridTemplateColumns:"repeat(auto-fit,minmax(280px,1fr))", marginBottom:"3rem" }}>
             {[
-              { img:"https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=600&q=80", tag:"🤖 Technology", title:"Cutting-Edge Energy Trading AI", text:"Our algorithm analyzes WTI, Brent data, and geopolitical factors in real time to maximize your returns." },
-              { img:"https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=600&q=80", tag:"🌍 Mission", title:"Pan-African Financial Inclusion", text:"We bridge global financial markets with African investors, eliminating traditional banking barriers." },
-              { img:"https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80", tag:"🚀 Vision 2026", title:"Expansion & New Horizons", text:"Coming soon: investments in renewable energy, mining assets, and sovereign energy bonds." },
+              { img:"https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=500&auto=format&q=75", tag:"🤖 Technology", title:"Cutting-Edge Energy Trading AI", text:"Our algorithm analyzes WTI, Brent data, and geopolitical factors in real time to maximize your returns." },
+              { img:"https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=500&auto=format&q=75", tag:"🌍 Mission", title:"Pan-African Financial Inclusion", text:"We bridge global financial markets with African investors, eliminating traditional banking barriers." },
+              { img:"https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&auto=format&q=75", tag:"🚀 Vision 2026", title:"Expansion & New Horizons", text:"Coming soon: investments in renewable energy, mining assets, and sovereign energy bonds." },
             ].map(({ img, tag, title, text }) => (
               <div key={title} className="float-card" style={{ padding:0, overflow:"hidden" }}>
                 <div style={{ height:180, overflow:"hidden", position:"relative" }}>
-                  <img src={img} alt={title} style={{ width:"100%", height:"100%", objectFit:"cover" }}/>
+                  <img src={img} alt={title} loading="lazy" decoding="async" style={{ width:"100%", height:"100%", objectFit:"cover" }}/>
                   <div style={{ position:"absolute", top:12, left:12 }}>
                     <span style={{ fontSize:11, fontWeight:700, padding:"4px 10px", background:"rgba(0,0,0,0.6)", backdropFilter:"blur(8px)", borderRadius:999, color:"#fff" }}>{tag}</span>
                   </div>
