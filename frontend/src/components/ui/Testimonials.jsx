@@ -56,7 +56,7 @@ export default function Testimonials() {
           <span className="gradient-text">investors say</span>
         </h2>
         <p style={{ color: 'var(--text-secondary)', maxWidth: 500, margin: '0 auto', fontSize: 14, lineHeight: 1.7 }}>
-          Over 18,000 investors trust us every day across West Africa and beyond.
+          Investors trust us every day across West Africa and beyond.
         </p>
       </div>
 

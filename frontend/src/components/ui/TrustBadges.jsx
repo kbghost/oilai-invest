@@ -43,7 +43,7 @@ const TICKER_ITEMS = [
   '🔵 Fatou deposited $500 in Bitcoin',
   '🤖 AI Signal: STRONG BUY — Confidence 87%',
   '🟢 Ibrahim just earned +$112.30',
-  '💰 18,432 active investors right now',
+  '💰 Automated high-yield investments 24/7',
   '📊 Average daily ROI: +2.8%',
   '✅ Serge successfully withdrew $315',
   '🛢️ OPEC+ maintains production cuts',

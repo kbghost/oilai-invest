@@ -142,7 +142,7 @@ export default function Register() {
           <div className="animate-fade-up">
             <h2 style={{ fontFamily: '"Poppins",sans-serif', fontSize: '2.4rem', fontWeight: 800, color: '#000', marginBottom: '1.5rem', lineHeight: 1.15, letterSpacing: '-0.02em' }}>
               Join<br />
-              <span className="gradient-text">18,000+ investors</span><br />
+              <span className="gradient-text">thousands of investors</span><br />
               worldwide
             </h2>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', maxWidth: 320 }}>

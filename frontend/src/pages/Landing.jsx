@@ -30,7 +30,6 @@ const PAYMENTS = [
 
 const STATS = [
   { val:124, suffix:'M€+', label:'Assets Managed' },
-  { val:18432, suffix:'+', label:'Investors' },
   { val:12, suffix:'%/day', label:'Maximum Daily ROI', decimals:0 },
   { val:190, suffix:'+', label:'Supported Countries' },
 ]
@@ -48,12 +47,14 @@ export default function Landing() {
       <nav style={{
         position:'fixed', top:0, left:0, right:0, zIndex:100,
         display:'flex', alignItems:'center', justifyContent:'space-between',
-        padding:'0.6rem 1rem',
+        padding:'0.5rem 0.75rem',
         background: isDark ? 'rgba(5,10,20,0.9)' : 'rgba(242,245,252,0.95)',
         backdropFilter:'blur(20px)',
         borderBottom:'1px solid var(--border)',
-        gap:'0.5rem',
+        gap:'0.4rem',
         minHeight: 56,
+        maxWidth:'100vw',
+        boxSizing:'border-box',
       }}>
         {/* Logo */}
         <div style={{ display:'flex', alignItems:'center', gap:7, flexShrink:0 }}>
@@ -93,7 +94,7 @@ export default function Landing() {
 
       {/* ── STATS (animated counters) ── */}
       <section style={{ background:'var(--bg-card)',borderBottom:'1px solid var(--border)',padding:'1.5rem' }}>
-        <div style={{ maxWidth:800,margin:'0 auto',display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:'0.5rem',textAlign:'center' }} id="stats-row">
+        <div style={{ maxWidth:800,margin:'0 auto',display:'grid',gridTemplateColumns:'repeat(auto-fit, minmax(130px, 1fr))',gap:'0.75rem',textAlign:'center' }} id="stats-row">
           {STATS.map(({ val, suffix, label, decimals=0 }) => (
             <div key={label} className="reveal">
               <p style={{ fontFamily:'"Poppins",sans-serif',fontSize:'clamp(1.1rem,3vw,1.6rem)',fontWeight:700,color:'var(--accent)',lineHeight:1 }}>
@@ -236,7 +237,7 @@ export default function Landing() {
             Your financial future<br /><span className="gradient-text">starts today</span>
           </h2>
           <p style={{ color:'var(--text-secondary)',marginBottom:'1.5rem',fontSize:13,lineHeight:1.65,maxWidth:440,margin:'0 auto 1.5rem' }} className="reveal">
-            Over 18,000 investors generate daily profits with OilAI.
+            Generate daily profits with OilAI's automated trading.
           </p>
           <div style={{ display:'flex',gap:'0.75rem',justifyContent:'center',flexWrap:'wrap' }} className="reveal">
             <Link to="/register" style={{
@@ -284,7 +285,7 @@ export default function Landing() {
             <div style={{ position:"absolute", inset:0, background:"linear-gradient(to right,rgba(6,11,15,0.85) 40%,transparent 100%)" }}/>
             <div style={{ position:"absolute", top:"50%", left:"2rem", transform:"translateY(-50%)", maxWidth:360 }}>
               <p style={{ fontFamily:"'Poppins',sans-serif", fontSize:"clamp(1.2rem,3vw,1.8rem)", fontWeight:700, color:"#fff", lineHeight:1.3, marginBottom:10 }}>
-                Built to Serve<br/>18,000+ Investors
+                Built to Serve<br/>Global Investors
               </p>
               <p style={{ fontSize:13, color:"rgba(255,255,255,0.8)", lineHeight:1.6 }}>
                 Since launch, over $124 million in profits have been distributed across 70+ countries.
@@ -317,7 +318,7 @@ export default function Landing() {
             {[
               { val:"2021",  label:"Founded" },
               { val:"70+",   label:"Countries" },
-              { val:"18k+",  label:"Active Investors" },
+              { val:"24/7",  label:"Automated Trading" },
               { val:"124M$", label:"Profits Distributed" },
               { val:"99.9%", label:"System Uptime" },
               { val:"24/7",  label:"AI Support" },
