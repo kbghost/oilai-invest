@@ -26,7 +26,12 @@ export default function AdminUsers() {
     } finally { setLoading(false) }
   }
 
-  useEffect(() => { load() }, [search])
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      load()
+    }, 400)
+    return () => clearTimeout(timer)
+  }, [search])
 
   const toggle = async (id) => {
     try {

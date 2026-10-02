@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { parsePhoneNumberFromString, isPossiblePhoneNumber } from 'libphonenumber-js/max';
+import { parsePhoneNumberFromString, isPossiblePhoneNumber } from 'libphonenumber-js/min';
 import { WORLD_COUNTRIES, searchCountries } from '../../data/countries';
 import { Search, ChevronDown, Check, X, Globe } from 'lucide-react';
 

@@ -381,20 +381,36 @@ const processDailyProfits = async (req = null, res = null) => {
   let count = 0;
   let totalGenerated = 0;
 
+  const bulkOps = [];
+  const now = new Date();
+
   for (const inv of active) {
     try {
       const variation = getOilVariation();
       const profit    = calculateDailyProfit(inv.amount, inv.dailyROI, variation);
+      const newPendingProfit = parseFloat(((inv.pendingProfit || 0) + profit).toFixed(2));
 
-      inv.pendingProfit  = parseFloat(((inv.pendingProfit || 0) + profit).toFixed(2));
-      inv.lastProfitDate = new Date();
-      await inv.save();
+      bulkOps.push({
+        updateOne: {
+          filter: { _id: inv._id },
+          update: { 
+            $set: { 
+              pendingProfit: newPendingProfit,
+              lastProfitDate: now
+            } 
+          }
+        }
+      });
 
       count++;
       totalGenerated += profit;
     } catch (err) {
       console.error(`[CRON] Erreur investissement ${inv._id}:`, err.message);
     }
+  }
+
+  if (bulkOps.length > 0) {
+    await Investment.bulkWrite(bulkOps);
   }
 
   const msg = `${count} investment(s) processed. $${totalGenerated.toFixed(2)} generated pending claim.`;

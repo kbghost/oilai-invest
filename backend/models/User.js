@@ -38,11 +38,13 @@ const userSchema = new mongoose.Schema({
   referralCount:    { type: Number, default: 0 },
 
   // ── Compte ────────────────────────────────────────────────────────────────
-  role:       { type: String, enum: ['user','admin'], default: 'user' },
+  role:       { type: String, enum: ['user','admin'], default: 'user', index: true },
   isVerified: { type: Boolean, default: false },
-  isActive:   { type: Boolean, default: true },
+  isActive:   { type: Boolean, default: true, index: true },
   lastLogin:  { type: Date },
 }, { timestamps: true });
+
+userSchema.index({ role: 1, createdAt: -1 });
 
 // ── Auto-génération du code de parrainage ─────────────────────────────────────
 userSchema.pre('validate', function(next) {

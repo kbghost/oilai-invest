@@ -39,8 +39,15 @@ export const authAPI = {
 }
 
 // ─── Investments ──────────────────────────────────────────────────────────────
+let plansCache = { data: null, timestamp: null }
 export const investmentAPI = {
-  getPlans:   ()     => api.get('/investments/plans'),
+  getPlans: async () => {
+    const now = Date.now()
+    if (plansCache.data && (now - plansCache.timestamp < 300000)) return plansCache.data
+    const res = await api.get('/investments/plans')
+    plansCache = { data: res, timestamp: now }
+    return res
+  },
   create:     (data) => api.post('/investments', data),
   getAll:     ()     => api.get('/investments'),
   getById:    (id)   => api.get(`/investments/${id}`),
@@ -77,8 +84,15 @@ export const adminAPI = {
 }
 
 // ─── Oil ──────────────────────────────────────────────────────────────────────
+let oilPriceCache = { data: null, timestamp: null }
 export const oilAPI = {
-  getPrice: () => api.get('/oil/price'),
+  getPrice: async () => {
+    const now = Date.now()
+    if (oilPriceCache.data && (now - oilPriceCache.timestamp < 60000)) return oilPriceCache.data
+    const res = await api.get('/oil/price')
+    oilPriceCache = { data: res, timestamp: now }
+    return res
+  },
   getNews:  () => api.get('/oil/news')
 }
 

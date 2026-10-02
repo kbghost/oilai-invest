@@ -34,14 +34,14 @@ const profitHistorySchema = new mongoose.Schema({
 }, { _id: false });
 
 const investmentSchema = new mongoose.Schema({
-  user:          { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  user:          { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true, index: true },
   plan:          { type: String, enum: ['decouverte', 'standard', 'performance', 'patrimoine', 'vip_exec', 'club_prive', 'starter', 'pro', 'premium', 'bronze', 'argent', 'or', 'platine', 'king'], required: true },
   amount:        { type: Number, required: true, min: 1 },
   dailyROI:      { type: Number, required: true },   // % par jour (ex: 1.5)
   durationDays:  { type: Number, required: true },   // durée totale en jours
   daysCompleted: { type: Number, default: 0 },       // jours écoulés
   totalEarned:   { type: Number, default: 0 },       // total des gains réclamés
-  status:        { type: String, enum: ['active', 'completed', 'cancelled'], default: 'active' },
+  status:        { type: String, enum: ['active', 'completed', 'cancelled'], default: 'active', index: true },
   profitHistory: [profitHistorySchema],
 
   // ── Système de claim ─────────────────────────────────────────────────────
@@ -54,6 +54,8 @@ const investmentSchema = new mongoose.Schema({
   startDate: { type: Date, default: Date.now },
   endDate:   { type: Date },
 }, { timestamps: true });
+
+investmentSchema.index({ status: 1, createdAt: -1 });
 
 investmentSchema.pre('save', function(next) {
   if (!this.endDate && this.startDate && this.durationDays) {

@@ -1,16 +1,22 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo, lazy, Suspense } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { investmentAPI, oilAPI } from '../services/api'
-import ImageSlider from '../components/ui/ImageSlider'
 import AnimatedCounter from '../components/ui/AnimatedCounter'
-import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts'
 import LiveActivityFeed from '../components/ui/LiveActivityFeed'
 import {
   TrendingUp, Zap, ArrowUpRight, ArrowDownRight,
   Clock, ChevronRight, ArrowDownCircle, ArrowUpCircle,
   History, Activity, ShieldCheck
 } from 'lucide-react'
+
+const ImageSlider = lazy(() => import('../components/ui/ImageSlider'))
+const ResponsiveContainer = lazy(() => import('recharts').then(module => ({ default: module.ResponsiveContainer })))
+const AreaChart = lazy(() => import('recharts').then(module => ({ default: module.AreaChart })))
+const Area = lazy(() => import('recharts').then(module => ({ default: module.Area })))
+const XAxis = lazy(() => import('recharts').then(module => ({ default: module.XAxis })))
+const YAxis = lazy(() => import('recharts').then(module => ({ default: module.YAxis })))
+const Tooltip = lazy(() => import('recharts').then(module => ({ default: module.Tooltip })))
 
 /* ── Tooltip recharts ── */
 const ChartTip = ({ active, payload, label }) => {
@@ -60,41 +66,43 @@ export default function Dashboard() {
   const [loading, setLoading]         = useState(true)
 
   useEffect(() => {
+    let isMounted = true
     const fetchData = async () => {
       try {
-        // Fetch investments
-        const inv = await investmentAPI.getAll().catch(() => ({ data: { investments: [] } }))
-        setInvestments(inv.data?.investments || [])
-      } catch {
-        setInvestments([])
+        const [invRes, oilRes] = await Promise.all([
+          investmentAPI.getAll().catch(() => ({ data: { investments: [] } })),
+          oilAPI.getPrice().catch(() => ({ data: null }))
+        ])
+        
+        if (isMounted) {
+          setInvestments(invRes.data?.investments || [])
+          setOilData(oilRes.data || null)
+          setLoading(false)
+        }
+      } catch (err) {
+        if (isMounted) setLoading(false)
       }
-
-      try {
-        // Fetch oil data separately so a failure doesn't block investments
-        const oil = await oilAPI.getPrice().catch(() => ({ data: null }))
-        setOilData(oil.data || null)
-      } catch {
-        setOilData(null)
-      }
-
-      setLoading(false)
     }
 
     fetchData()
+    return () => { isMounted = false }
   }, [])
 
-  const activeInvs    = (investments || []).filter(i => i && i.status === 'active')
-  const totalInvested = activeInvs.reduce((s, i) => s + (i.amount || 0), 0)
-  const totalEarned   = (investments || []).reduce((s, i) => s + (i.totalEarned || 0), 0)
+  const { activeInvs, totalInvested, totalEarned } = useMemo(() => {
+    const activeInvs = (investments || []).filter(i => i && i.status === 'active')
+    const totalInvested = activeInvs.reduce((s, i) => s + (i.amount || 0), 0)
+    const totalEarned   = (investments || []).reduce((s, i) => s + (i.totalEarned || 0), 0)
+    return { activeInvs, totalInvested, totalEarned }
+  }, [investments])
 
-  const chartData = (() => {
+  const chartData = useMemo(() => {
     const map = {};
     (investments || []).forEach(inv => inv?.profitHistory?.forEach(({ date, profit }) => {
       const d = new Date(date).toLocaleDateString('fr-FR', { day:'2-digit', month:'short' })
       map[d] = (map[d] || 0) + (profit || 0)
     }))
     return Object.entries(map).slice(-14).map(([date, profit]) => ({ date, profit }))
-  })()
+  }, [investments])
 
   if (loading) return (
     <div style={{ display:'flex',alignItems:'center',justifyContent:'center',minHeight:400 }}>
@@ -148,7 +156,9 @@ export default function Dashboard() {
       {/* ── Market overview + slider ── */}
       <div style={{ display:'grid',gap:'1rem' }} id="oil-slider-grid">
         <div className="dash-enter dash-enter-2">
-          <ImageSlider height="240px" showText={true} />
+          <Suspense fallback={<div style={{ height: 240, background: 'var(--bg-card2)', borderRadius: 16 }} />}>
+            <ImageSlider height="240px" showText={true} />
+          </Suspense>
         </div>
 
         {oilData && (
@@ -207,20 +217,22 @@ export default function Dashboard() {
             </span>
           </div>
           {chartData.length > 0 ? (
-            <ResponsiveContainer width="100%" height={190}>
-              <AreaChart data={chartData}>
-                <defs>
-                  <linearGradient id="pG" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%"  stopColor="var(--accent)" stopOpacity={0.3} />
-                    <stop offset="95%" stopColor="var(--accent)" stopOpacity={0} />
-                  </linearGradient>
-                </defs>
-                <XAxis dataKey="date" tick={{ fill:'var(--text-muted)',fontSize:10 }} axisLine={false} tickLine={false} />
-                <YAxis tick={{ fill:'var(--text-muted)',fontSize:10 }} axisLine={false} tickLine={false} width={34} />
-                <Tooltip content={<ChartTip />} />
-                <Area type="monotone" dataKey="profit" stroke="var(--accent)" strokeWidth={2.25} fill="url(#pG)" dot={false} />
-              </AreaChart>
-            </ResponsiveContainer>
+            <Suspense fallback={<div style={{ height: 190, background: 'var(--bg-card2)', borderRadius: 16 }} />}>
+              <ResponsiveContainer width="100%" height={190}>
+                <AreaChart data={chartData}>
+                  <defs>
+                    <linearGradient id="pG" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%"  stopColor="var(--accent)" stopOpacity={0.3} />
+                      <stop offset="95%" stopColor="var(--accent)" stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
+                  <XAxis dataKey="date" tick={{ fill:'var(--text-muted)',fontSize:10 }} axisLine={false} tickLine={false} />
+                  <YAxis tick={{ fill:'var(--text-muted)',fontSize:10 }} axisLine={false} tickLine={false} width={34} />
+                  <Tooltip content={<ChartTip />} />
+                  <Area type="monotone" dataKey="profit" stroke="var(--accent)" strokeWidth={2.25} fill="url(#pG)" dot={false} />
+                </AreaChart>
+              </ResponsiveContainer>
+            </Suspense>
           ) : (
             <div style={{ height:190,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',color:'var(--text-muted)' }}>
               <TrendingUp size={28} style={{ opacity:0.3,marginBottom:8 }} />
