@@ -23,10 +23,13 @@ export default function PhoneInput({
     setFilteredCountries(searchCountries(searchQuery));
   }, [searchQuery]);
 
-  // Focus search input on modal open
+  // Focus search input on modal open (desktop only to avoid mobile keyboard pushing modal down)
   useEffect(() => {
     if (isModalOpen) {
-      setTimeout(() => searchInputRef.current?.focus(), 100);
+      const isMobile = window.matchMedia('(pointer: coarse)').matches || window.innerWidth < 640;
+      if (!isMobile) {
+        setTimeout(() => searchInputRef.current?.focus(), 80);
+      }
     } else {
       setSearchQuery('');
     }
@@ -209,9 +212,12 @@ export default function PhoneInput({
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            padding: '1rem',
-            background: 'rgba(0, 0, 0, 0.65)',
+            padding: 'clamp(0.5rem, 3vw, 1.25rem)',
+            background: 'rgba(0, 0, 0, 0.72)',
             backdropFilter: 'blur(8px)',
+            WebkitBackdropFilter: 'blur(8px)',
+            overflowY: 'auto',
+            overscrollBehavior: 'contain',
             animation: 'fadeIn 0.2s ease forwards',
           }}
           onClick={() => setIsModalOpen(false)}
@@ -219,34 +225,38 @@ export default function PhoneInput({
           <div
             style={{
               width: '100%',
-              maxWidth: 480,
-              maxHeight: '82vh',
+              maxWidth: 460,
+              height: 'auto',
+              maxHeight: 'min(580px, calc(100dvh - 1.5rem))',
               background: 'var(--bg-card)',
               border: '1px solid var(--border)',
               borderRadius: 20,
-              boxShadow: '0 20px 50px rgba(0,0,0,0.5)',
+              boxShadow: '0 25px 60px rgba(0,0,0,0.6)',
               display: 'flex',
               flexDirection: 'column',
               overflow: 'hidden',
-              animation: 'slideUp 0.25s ease forwards',
+              position: 'relative',
+              margin: 'auto',
             }}
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Header */}
             <div
               style={{
-                padding: '1.15rem 1.25rem 0.85rem',
+                padding: '1rem 1.25rem',
                 borderBottom: '1px solid var(--border)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
+                flexShrink: 0,
+                background: 'var(--bg-card2)',
               }}
             >
               <div>
                 <h3
                   style={{
                     fontFamily: '"Poppins", sans-serif',
-                    fontSize: '1.15rem',
+                    fontSize: '1.1rem',
                     fontWeight: 700,
                     color: 'var(--text-primary)',
                     margin: 0,
@@ -255,14 +265,14 @@ export default function PhoneInput({
                   Select your country
                 </h3>
                 <p style={{ fontSize: 11, color: 'var(--text-muted)', margin: '2px 0 0' }}>
-                  All world countries ({WORLD_COUNTRIES.length}) · Sorted alphabetically
+                  {filteredCountries.length} countries available · Alphabetical
                 </p>
               </div>
               <button
                 type="button"
                 onClick={() => setIsModalOpen(false)}
                 style={{
-                  background: 'var(--bg-card2)',
+                  background: 'var(--bg-card)',
                   border: '1px solid var(--border)',
                   borderRadius: 10,
                   width: 32,
@@ -272,6 +282,7 @@ export default function PhoneInput({
                   justifyContent: 'center',
                   color: 'var(--text-muted)',
                   cursor: 'pointer',
+                  transition: 'all 0.15s ease',
                 }}
               >
                 <X size={16} />
@@ -279,7 +290,7 @@ export default function PhoneInput({
             </div>
 
             {/* Modal Search Bar */}
-            <div style={{ padding: '0.85rem 1.25rem', borderBottom: '1px solid var(--border)', background: 'var(--bg-card2)' }}>
+            <div style={{ padding: '0.75rem 1.25rem', borderBottom: '1px solid var(--border)', background: 'var(--bg-card)', flexShrink: 0 }}>
               <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
                 <Search size={16} style={{ position: 'absolute', left: 12, color: 'var(--text-muted)' }} />
                 <input
@@ -287,13 +298,14 @@ export default function PhoneInput({
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="🔎 Search country (e.g. France, +229, BJ, Nigeria)..."
+                  placeholder="Search country name or code (+33, +229...)"
                   className="input"
                   style={{
                     paddingLeft: 38,
-                    fontSize: '0.9rem',
+                    fontSize: '0.875rem',
                     borderRadius: 12,
-                    background: 'var(--bg-card)',
+                    background: 'var(--bg-card2)',
+                    minHeight: 40,
                   }}
                 />
                 {searchQuery && (
@@ -307,6 +319,8 @@ export default function PhoneInput({
                       border: 'none',
                       color: 'var(--text-muted)',
                       cursor: 'pointer',
+                      display: 'flex',
+                      padding: 2,
                     }}
                   >
                     <X size={14} />
@@ -315,19 +329,20 @@ export default function PhoneInput({
               </div>
             </div>
 
-            {/* Modal Country List (Scrollable) */}
+            {/* Modal Country List (Scrollable & Responsive) */}
             <div
               style={{
-                flex: 1,
+                flex: '1 1 0%',
+                minHeight: 0,
                 overflowY: 'auto',
-                padding: '0.5rem',
-                maxHeight: 380,
+                overscrollBehavior: 'contain',
                 WebkitOverflowScrolling: 'touch',
+                padding: '0.4rem 0.6rem',
               }}
             >
               {filteredCountries.length === 0 ? (
-                <div style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-muted)', fontSize: 13 }}>
-                  <Globe size={28} style={{ opacity: 0.5, marginBottom: 8 }} />
+                <div style={{ padding: '2.5rem 1rem', textAlign: 'center', color: 'var(--text-muted)', fontSize: 13 }}>
+                  <Globe size={28} style={{ opacity: 0.5, marginBottom: 8, margin: '0 auto' }} />
                   <p>No country found for "{searchQuery}"</p>
                 </div>
               ) : (
@@ -343,7 +358,8 @@ export default function PhoneInput({
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'space-between',
-                        padding: '0.7rem 0.85rem',
+                        padding: '0.65rem 0.85rem',
+                        minHeight: 44,
                         borderRadius: 12,
                         border: isSelected ? '1px solid var(--accent)' : '1px solid transparent',
                         background: isSelected ? 'var(--accent-glow)' : 'transparent',
@@ -365,7 +381,7 @@ export default function PhoneInput({
                       <div style={{ display: 'flex', alignItems: 'center', gap: 12, minWidth: 0 }}>
                         <span style={{ fontSize: '1.35rem', lineHeight: 1, flexShrink: 0 }}>{c.flag}</span>
                         <div style={{ minWidth: 0 }}>
-                          <p style={{ fontWeight: isSelected ? 700 : 500, margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                          <p style={{ fontWeight: isSelected ? 700 : 500, margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontSize: '0.875rem' }}>
                             {c.name}
                           </p>
                           <p style={{ fontSize: 10, color: 'var(--text-muted)', margin: '1px 0 0' }}>
