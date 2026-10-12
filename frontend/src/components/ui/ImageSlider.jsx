@@ -36,7 +36,7 @@ export const SLIDES = [
   {
     image: 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&auto=format&fit=crop&q=75',
     badge: '🛢️ Oil Market',
-    title: 'Oil, the Engine of\nYour Financial Growth',
+    title: 'crespin , the Engine of\nYour Financial Growth',
     sub: 'Access global energy market opportunities directly from your phone, anywhere in the world.',
   },
   {
@@ -126,28 +126,28 @@ export default function ImageSlider({ height = '520px', showText = true }) {
 
       {/* Text content */}
       {showText && (
-        <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems:'center', justifyContent:'center', padding: '1.5rem 1.25rem', zIndex: 2 }}>
-          <div style={{ maxWidth: 620, width:'100%' }}>
+        <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1.5rem 1.25rem', zIndex: 2 }}>
+          <div style={{ maxWidth: 620, width: '100%' }}>
             <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '0.3rem 0.9rem', background: 'rgba(245,166,35,0.18)', border: '1px solid rgba(245,166,35,0.35)', borderRadius: 999, color: 'var(--accent)', fontSize: 12, fontWeight: 700, letterSpacing: '0.05em', marginBottom: '1.25rem', width: 'fit-content' }}>
               {slide.badge}
             </div>
 
-          <h2 style={{ fontFamily: '"Poppins", sans-serif', fontSize: 'clamp(1.4rem, 3vw, 2.2rem)', fontWeight: 700, color: '#fff', lineHeight: 1.25, marginBottom: '1rem', whiteSpace: 'pre-line', textShadow: '0 16px 30px rgba(0,0,0,0.45)' }}>
-            {slide.title}
-          </h2>
+            <h2 style={{ fontFamily: '"Poppins", sans-serif', fontSize: 'clamp(1.4rem, 3vw, 2.2rem)', fontWeight: 700, color: '#fff', lineHeight: 1.25, marginBottom: '1rem', whiteSpace: 'pre-line', textShadow: '0 16px 30px rgba(0,0,0,0.45)' }}>
+              {slide.title}
+            </h2>
 
-          <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.95rem', maxWidth: 500, lineHeight: 1.65, marginBottom: '1.5rem' }}>
-            {slide.sub}
-          </p>
+            <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.95rem', maxWidth: 500, lineHeight: 1.65, marginBottom: '1.5rem' }}>
+              {slide.sub}
+            </p>
 
-          {/* Slide counter */}
-          <div style={{ display: 'flex', gap: 6 }}>
-            {SLIDES.map((_, i) => (
-              <button key={i} onClick={() => go(i)} className={'slider-dot' + (i === current ? ' active' : '')} />
-            ))}
+            {/* Slide counter */}
+            <div style={{ display: 'flex', gap: 6 }}>
+              {SLIDES.map((_, i) => (
+                <button key={i} onClick={() => go(i)} className={'slider-dot' + (i === current ? ' active' : '')} />
+              ))}
+            </div>
           </div>
         </div>
-      </div>
       )}
 
       {/* Arrow buttons */}
