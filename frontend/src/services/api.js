@@ -77,10 +77,16 @@ export const withdrawalAPI = {
 
 // ─── Admin ────────────────────────────────────────────────────────────────────
 export const adminAPI = {
-  getStats:       ()           => api.get('/admin/stats'),
-  getUsers:       (params)     => api.get('/admin/users', { params }),
-  toggleStatus:   (id)         => api.patch(`/admin/users/${id}/toggle`),
-  adjustBalance:  (id, data)   => api.patch(`/admin/users/${id}/balance`, data)
+  getStats:               ()           => api.get('/admin/stats'),
+  getUsers:               (params)     => api.get('/admin/users', { params }),
+  getUserDetails:         (id)         => api.get(`/admin/users/${id}`),
+  updateUser:             (id, data)   => api.put(`/admin/users/${id}`, data),
+  toggleStatus:           (id)         => api.patch(`/admin/users/${id}/toggle`),
+  resetPassword:          (id, data)   => api.patch(`/admin/users/${id}/password`, data),
+  deleteUser:             (id)         => api.delete(`/admin/users/${id}`),
+  adjustBalance:          (id, data)   => api.patch(`/admin/users/${id}/balance`, data),
+  getInvestments:         (params)     => api.get('/admin/investments', { params }),
+  updateInvestmentStatus: (id, data)   => api.patch(`/admin/investments/${id}/status`, data),
 }
 
 // ─── Oil ──────────────────────────────────────────────────────────────────────

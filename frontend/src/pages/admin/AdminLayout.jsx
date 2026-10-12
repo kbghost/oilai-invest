@@ -3,11 +3,12 @@ import { useState } from 'react'
 import { useAuth } from '../../context/AuthContext'
 import ThemeToggle from '../../components/ui/ThemeToggle'
 import AdminBottomNav from '../../components/layout/AdminBottomNav'
-import { LayoutDashboard, Users, ArrowDownCircle, ArrowUpCircle, LogOut, Shield, Menu, X, ChevronRight, Zap } from 'lucide-react'
+import { LayoutDashboard, Users, TrendingUp, ArrowDownCircle, ArrowUpCircle, LogOut, Shield, Menu, X, ChevronRight, Zap } from 'lucide-react'
 
 const navItems = [
   { to:'/admin',             label:'Dashboard',   icon:LayoutDashboard },
   { to:'/admin/users',       label:'Users',       icon:Users },
+  { to:'/admin/investments', label:'Investments', icon:TrendingUp },
   { to:'/admin/deposits',    label:'Deposits',    icon:ArrowDownCircle },
   { to:'/admin/withdrawals', label:'Withdrawals', icon:ArrowUpCircle },
 ]

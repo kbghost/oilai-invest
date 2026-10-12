@@ -20,6 +20,7 @@ const AdminDashboard   = lazy(() => import('./pages/admin/AdminDashboard'))
 const AdminUsers       = lazy(() => import('./pages/admin/AdminUsers'))
 const AdminDeposits    = lazy(() => import('./pages/admin/AdminDeposits'))
 const AdminWithdrawals = lazy(() => import('./pages/admin/AdminWithdrawals'))
+const AdminInvestments = lazy(() => import('./pages/admin/AdminInvestments'))
 
 // Layout
 const DashboardLayout = lazy(() => import('./components/layout/DashboardLayout'))
@@ -74,6 +75,7 @@ export default function App() {
           <Route path="/admin" element={<AdminRoute><AdminLayout /></AdminRoute>}>
             <Route index              element={<AdminDashboard />} />
             <Route path="users"       element={<AdminUsers />} />
+            <Route path="investments" element={<AdminInvestments />} />
             <Route path="deposits"    element={<AdminDeposits />} />
             <Route path="withdrawals" element={<AdminWithdrawals />} />
           </Route>
