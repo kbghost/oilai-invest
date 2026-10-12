@@ -36,7 +36,7 @@ export const SLIDES = [
   {
     image: 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&auto=format&fit=crop&q=75',
     badge: '🛢️ Oil Market',
-    title: 'crespin , the Engine of\nYour Financial Growth',
+    title: 'Oil, the Engine of\nYour Financial Growth',
     sub: 'Access global energy market opportunities directly from your phone, anywhere in the world.',
   },
   {
