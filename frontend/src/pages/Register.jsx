@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import ThemeToggle from '../components/ui/ThemeToggle';
@@ -31,6 +31,7 @@ export default function Register() {
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
   const [refStatus, setRefStatus] = useState(null);
+  const refCache = useRef({});
 
   // Auto country detection on load
   useEffect(() => {
@@ -48,19 +49,29 @@ export default function Register() {
   const handleCountryChange = (country) => setSelectedCountry(country);
   const handlePhoneChange = (val) => setPhoneRaw(val);
 
-  // Referral code real-time check
+  // Referral code real-time check with in-memory caching
   useEffect(() => {
     const code = form.referralCode.trim().toUpperCase();
     if (!code || code.length < 6) { setRefStatus(null); return; }
+
+    if (refCache.current[code] !== undefined) {
+      setRefStatus(refCache.current[code]);
+      return;
+    }
+
     setRefStatus('checking');
     const timer = setTimeout(async () => {
       try {
         const r = await referralAPI.verifyCode(code);
-        setRefStatus({ valid: true, name: r.data.referrer.name });
+        const result = { valid: true, name: r.data.referrer.name };
+        refCache.current[code] = result;
+        setRefStatus(result);
       } catch {
-        setRefStatus({ valid: false });
+        const result = { valid: false };
+        refCache.current[code] = result;
+        setRefStatus(result);
       }
-    }, 600);
+    }, 350);
     return () => clearTimeout(timer);
   }, [form.referralCode]);
 

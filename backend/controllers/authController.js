@@ -58,9 +58,10 @@ const register = async (req, res) => {
     }
 
     const { firstName, lastName, email, password, phone, phoneCountry, country, referralCode } = req.body;
+    const normalizedEmail = (email || '').toLowerCase().trim();
 
-    // Verify unique email
-    if (await User.findOne({ email })) {
+    // Verify unique email with lightweight exists check
+    if (await User.exists({ email: normalizedEmail })) {
       return res.status(409).json({ success: false, message: 'This email is already in use.' });
     }
 
@@ -96,11 +97,11 @@ const register = async (req, res) => {
       }
     }
 
-    // Vérifier le code de parrainage si fourni
+    // Vérifier le code de parrainage si fourni (requête allégée)
     let referrer = null;
     if (referralCode && referralCode.trim()) {
       const code = referralCode.trim().toUpperCase();
-      referrer = await User.findOne({ referralCode: code });
+      referrer = await User.findOne({ referralCode: code }).select('_id firstName').lean();
       if (!referrer) {
         return res.status(400).json({ success: false, message: 'Invalid referral code.' });
       }
@@ -110,7 +111,7 @@ const register = async (req, res) => {
     const user = await User.create({
       firstName,
       lastName,
-      email,
+      email: normalizedEmail,
       password,
       phone:        formattedPhone,
       phoneCountry: isoCountry,
@@ -118,9 +119,10 @@ const register = async (req, res) => {
       referredBy:   referrer ? referrer._id : null,
     });
 
-    // Incrémenter le compteur de filleuls du parrain
+    // Incrémenter le compteur de filleuls du parrain en arrière-plan sans bloquer la réponse
     if (referrer) {
-      await User.findByIdAndUpdate(referrer._id, { $inc: { referralCount: 1 } });
+      User.findByIdAndUpdate(referrer._id, { $inc: { referralCount: 1 } })
+        .catch(err => console.error('[AUTH] Referrer count update error:', err));
     }
 
     const token = generateToken(user._id);
@@ -151,8 +153,9 @@ const login = async (req, res) => {
     }
 
     const { email, password } = req.body;
+    const normalizedEmail = (email || '').toLowerCase().trim();
 
-    const user = await User.findOne({ email }).select('+password');
+    const user = await User.findOne({ email: normalizedEmail }).select('+password');
     if (!user) {
       return res.status(401).json({ success: false, message: 'Invalid credentials.' });
     }
@@ -163,8 +166,9 @@ const login = async (req, res) => {
       return res.status(401).json({ success: false, message: 'Invalid credentials.' });
     }
 
-    user.lastLogin = new Date();
-    await user.save({ validateBeforeSave: false });
+    // Mise à jour de lastLogin en tâche de fond (non bloquant pour renvoyer le token instantanément)
+    User.updateOne({ _id: user._id }, { $set: { lastLogin: new Date() } })
+      .catch(err => console.error('[AUTH] Update lastLogin error:', err));
 
     const token = generateToken(user._id);
 
@@ -183,9 +187,9 @@ const login = async (req, res) => {
 // ── GET ME ────────────────────────────────────────────────────────────────────
 const getMe = async (req, res) => {
   try {
-    const user = await User.findById(req.user._id);
-    if (!user) return res.status(404).json({ success: false, message: 'User not found.' });
-    res.json({ success: true, user: safeUser(user) });
+    // req.user est déjà chargé et validé par le middleware protect (évite une double requête DB)
+    if (!req.user) return res.status(404).json({ success: false, message: 'User not found.' });
+    res.json({ success: true, user: safeUser(req.user) });
   } catch (err) {
     console.error('[AUTH] GetMe error:', err);
     res.status(500).json({ success: false, message: 'Server error.' });
@@ -201,7 +205,8 @@ const verifyReferralCode = async (req, res) => {
     }
 
     const referrer = await User.findOne({ referralCode: code })
-      .select('firstName lastName referralCode');
+      .select('firstName lastName referralCode')
+      .lean();
 
     if (!referrer) {
       return res.status(404).json({ success: false, message: 'Referral code not found.' });
@@ -210,7 +215,7 @@ const verifyReferralCode = async (req, res) => {
     res.json({
       success: true,
       referrer: {
-        name: `${referrer.firstName} ${referrer.lastName[0]}.`, // Sécurité : nom partiel
+        name: `${referrer.firstName} ${referrer.lastName ? referrer.lastName[0] + '.' : ''}`,
         code: referrer.referralCode,
       },
     });

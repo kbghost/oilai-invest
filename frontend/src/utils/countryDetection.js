@@ -17,6 +17,16 @@ const TIMEZONE_TO_COUNTRY = {
   'Africa/Bissau': 'GW',
   'Africa/Monrovia': 'LR',
   'Africa/Freetown': 'SL',
+  'Africa/Douala': 'CM',
+  'Africa/Libreville': 'GA',
+  'Africa/Brazzaville': 'CG',
+  'Africa/Kinshasa': 'CD',
+  'Africa/Lubumbashi': 'CD',
+  'Africa/Ndjamena': 'TD',
+  'Africa/Bangui': 'CF',
+  'Africa/Kigali': 'RW',
+  'Africa/Nairobi': 'KE',
+  'Africa/Addis_Ababa': 'ET',
   'Africa/Casablanca': 'MA',
   'Africa/Algiers': 'DZ',
   'Africa/Tunis': 'TN',
@@ -29,17 +39,24 @@ const TIMEZONE_TO_COUNTRY = {
   'Europe/Berlin': 'DE',
   'Europe/Madrid': 'ES',
   'Europe/Rome': 'IT',
+  'Europe/Lisbon': 'PT',
+  'Europe/Amsterdam': 'NL',
   'America/New_York': 'US',
   'America/Chicago': 'US',
   'America/Los_Angeles': 'US',
   'America/Toronto': 'CA',
   'America/Montreal': 'CA',
+  'America/Sao_Paulo': 'BR',
+  'America/Bogota': 'CO',
+  'America/Mexico_City': 'MX',
   'Asia/Tokyo': 'JP',
   'Asia/Dubai': 'AE',
+  'Asia/Riyadh': 'SA',
+  'Asia/Singapore': 'SG',
 };
 
 /**
- * Tente de déterminer le pays le plus probable à partir de la langue du navigateur.
+ * Tente de déterminer le pays le plus probable à partir de la langue du navigateur (0ms).
  */
 function detectFromBrowserLanguage() {
   try {
@@ -62,7 +79,7 @@ function detectFromBrowserLanguage() {
 }
 
 /**
- * Tente de déterminer le pays à partir du fuseau horaire du navigateur.
+ * Tente de déterminer le pays à partir du fuseau horaire du navigateur (0ms).
  */
 function detectFromTimezone() {
   try {
@@ -77,12 +94,12 @@ function detectFromTimezone() {
 }
 
 /**
- * Tente de déterminer le pays probable à partir de l'IP en utilisant des API gratuites avec fallback.
+ * Tente de déterminer le pays probable à partir de l'IP avec un timeout strict de 1.2s.
  */
 async function detectFromIP() {
   try {
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 3500);
+    const timeoutId = setTimeout(() => controller.abort(), 1200);
 
     const res = await fetch('https://ipapi.co/json/', { signal: controller.signal });
     clearTimeout(timeoutId);
@@ -95,10 +112,10 @@ async function detectFromIP() {
       }
     }
   } catch (e) {
-    // Premier fallback: ip-api.com
+    // Fallback rapide avec timeout 1.2s
     try {
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 3500);
+      const timeoutId = setTimeout(() => controller.abort(), 1200);
 
       const res = await fetch('https://ip-api.com/json/?fields=status,countryCode', { signal: controller.signal });
       clearTimeout(timeoutId);
@@ -118,22 +135,44 @@ async function detectFromIP() {
 }
 
 /**
- * Fonction principale de détection intelligente combinée
+ * Fonction principale de détection intelligente ultra-rapide avec cache sessionStorage
  */
 export async function detectUserCountry() {
-  // 1. IP Geolocation (plus précis physiquement)
-  const ipCountry = await detectFromIP();
-  if (ipCountry) return { country: ipCountry, method: 'ip' };
+  // 1. Cache sessionStorage (0ms - instantané lors des navigations)
+  try {
+    const cached = sessionStorage.getItem('oilai_detected_country');
+    if (cached) {
+      const parsed = JSON.parse(cached);
+      if (parsed && parsed.code) {
+        const match = getCountryByCode(parsed.code) || parsed;
+        return { country: match, method: 'cached' };
+      }
+    }
+  } catch (e) {}
 
-  // 2. Langue du navigateur (ex: fr-BJ -> BJ)
-  const langCountry = detectFromBrowserLanguage();
-  if (langCountry) return { country: langCountry, method: 'browser_language' };
-
-  // 3. Fuseau horaire du navigateur
+  // 2. Fuseau horaire du navigateur (0ms, ultra-précis localement)
   const tzCountry = detectFromTimezone();
-  if (tzCountry) return { country: tzCountry, method: 'timezone' };
+  if (tzCountry) {
+    try { sessionStorage.setItem('oilai_detected_country', JSON.stringify(tzCountry)); } catch (e) {}
+    return { country: tzCountry, method: 'timezone' };
+  }
 
-  // 4. Par défaut : Bénin ou France
+  // 3. Langue du navigateur (ex: fr-BJ -> BJ, en-US -> US) (0ms)
+  const langCountry = detectFromBrowserLanguage();
+  if (langCountry) {
+    try { sessionStorage.setItem('oilai_detected_country', JSON.stringify(langCountry)); } catch (e) {}
+    return { country: langCountry, method: 'browser_language' };
+  }
+
+  // 4. Géolocalisation IP externe (seulement si tz & langue indéterminés)
+  const ipCountry = await detectFromIP();
+  if (ipCountry) {
+    try { sessionStorage.setItem('oilai_detected_country', JSON.stringify(ipCountry)); } catch (e) {}
+    return { country: ipCountry, method: 'ip' };
+  }
+
+  // 5. Par défaut : Bénin (BJ)
   const defaultCountry = getCountryByCode('BJ');
+  try { sessionStorage.setItem('oilai_detected_country', JSON.stringify(defaultCountry)); } catch (e) {}
   return { country: defaultCountry, method: 'default' };
 }

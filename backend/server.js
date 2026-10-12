@@ -49,13 +49,17 @@ app.use(cors({
 // ─── Rate Limiting ───────────────────────────────────────────────────────────
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100,
+    max: 200,
+    standardHeaders: true,
+    legacyHeaders: false,
     message: { success: false, message: 'Too many requests, please try again later.' }
 });
 
 const authLimiter = rateLimit({
     windowMs: 15 * 60 * 1000,
-    max: 10,
+    max: 60,
+    standardHeaders: true,
+    legacyHeaders: false,
     message: { success: false, message: 'Too many auth attempts, please try again later.' }
 });
 
@@ -105,7 +109,12 @@ app.use((req, res) => {
 // ─── Database Connection & Server Start ──────────────────────────────────────
 const PORT = process.env.PORT || 5000;
 
-mongoose.connect(process.env.MONGODB_URI)
+mongoose.connect(process.env.MONGODB_URI, {
+    maxPoolSize: 20,
+    minPoolSize: 5,
+    serverSelectionTimeoutMS: 5000,
+    socketTimeoutMS: 45000,
+})
     .then(() => {
         console.log('✅ MongoDB connected successfully');
         startCronJobs();
