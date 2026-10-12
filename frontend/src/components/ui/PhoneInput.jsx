@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { parsePhoneNumberFromString, isPossiblePhoneNumber } from 'libphonenumber-js/min';
 import { WORLD_COUNTRIES, searchCountries } from '../../data/countries';
 import { Search, ChevronDown, Check, X, Globe } from 'lucide-react';
@@ -44,6 +45,17 @@ export default function PhoneInput({
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isModalOpen]);
+
+  // Lock background scroll when modal is open
+  useEffect(() => {
+    if (isModalOpen) {
+      const prevOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      return () => {
+        document.body.style.overflow = prevOverflow;
+      };
+    }
   }, [isModalOpen]);
 
   // Validate phone number with libphonenumber-js (isValid or isPossible fallback)
@@ -203,21 +215,22 @@ export default function PhoneInput({
       )}
 
       {/* ── WORLDWIDE COUNTRY SELECTOR MODAL ── */}
-      {isModalOpen && (
+      {isModalOpen && typeof document !== 'undefined' && createPortal(
         <div
           style={{
             position: 'fixed',
             inset: 0,
-            zIndex: 9999,
+            zIndex: 99999,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            padding: 'clamp(0.5rem, 3vw, 1.25rem)',
-            background: 'rgba(0, 0, 0, 0.72)',
+            padding: 'clamp(0.75rem, 3vw, 1.25rem)',
+            paddingTop: 'max(clamp(0.75rem, 3vw, 1.25rem), env(safe-area-inset-top, 0px))',
+            paddingBottom: 'max(clamp(0.75rem, 3vw, 1.25rem), env(safe-area-inset-bottom, 0px))',
+            background: 'rgba(0, 0, 0, 0.75)',
             backdropFilter: 'blur(8px)',
             WebkitBackdropFilter: 'blur(8px)',
-            overflowY: 'auto',
-            overscrollBehavior: 'contain',
+            overflow: 'hidden',
             animation: 'fadeIn 0.2s ease forwards',
           }}
           onClick={() => setIsModalOpen(false)}
@@ -226,17 +239,17 @@ export default function PhoneInput({
             style={{
               width: '100%',
               maxWidth: 460,
-              height: 'auto',
-              maxHeight: 'min(580px, calc(100dvh - 1.5rem))',
+              height: 'min(560px, calc(100dvh - 2.5rem))',
+              maxHeight: 'calc(100dvh - 2.5rem)',
               background: 'var(--bg-card)',
               border: '1px solid var(--border)',
-              borderRadius: 20,
-              boxShadow: '0 25px 60px rgba(0,0,0,0.6)',
+              borderRadius: 22,
+              boxShadow: '0 25px 60px rgba(0,0,0,0.65)',
               display: 'flex',
               flexDirection: 'column',
               overflow: 'hidden',
               position: 'relative',
-              margin: 'auto',
+              animation: 'modalScaleIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards',
             }}
             onClick={(e) => e.stopPropagation()}
           >
@@ -256,7 +269,7 @@ export default function PhoneInput({
                 <h3
                   style={{
                     fontFamily: '"Poppins", sans-serif',
-                    fontSize: '1.1rem',
+                    fontSize: '1.05rem',
                     fontWeight: 700,
                     color: 'var(--text-primary)',
                     margin: 0,
@@ -284,13 +297,21 @@ export default function PhoneInput({
                   cursor: 'pointer',
                   transition: 'all 0.15s ease',
                 }}
+                aria-label="Close country selector"
               >
                 <X size={16} />
               </button>
             </div>
 
             {/* Modal Search Bar */}
-            <div style={{ padding: '0.75rem 1.25rem', borderBottom: '1px solid var(--border)', background: 'var(--bg-card)', flexShrink: 0 }}>
+            <div
+              style={{
+                padding: '0.75rem 1.25rem',
+                borderBottom: '1px solid var(--border)',
+                background: 'var(--bg-card)',
+                flexShrink: 0,
+              }}
+            >
               <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
                 <Search size={16} style={{ position: 'absolute', left: 12, color: 'var(--text-muted)' }} />
                 <input
@@ -302,6 +323,7 @@ export default function PhoneInput({
                   className="input"
                   style={{
                     paddingLeft: 38,
+                    paddingRight: searchQuery ? 36 : 12,
                     fontSize: '0.875rem',
                     borderRadius: 12,
                     background: 'var(--bg-card2)',
@@ -322,6 +344,7 @@ export default function PhoneInput({
                       display: 'flex',
                       padding: 2,
                     }}
+                    aria-label="Clear search"
                   >
                     <X size={14} />
                   </button>
@@ -337,7 +360,7 @@ export default function PhoneInput({
                 overflowY: 'auto',
                 overscrollBehavior: 'contain',
                 WebkitOverflowScrolling: 'touch',
-                padding: '0.4rem 0.6rem',
+                padding: '0.5rem 0.65rem 1rem',
               }}
             >
               {filteredCountries.length === 0 ? (
@@ -402,7 +425,8 @@ export default function PhoneInput({
               )}
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );
