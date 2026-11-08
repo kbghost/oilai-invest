@@ -43,7 +43,7 @@ export const SLIDES = [
     image: 'https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=800&auto=format&fit=crop&q=75',
     badge: '📈 High Daily Yields',
     title: 'Up to 20% Profit\nEvery Single Day',
-    sub: 'Flexible investment plans tailored for every budget. Start with as little as $15 and grow your capital.',
+    sub: 'Flexible investment plans tailored for every budget. Start with as little as €15 and grow your capital.',
   },
   {
     image: 'https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=800&auto=format&fit=crop&q=75',

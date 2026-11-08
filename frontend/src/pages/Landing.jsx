@@ -293,7 +293,7 @@ export default function Landing() {
                 Built to Serve<br/>Global Investors
               </p>
               <p style={{ fontSize:13, color:"rgba(255,255,255,0.8)", lineHeight:1.6 }}>
-                Since launch, over $124 million in profits have been distributed across 70+ countries.
+                Since launch, over €124 million in profits have been distributed across 70+ countries.
               </p>
             </div>
           </div>
@@ -324,7 +324,7 @@ export default function Landing() {
               { val:"2021",  label:"Founded" },
               { val:"70+",   label:"Countries" },
               { val:"24/7",  label:"Automated Trading" },
-              { val:"124M$", label:"Profits Distributed" },
+              { val:"€124M", label:"Profits Distributed" },
               { val:"99.9%", label:"System Uptime" },
               { val:"24/7",  label:"AI Support" },
             ].map(({ val, label }) => (

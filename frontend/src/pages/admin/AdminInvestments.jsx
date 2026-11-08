@@ -109,7 +109,7 @@ export default function AdminInvestments() {
               Total Volume
             </p>
             <p style={{ fontFamily: '"Poppins", sans-serif', fontSize: '1.5rem', fontWeight: 800, color: 'var(--accent)' }}>
-              ${stats.totalVolume?.toLocaleString()}
+              €{stats.totalVolume?.toLocaleString('fr-FR')}
             </p>
           </div>
 
@@ -229,7 +229,7 @@ export default function AdminInvestments() {
                 </td>
 
                 <td style={{ textAlign: 'right', fontWeight: 700, color: 'var(--text-primary)' }}>
-                  ${inv.amount?.toLocaleString()}
+                  €{inv.amount?.toLocaleString('fr-FR')}
                 </td>
 
                 <td style={{ textAlign: 'center', fontWeight: 600, color: 'var(--green)' }}>
@@ -249,7 +249,7 @@ export default function AdminInvestments() {
                 </td>
 
                 <td style={{ textAlign: 'right', fontWeight: 700, color: 'var(--accent)' }}>
-                  ${(inv.totalEarned || 0).toFixed(2)}
+                  €{(inv.totalEarned || 0).toFixed(2)}
                 </td>
 
                 <td style={{ textAlign: 'center' }}>

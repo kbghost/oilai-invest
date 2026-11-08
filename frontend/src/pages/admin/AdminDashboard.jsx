@@ -51,10 +51,10 @@ export default function AdminDashboard() {
     { label: 'Active Investments',    value: stats.activeInvestments,  icon: TrendingUp,      color: 'var(--accent)',   to: '/admin/investments' },
     { label: 'Pending Deposits',      value: stats.pendingDeposits,    icon: ArrowDownCircle, color: '#FFCC00',         to: '/admin/deposits' },
     { label: 'Pending Withdrawals',   value: stats.pendingWithdrawals, icon: ArrowUpCircle,   color: 'var(--red)',      to: '/admin/withdrawals' },
-    { label: 'Total Deposited',       value: `$${(stats.totalDeposits||0).toLocaleString('en-US')}`,    icon: DollarSign, color: 'var(--green)' },
-    { label: 'Total Withdrawn',       value: `$${(stats.totalWithdrawals||0).toLocaleString('en-US')}`, icon: Activity,   color: '#a78bfa' },
-    { label: 'Platform Balances',     value: `$${(stats.totalUserBalances||0).toLocaleString('en-US')}`, icon: Wallet,   color: 'var(--accent)', to: '/admin/users' },
-    { label: 'Invested Capital',      value: `$${(stats.totalInvested||0).toLocaleString('en-US')}`,    icon: TrendingUp, color: 'var(--blue)',   to: '/admin/investments' },
+    { label: 'Total Deposited',       value: `€${(stats.totalDeposits||0).toLocaleString('fr-FR')}`,    icon: DollarSign, color: 'var(--green)' },
+    { label: 'Total Withdrawn',       value: `€${(stats.totalWithdrawals||0).toLocaleString('fr-FR')}`, icon: Activity,   color: '#a78bfa' },
+    { label: 'Platform Balances',     value: `€${(stats.totalUserBalances||0).toLocaleString('fr-FR')}`, icon: Wallet,   color: 'var(--accent)', to: '/admin/users' },
+    { label: 'Invested Capital',      value: `€${(stats.totalInvested||0).toLocaleString('fr-FR')}`,    icon: TrendingUp, color: 'var(--blue)',   to: '/admin/investments' },
   ] : []
 
   if (loading) return (
@@ -212,7 +212,7 @@ export default function AdminDashboard() {
                   <p style={{ fontSize: 12, color: 'var(--text-muted)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{u.email}</p>
                 </div>
                 <div style={{ textAlign: 'right', flexShrink: 0 }}>
-                  <p style={{ fontWeight: 700, color: 'var(--accent)', fontSize: 14 }}>${(u.balance||0).toFixed(2)}</p>
+                  <p style={{ fontWeight: 700, color: 'var(--accent)', fontSize: 14 }}>€{(u.balance||0).toFixed(2)}</p>
                   <p style={{ fontSize: 11, color: 'var(--text-muted)' }}>{new Date(u.createdAt).toLocaleDateString('en-US')}</p>
                 </div>
               </div>
@@ -232,4 +232,3 @@ export default function AdminDashboard() {
     </div>
   )
 }
-

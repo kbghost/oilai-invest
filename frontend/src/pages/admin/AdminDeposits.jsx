@@ -102,7 +102,7 @@ export default function AdminDeposits() {
                   <span style={{ fontSize: 16, marginRight: 6 }}>{PAYMENT_EMOJIS[d.method] || '💳'}</span>
                   <span style={{ fontSize: 13, color: 'var(--text-secondary)' }}>{METHOD_LABELS[d.method] || d.method}</span>
                 </td>
-                <td style={{ textAlign: 'right', fontWeight: 700, color: 'var(--green)' }}>+${d.amount?.toLocaleString()}</td>
+                <td style={{ textAlign: 'right', fontWeight: 700, color: 'var(--green)' }}>+€{d.amount?.toLocaleString('fr-FR')}</td>
                 <td style={{ textAlign: 'center', color: 'var(--text-muted)', fontSize: 12 }}>{new Date(d.createdAt).toLocaleDateString('en-US')}</td>
                 <td style={{ textAlign: 'center' }}>
                   <span className={'badge-' + d.status}>{d.status === 'pending' ? 'Pending' : d.status === 'approved' ? 'Approved' : 'Rejected'}</span>
@@ -143,7 +143,7 @@ export default function AdminDeposits() {
             </h3>
             <div style={{ padding: '0.875rem', background: 'var(--bg-card2)', borderRadius: 12, marginBottom: '1rem' }}>
               <p style={{ fontSize: 13, color: 'var(--text-secondary)' }}>{modal.user?.firstName} {modal.user?.lastName}</p>
-              <p style={{ fontFamily: '"Poppins", sans-serif', fontWeight: 700, color: 'var(--accent)', fontSize: '1.2rem' }}>${modal.amount?.toLocaleString()}</p>
+              <p style={{ fontFamily: '"Poppins", sans-serif', fontWeight: 700, color: 'var(--accent)', fontSize: '1.2rem' }}>€{modal.amount?.toLocaleString('fr-FR')}</p>
             </div>
             <div>
               <label className="label">Admin note (optional)</label>

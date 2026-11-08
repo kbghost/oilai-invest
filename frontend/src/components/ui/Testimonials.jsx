@@ -26,7 +26,7 @@ const TESTIMONIALS = [
     role: 'Verified Investor',
     plan: 'Starter Plan',
     earned: 520,
-    text: 'I started with only $200 and within a month I had already earned $130 in profits. This is the best investment platform I have ever tried globally.',
+    text: 'I started with only €200 and within a month I had already earned €130 in profits. This is the best investment platform I have ever tried globally.',
     avatar: 'DS',
     color: 'var(--green)',
     stars: 5,
@@ -83,7 +83,7 @@ export default function Testimonials() {
             {/* Earned badge */}
             <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '0.3rem 0.75rem', background: 'rgba(0,212,160,0.08)', border: '1px solid rgba(0,212,160,0.2)', borderRadius: 999, marginBottom: '1rem' }}>
               <span style={{ fontSize: 11, color: 'var(--green)', fontWeight: 700 }}>
-                +$<AnimatedCounter value={t.earned} duration={1800} /> earned
+                +€<AnimatedCounter value={t.earned} duration={1800} /> earned
               </span>
             </div>
 

@@ -85,7 +85,7 @@ export default function AdjustBalanceModal({ user, onClose, onBalanceAdjusted })
           <div>
             <p style={{ fontSize: 11, color: 'var(--text-muted)', fontWeight: 600 }}>CURRENT BALANCE</p>
             <p style={{ fontFamily: '"Poppins", sans-serif', fontSize: '1.25rem', fontWeight: 700, color: 'var(--text-primary)' }}>
-              ${currentBalance.toFixed(2)}
+              €{currentBalance.toFixed(2)}
             </p>
           </div>
 
@@ -94,7 +94,7 @@ export default function AdjustBalanceModal({ user, onClose, onBalanceAdjusted })
           <div style={{ textAlign: 'right' }}>
             <p style={{ fontSize: 11, color: 'var(--text-muted)', fontWeight: 600 }}>AFTER ADJUSTMENT</p>
             <p style={{ fontFamily: '"Poppins", sans-serif', fontSize: '1.25rem', fontWeight: 700, color: form.type === 'credit' ? 'var(--green)' : 'var(--red)' }}>
-              ${newBalance.toFixed(2)}
+              €{newBalance.toFixed(2)}
             </p>
           </div>
         </div>
@@ -147,13 +147,13 @@ export default function AdjustBalanceModal({ user, onClose, onBalanceAdjusted })
                     fontFamily: 'inherit'
                   }}
                 >
-                  ${amt}
+                  €{amt}
                 </button>
               ))}
             </div>
 
             <div>
-              <label className="label">Amount ($ USD)</label>
+              <label className="label">Amount (€)</label>
               <input 
                 type="number" 
                 step="any"

@@ -24,8 +24,8 @@ const { validationResult } = require('express-validator');
 // ══════════════════════════════════════════════════════════════
 //
 // dailyROI     : % de gain par jour (ex: 2.5 = 2.5%/jour)
-// minAmount    : dépôt minimum en USD
-// maxAmount    : dépôt maximum en USD (null = illimité)
+// minAmount    : dépôt minimum en EUR
+// maxAmount    : dépôt maximum en EUR (null = illimité)
 // durationDays : durée du plan en jours
 //
 // EXEMPLES DE MODIFICATION :
@@ -205,7 +205,7 @@ const createInvestment = async (req, res) => {
     const user = await User.findById(req.user._id);
     if (!user) return res.status(404).json({ success: false, message: 'User not found.' });
     if (user.balance < amt) {
-      return res.status(400).json({ success: false, message: `Insufficient balance. Current balance: $${user.balance.toFixed(2)}` });
+      return res.status(400).json({ success: false, message: `Insufficient balance. Current balance: €${user.balance.toFixed(2)}` });
     }
 
     // Calculer le 1er profit immédiatement disponible
@@ -231,7 +231,7 @@ const createInvestment = async (req, res) => {
 
     res.status(201).json({
       success: true,
-      message: `${planConfig.name} plan activated! First profit of $${firstProfit} already available.`,
+      message: `${planConfig.name} plan activated! First profit of €${firstProfit} already available.`,
       investment,
       firstProfit,
     });
@@ -346,7 +346,7 @@ const claimProfit = async (req, res) => {
     return res.json({
       success:       true,
       completed:     false,
-      message:       `✅ $${profitToClaim.toFixed(2)} credited to your balance!`,
+      message:       `✅ €${profitToClaim.toFixed(2)} credited to your balance!`,
       profitClaimed: profitToClaim,
       nextProfit,
       nextClaimAt,
@@ -413,7 +413,7 @@ const processDailyProfits = async (req = null, res = null) => {
     await Investment.bulkWrite(bulkOps);
   }
 
-  const msg = `${count} investment(s) processed. $${totalGenerated.toFixed(2)} generated pending claim.`;
+  const msg = `${count} investment(s) processed. €${totalGenerated.toFixed(2)} generated pending claim.`;
   console.log('[CRON]', msg);
 
   if (res) res.json({ success: true, message: msg, processed: count, totalGenerated });

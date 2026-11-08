@@ -9,7 +9,7 @@ const {
 const router = express.Router();
 
 const depositValidation = [
-  body('amount').isFloat({ min: 10 }).withMessage('Minimum deposit is $10'),
+  body('amount').isFloat({ min: 10 }).withMessage('Minimum deposit is €10'),
   body('method').isIn(['bitcoin', 'ethereum', 'usdt', 'bnb']).withMessage('Invalid payment method')
 ];
 

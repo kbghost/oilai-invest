@@ -10,7 +10,7 @@ const {
 const router = express.Router();
 
 const withdrawalValidation = [
-  body('amount').isFloat({ min: 20 }).withMessage('Minimum withdrawal is $20'),
+  body('amount').isFloat({ min: 20 }).withMessage('Minimum withdrawal is €20'),
   body('method').isIn(['bitcoin', 'ethereum', 'usdt', 'bnb']).withMessage('Invalid method'),
   body('walletAddress').notEmpty().withMessage('Wallet address is required')
 ];

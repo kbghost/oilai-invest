@@ -24,7 +24,7 @@ const ChartTip = ({ active, payload, label }) => {
   return (
     <div style={{ background:'var(--bg-card)',border:'1px solid var(--border)',borderRadius:10,padding:'8px 12px',fontSize:12,boxShadow:'0 4px 16px rgba(0,0,0,0.12)' }}>
       <p style={{ color:'var(--text-muted)',marginBottom:2 }}>{label}</p>
-      <p style={{ fontWeight:700,color:'var(--accent)' }}>${payload[0]?.value?.toFixed(2)}</p>
+      <p style={{ fontWeight:700,color:'var(--accent)' }}>€{payload[0]?.value?.toFixed(2)}</p>
     </div>
   )
 }
@@ -67,24 +67,22 @@ export default function Dashboard() {
 
   useEffect(() => {
     let isMounted = true
-    const fetchData = async () => {
-      try {
-        const [invRes, oilRes] = await Promise.all([
-          investmentAPI.getAll().catch(() => ({ data: { investments: [] } })),
-          oilAPI.getPrice().catch(() => ({ data: null }))
-        ])
-        
-        if (isMounted) {
-          setInvestments(invRes.data?.investments || [])
-          setOilData(oilRes.data || null)
-          setLoading(false)
-        }
-      } catch (err) {
+    investmentAPI.getAll()
+      .then(res => {
+        if (isMounted) setInvestments(res.data?.investments || [])
+      })
+      .catch(() => {
+        if (isMounted) setInvestments([])
+      })
+      .finally(() => {
         if (isMounted) setLoading(false)
-      }
-    }
+      })
 
-    fetchData()
+    oilAPI.getPrice()
+      .then(res => {
+        if (isMounted) setOilData(res.data || null)
+      })
+      .catch(() => {})
     return () => { isMounted = false }
   }, [])
 
@@ -125,7 +123,7 @@ export default function Dashboard() {
             </div>
             <p style={{ fontSize:12,opacity:0.75,marginBottom:'0.875rem' }}>Available wallet balance</p>
             <p className="dash-balance-amount" style={{ marginBottom:'1.1rem' }}>
-              <AnimatedCounter value={user?.balance || 0} prefix="$" duration={1500} decimals={2} />
+              <AnimatedCounter value={user?.balance || 0} prefix="€" duration={1500} decimals={2} />
             </p>
             <div style={{ display:'flex',gap:8 }}>
               {[
@@ -147,8 +145,8 @@ export default function Dashboard() {
 
       {/* ── Stats Grid ── */}
       <div className="stat-grid-mobile">
-        <StatCard label="Total Invested" numValue={totalInvested} prefix="$" icon={TrendingUp}  color="var(--blue)"   delayClass="dash-enter-2" />
-        <StatCard label="Total Earnings" numValue={totalEarned}   prefix="$" icon={Zap}          color="var(--green)"  delayClass="dash-enter-3" />
+        <StatCard label="Total Invested" numValue={totalInvested} prefix="€" icon={TrendingUp}  color="var(--blue)"   delayClass="dash-enter-2" />
+        <StatCard label="Total Earnings" numValue={totalEarned}   prefix="€" icon={Zap}          color="var(--green)"  delayClass="dash-enter-3" />
         <StatCard label="Active Plans"  value={activeInvs.length}           icon={Activity}     color="var(--accent)" delayClass="dash-enter-4" />
         <StatCard label="Return Rate"   value={activeInvs.length > 0 ? `${(totalEarned / Math.max(totalInvested,1) * 100).toFixed(1)}%` : '0%'} icon={ArrowUpRight} color="#a78bfa" delayClass="dash-enter-5" />
       </div>
@@ -165,8 +163,8 @@ export default function Dashboard() {
           <div className="float-card dash-enter dash-enter-3" style={{ display:'flex',flexDirection:'column',gap:'0.75rem' }}>
             <div style={{ display:'flex',alignItems:'center',justifyContent:'space-between' }}>
               <div>
-                <p className="dash-card-title" style={{ color:'var(--text-primary)' }}>Oil Market · WTI</p>
-                <p style={{ fontSize:11,color:'var(--text-muted)' }}>Real-time AI Analysis</p>
+                <p className="dash-card-title" style={{ color:'var(--text-primary)' }}>Oil Market · WTI (USD)</p>
+                <p style={{ fontSize:11,color:'var(--text-muted)' }}>Market quote in USD · Real-time AI Analysis</p>
               </div>
               <div className="live-dot" />
             </div>
@@ -268,13 +266,13 @@ export default function Dashboard() {
                     <div style={{ flex:1,minWidth:0 }}>
                       <div style={{ display:'flex',justifyContent:'space-between',marginBottom:3 }}>
                         <span style={{ fontWeight:700,color:'var(--text-primary)',fontSize:13,textTransform:'capitalize' }}>{inv.plan}</span>
-                        <span style={{ fontWeight:700,color:'var(--green)',fontSize:12 }}>+${inv.totalEarned.toFixed(2)}</span>
+                        <span style={{ fontWeight:700,color:'var(--green)',fontSize:12 }}>+€{inv.totalEarned.toFixed(2)}</span>
                       </div>
                       <div style={{ display:'flex',justifyContent:'space-between',marginBottom:4 }}>
                         <span style={{ fontSize:10,color:'var(--text-muted)',display:'flex',alignItems:'center',gap:3 }}>
                           <Clock size={10} /> {inv.daysCompleted}/{inv.durationDays} days
                         </span>
-                        <span style={{ fontSize:10,color:'var(--text-primary)',fontWeight:600 }}>${inv.amount.toLocaleString()}</span>
+                        <span style={{ fontSize:10,color:'var(--text-primary)',fontWeight:600 }}>€{inv.amount.toLocaleString()}</span>
                       </div>
                       <div className="progress-bar">
                         <div className="progress-fill" style={{ width:pct+'%' }} />

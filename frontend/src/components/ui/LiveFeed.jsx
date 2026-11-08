@@ -70,8 +70,8 @@ export default function LiveFeed() {
           <div style={{ minWidth:0 }}>
             <p style={{ fontSize:12.5, fontWeight:700, color:'var(--text-primary)', marginBottom:2 }}>
               {notif.type==='earn'
-                ? <><span style={{ color:'var(--green)' }}>+${notif.amount.toFixed(2)}</span> gagné</>
-                : <><span style={{ color:'var(--accent)' }}>${notif.amount.toLocaleString()}</span> déposé</>}
+                ? <><span style={{ color:'var(--green)' }}>+€{notif.amount.toFixed(2)}</span> gagné</>
+                : <><span style={{ color:'var(--accent)' }}>€{notif.amount.toLocaleString('fr-FR')}</span> déposé</>}
             </p>
             <p style={{ fontSize:11, color:'var(--text-secondary)', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>
               {notif.name}{notif.plan && <> · Plan <span style={{ color:'var(--text-primary)', fontWeight:600 }}>{notif.plan}</span></>}

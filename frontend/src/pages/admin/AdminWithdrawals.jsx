@@ -93,7 +93,7 @@ export default function AdminWithdrawals() {
                 <td style={{ fontFamily: 'monospace', fontSize: 12, color: 'var(--text-secondary)', maxWidth: 140, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                   {w.walletAddress}
                 </td>
-                <td style={{ textAlign: 'right', fontWeight: 700, color: 'var(--red)' }}>-${w.amount?.toLocaleString()}</td>
+                <td style={{ textAlign: 'right', fontWeight: 700, color: 'var(--red)' }}>-€{w.amount?.toLocaleString('fr-FR')}</td>
                 <td style={{ textAlign: 'center', color: 'var(--text-muted)', fontSize: 12 }}>{new Date(w.createdAt).toLocaleDateString('en-US')}</td>
                 <td style={{ textAlign: 'center' }}>
                   <span className={'badge-' + w.status}>{w.status === 'pending' ? 'Pending' : w.status === 'approved' ? 'Approved' : 'Rejected'}</span>
@@ -128,7 +128,7 @@ export default function AdminWithdrawals() {
             </h3>
             <div style={{ padding: '0.875rem', background: 'var(--bg-card2)', borderRadius: 12, marginBottom: '1rem' }}>
               <p style={{ fontSize: 13, color: 'var(--text-secondary)', marginBottom: 4 }}>{modal.user?.firstName} {modal.user?.lastName}</p>
-              <p style={{ fontFamily: '"Poppins", sans-serif', fontWeight: 700, color: 'var(--red)', fontSize: '1.2rem', marginBottom: 4 }}>-${modal.amount?.toLocaleString()}</p>
+              <p style={{ fontFamily: '"Poppins", sans-serif', fontWeight: 700, color: 'var(--red)', fontSize: '1.2rem', marginBottom: 4 }}>-€{modal.amount?.toLocaleString('fr-FR')}</p>
               <p style={{ fontSize: 11, fontFamily: 'monospace', color: 'var(--text-muted)', wordBreak: 'break-all' }}>{modal.walletAddress}</p>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>

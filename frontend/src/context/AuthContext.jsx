@@ -35,7 +35,10 @@ export const AuthProvider = ({ children }) => {
 
       // Restore from localStorage immediately (avoid disconnect flash)
       if (saved) {
-        try { setUser(JSON.parse(saved)) } catch {}
+        try {
+          setUser(JSON.parse(saved))
+          setLoading(false)
+        } catch {}
       }
 
       // Refresh from API to get fresh data (balance, etc.)

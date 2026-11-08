@@ -5,7 +5,7 @@ import { useState, useEffect, useRef } from 'react'
  * Props:
  *  - value    : nombre cible
  *  - duration : durée en ms (défaut 2000)
- *  - prefix   : ex "$"
+ *  - prefix   : ex "€"
  *  - suffix   : ex "%", "+"
  *  - decimals : décimales (défaut 0)
  */

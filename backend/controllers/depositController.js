@@ -148,7 +148,7 @@ const approveDeposit = async (req, res) => {
         });
 
         console.log(
-          `[REFERRAL] ✅ Bonus $${bonus} (${REFERRAL_BONUS_PERCENT}% de $${deposit.amount}) ` +
+          `[REFERRAL] ✅ Bonus €${bonus} (${REFERRAL_BONUS_PERCENT}% de €${deposit.amount}) ` +
           `crédité au parrain (ID: ${user.referredBy}) ` +
           `pour le filleul ${user.firstName} (ID: ${deposit.user})`
         );
@@ -157,7 +157,7 @@ const approveDeposit = async (req, res) => {
 
     res.json({
       success: true,
-      message: `Deposit of $${deposit.amount} approved. Account credited.`,
+      message: `Deposit of €${deposit.amount} approved. Account credited.`,
       deposit,
     });
   } catch (err) {

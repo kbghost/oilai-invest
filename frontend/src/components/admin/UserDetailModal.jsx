@@ -495,14 +495,14 @@ export default function UserDetailModal({
                     <div style={{ padding: '1rem', background: 'var(--bg-card2)', border: '1px solid var(--border)', borderRadius: 16 }}>
                       <p style={{ fontSize: 11, color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 600, marginBottom: 4 }}>Balance</p>
                       <p style={{ fontFamily: '"Poppins", sans-serif', fontSize: '1.35rem', fontWeight: 800, color: 'var(--accent)' }}>
-                        ${(u.balance || 0).toFixed(2)}
+                        €{(u.balance || 0).toFixed(2)}
                       </p>
                     </div>
 
                     <div style={{ padding: '1rem', background: 'var(--bg-card2)', border: '1px solid var(--border)', borderRadius: 16 }}>
                       <p style={{ fontSize: 11, color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 600, marginBottom: 4 }}>Deposited</p>
                       <p style={{ fontFamily: '"Poppins", sans-serif', fontSize: '1.35rem', fontWeight: 800, color: 'var(--green)' }}>
-                        ${stats.totalDeposited?.toLocaleString()}
+                        €{stats.totalDeposited?.toLocaleString('fr-FR')}
                       </p>
                       {stats.pendingDepositsCount > 0 && (
                         <p style={{ fontSize: 10, color: '#f5a623', marginTop: 2 }}>{stats.pendingDepositsCount} pending</p>
@@ -512,7 +512,7 @@ export default function UserDetailModal({
                     <div style={{ padding: '1rem', background: 'var(--bg-card2)', border: '1px solid var(--border)', borderRadius: 16 }}>
                       <p style={{ fontSize: 11, color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 600, marginBottom: 4 }}>Withdrawn</p>
                       <p style={{ fontFamily: '"Poppins", sans-serif', fontSize: '1.35rem', fontWeight: 800, color: 'var(--red)' }}>
-                        ${stats.totalWithdrawn?.toLocaleString()}
+                        €{stats.totalWithdrawn?.toLocaleString('fr-FR')}
                       </p>
                       {stats.pendingWithdrawalsCount > 0 && (
                         <p style={{ fontSize: 10, color: 'var(--red)', marginTop: 2 }}>{stats.pendingWithdrawalsCount} pending</p>
@@ -522,21 +522,21 @@ export default function UserDetailModal({
                     <div style={{ padding: '1rem', background: 'var(--bg-card2)', border: '1px solid var(--border)', borderRadius: 16 }}>
                       <p style={{ fontSize: 11, color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 600, marginBottom: 4 }}>Invested Active</p>
                       <p style={{ fontFamily: '"Poppins", sans-serif', fontSize: '1.35rem', fontWeight: 800, color: 'var(--blue)' }}>
-                        ${stats.activeInvestmentsSum?.toLocaleString()}
+                        €{stats.activeInvestmentsSum?.toLocaleString('fr-FR')}
                       </p>
                     </div>
 
                     <div style={{ padding: '1rem', background: 'var(--bg-card2)', border: '1px solid var(--border)', borderRadius: 16 }}>
                       <p style={{ fontSize: 11, color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 600, marginBottom: 4 }}>Profit Claimed</p>
                       <p style={{ fontFamily: '"Poppins", sans-serif', fontSize: '1.35rem', fontWeight: 800, color: 'var(--accent)' }}>
-                        ${stats.totalProfitClaimed?.toFixed(2)}
+                        €{stats.totalProfitClaimed?.toFixed(2)}
                       </p>
                     </div>
 
                     <div style={{ padding: '1rem', background: 'var(--bg-card2)', border: '1px solid var(--border)', borderRadius: 16 }}>
                       <p style={{ fontSize: 11, color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 600, marginBottom: 4 }}>Referral Bonus</p>
                       <p style={{ fontFamily: '"Poppins", sans-serif', fontSize: '1.35rem', fontWeight: 800, color: '#a78bfa' }}>
-                        ${(u.referralEarnings || 0).toFixed(2)}
+                        €{(u.referralEarnings || 0).toFixed(2)}
                       </p>
                     </div>
                   </div>
@@ -602,7 +602,7 @@ export default function UserDetailModal({
                         </div>
                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                           <span style={{ color: 'var(--text-muted)' }}>Total Commission Earned</span>
-                          <span style={{ fontWeight: 700, color: 'var(--green)' }}>${(u.referralEarnings || 0).toFixed(2)}</span>
+                          <span style={{ fontWeight: 700, color: 'var(--green)' }}>€{(u.referralEarnings || 0).toFixed(2)}</span>
                         </div>
                       </div>
                     </div>
@@ -645,7 +645,7 @@ export default function UserDetailModal({
                                 <p style={{ fontSize: 11, color: 'var(--text-muted)' }}>{new Date(inv.startDate || inv.createdAt).toLocaleDateString()}</p>
                               </td>
                               <td style={{ textAlign: 'right', fontWeight: 700, color: 'var(--accent)' }}>
-                                ${inv.amount?.toLocaleString()}
+                                €{inv.amount?.toLocaleString('fr-FR')}
                               </td>
                               <td style={{ textAlign: 'center', color: 'var(--green)', fontWeight: 600 }}>
                                 +{inv.dailyROI}% / day
@@ -656,7 +656,7 @@ export default function UserDetailModal({
                                 </span>
                               </td>
                               <td style={{ textAlign: 'right', fontWeight: 600, color: 'var(--text-primary)' }}>
-                                ${(inv.totalEarned || 0).toFixed(2)}
+                                €{(inv.totalEarned || 0).toFixed(2)}
                               </td>
                               <td style={{ textAlign: 'center' }}>
                                 <span className={
@@ -727,7 +727,7 @@ export default function UserDetailModal({
                                 <span style={{ fontWeight: 600 }}>{METHOD_LABELS[d.method] || d.method}</span>
                               </td>
                               <td style={{ textAlign: 'right', fontWeight: 700, color: 'var(--green)' }}>
-                                +${d.amount?.toLocaleString()}
+                                +€{d.amount?.toLocaleString('fr-FR')}
                               </td>
                               <td style={{ textAlign: 'center', color: 'var(--text-muted)', fontSize: 12 }}>
                                 {new Date(d.createdAt).toLocaleDateString()}
@@ -801,7 +801,7 @@ export default function UserDetailModal({
                                 {w.walletAddress}
                               </td>
                               <td style={{ textAlign: 'right', fontWeight: 700, color: 'var(--red)' }}>
-                                -${w.amount?.toLocaleString()}
+                                -€{w.amount?.toLocaleString('fr-FR')}
                               </td>
                               <td style={{ textAlign: 'center', color: 'var(--text-muted)', fontSize: 12 }}>
                                 {new Date(w.createdAt).toLocaleDateString()}
@@ -865,10 +865,10 @@ export default function UserDetailModal({
                                 {r.email}
                               </td>
                               <td style={{ textAlign: 'right', fontWeight: 600, color: 'var(--accent)' }}>
-                                ${(r.balance || 0).toFixed(2)}
+                                €{(r.balance || 0).toFixed(2)}
                               </td>
                               <td style={{ textAlign: 'right', fontWeight: 600 }}>
-                                ${(r.totalInvested || 0).toLocaleString()}
+                                €{(r.totalInvested || 0).toLocaleString('fr-FR')}
                               </td>
                               <td style={{ textAlign: 'center', paddingRight: '1.25rem', color: 'var(--text-muted)', fontSize: 12 }}>
                                 {new Date(r.createdAt).toLocaleDateString()}

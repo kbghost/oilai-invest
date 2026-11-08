@@ -12,22 +12,29 @@ export default function Withdrawals() {
   const [loading, setLoading] = useState(false)
   const [tab, setTab] = useState('new')
 
-  useEffect(() => { withdrawalAPI.getAll().then(r => setWithdrawals(r.data.withdrawals)).catch(()=>{}) }, [])
+  useEffect(() => {
+    withdrawalAPI.getAll()
+      .then(r => setWithdrawals(current => {
+        const fetched = r.data.withdrawals || []
+        return [...current, ...fetched.filter(withdrawal => !current.some(item => item._id === withdrawal._id))]
+      }))
+      .catch(() => {})
+  }, [])
   const handle = e => setForm(p => ({ ...p, [e.target.name]: e.target.value }))
   const selectedMethod = getPaymentMethod(form.method)
 
   const submit = async e => {
     e.preventDefault()
-    if (parseFloat(form.amount) < 10) return toast.error('Minimum: $10')
+    if (parseFloat(form.amount) < 10) return toast.error('Minimum: €10')
     if (!form.method) return toast.error('Please select a cryptocurrency')
     if (!form.walletAddress) return toast.error('Enter your wallet address')
     if ((user?.balance||0) < parseFloat(form.amount)) return toast.error('Insufficient balance')
     setLoading(true)
     try {
-      await withdrawalAPI.create({ ...form, amount: parseFloat(form.amount) })
+      const { data } = await withdrawalAPI.create({ ...form, amount: parseFloat(form.amount) })
       toast.success('Withdrawal submitted! Processing within '+(selectedMethod?.delay||'45 min'))
       updateUser({ ...user, balance: (user?.balance||0) - parseFloat(form.amount) })
-      const r = await withdrawalAPI.getAll(); setWithdrawals(r.data.withdrawals)
+      if (data.withdrawal) setWithdrawals(current => [data.withdrawal, ...current])
       setForm({ amount:'', method:'', walletAddress:'' })
       setTab('history')
     } catch (err) { toast.error(err.response?.data?.message || 'Error creating withdrawal') }
@@ -43,7 +50,7 @@ export default function Withdrawals() {
 
       <div style={{ display:'flex',alignItems:'center',gap:10,padding:'0.75rem 1rem',background:'var(--accent-glow)',border:'1px solid var(--accent-glow)',borderRadius:12,marginBottom:'1.25rem' }}>
         <ArrowUpCircle size={16} color="var(--accent)" />
-        <p style={{ fontSize:12,color:'var(--text-primary)' }}>Balance: <span style={{ fontWeight:700,color:'var(--accent)' }}>${(user?.balance||0).toFixed(2)}</span> · Min. $10</p>
+        <p style={{ fontSize:12,color:'var(--text-primary)' }}>Balance: <span style={{ fontWeight:700,color:'var(--accent)' }}>€{(user?.balance||0).toFixed(2)}</span> · Min. €10</p>
       </div>
 
       <div className="tab-bar" style={{ marginBottom:'1.25rem',width:'fit-content' }}>
@@ -67,31 +74,31 @@ export default function Withdrawals() {
           </div>
 
           <div className="card">
-            <label className="label">Amount ($)</label>
+            <label className="label">Amount (€)</label>
             <div style={{ position:'relative' }}>
-              <span style={{ position:'absolute',left:14,top:'50%',transform:'translateY(-50%)',color:'var(--text-muted)',fontWeight:700 }}>$</span>
-              <input type="number" name="amount" value={form.amount} onChange={handle} min="10" max={user?.balance} className="input" style={{ paddingLeft:28 }} placeholder="Min. $10" />
+              <span style={{ position:'absolute',left:14,top:'50%',transform:'translateY(-50%)',color:'var(--text-muted)',fontWeight:700 }}>€</span>
+              <input type="number" name="amount" value={form.amount} onChange={handle} min="10" max={user?.balance} className="input" style={{ paddingLeft:28 }} placeholder="Min. €10" />
             </div>
             {form.amount && parseFloat(form.amount) > 0 && (
               <div style={{ marginTop:10, padding:'0.75rem', background:'var(--bg-card2)', borderRadius:10, fontSize:12 }}>
                 <div style={{ display:'flex', justifyContent:'space-between', marginBottom:4 }}>
                   <span style={{ color:'var(--text-muted)' }}>Requested Amount</span>
-                  <span style={{ fontWeight:600 }}>${parseFloat(form.amount).toFixed(2)}</span>
+                  <span style={{ fontWeight:600 }}>€{parseFloat(form.amount).toFixed(2)}</span>
                 </div>
                 <div style={{ display:'flex', justifyContent:'space-between', marginBottom:4 }}>
                   <span style={{ color:'var(--red)' }}>Network Fee (2%)</span>
-                  <span style={{ fontWeight:600, color:'var(--red)' }}>-${(parseFloat(form.amount) * 0.02).toFixed(2)}</span>
+                  <span style={{ fontWeight:600, color:'var(--red)' }}>-€{(parseFloat(form.amount) * 0.02).toFixed(2)}</span>
                 </div>
                 <div style={{ display:'flex', justifyContent:'space-between', borderTop:'1px solid var(--border)', paddingTop:4, marginTop:4 }}>
                   <span style={{ color:'var(--text-primary)', fontWeight:700 }}>Net Amount Received</span>
-                  <span style={{ fontWeight:800, color:'var(--green)' }}>${(parseFloat(form.amount) * 0.98).toFixed(2)}</span>
+                  <span style={{ fontWeight:800, color:'var(--green)' }}>€{(parseFloat(form.amount) * 0.98).toFixed(2)}</span>
                 </div>
               </div>
             )}
             {(user?.balance||0) > 0 && (
               <div style={{ display:'flex',gap:6,marginTop:8 }}>
                 {[10,50,100].filter(v => v <= (user?.balance||0)).map(v => (
-                  <button type="button" key={v} onClick={()=>setForm(p=>({...p,amount:v.toString()}))} style={{ flex:1,padding:'0.35rem',background:'var(--bg-card2)',border:'1px solid var(--border)',borderRadius:9,fontSize:11,fontWeight:600,color:'var(--text-secondary)',cursor:'pointer',fontFamily:'inherit' }}>${v}</button>
+                  <button type="button" key={v} onClick={()=>setForm(p=>({...p,amount:v.toString()}))} style={{ flex:1,padding:'0.35rem',background:'var(--bg-card2)',border:'1px solid var(--border)',borderRadius:9,fontSize:11,fontWeight:600,color:'var(--text-secondary)',cursor:'pointer',fontFamily:'inherit' }}>€{v}</button>
                 ))}
                 <button type="button" onClick={()=>setForm(p=>({...p,amount:(user?.balance||0).toString()}))} style={{ flex:1,padding:'0.35rem',background:'var(--bg-card2)',border:'1px solid var(--border)',borderRadius:9,fontSize:11,fontWeight:600,color:'var(--accent)',cursor:'pointer',fontFamily:'inherit' }}>All</button>
               </div>
@@ -134,8 +141,8 @@ export default function Withdrawals() {
                       <p style={{ fontSize:10,color:'var(--text-muted)',fontFamily:'monospace',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',maxWidth:150 }}>{w.walletAddress}</p>
                     </div>
                     <div style={{ textAlign:'right',flexShrink:0 }}>
-                      <p style={{ fontWeight:700,color:'var(--red)',fontSize:14 }}>-${w.amount?.toLocaleString()}</p>
-                      {w.netAmount && <p style={{ fontSize:10,color:'var(--green)', fontWeight:600 }}>Received: ${w.netAmount.toLocaleString()}</p>}
+                      <p style={{ fontWeight:700,color:'var(--red)',fontSize:14 }}>-€{w.amount?.toLocaleString()}</p>
+                      {w.netAmount && <p style={{ fontSize:10,color:'var(--green)', fontWeight:600 }}>Received: €{w.netAmount.toLocaleString()}</p>}
                       <span className={'badge-'+w.status}>{w.status==='pending'?'Pending':w.status==='approved'?'Approved':'Rejected'}</span>
                     </div>
                   </div>

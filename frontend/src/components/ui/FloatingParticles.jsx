@@ -24,7 +24,7 @@ export default function FloatingParticles({ count = 18 }) {
     resize()
     window.addEventListener('resize', resize)
 
-    const SYMBOLS = ['$', '+', '↑', '●', '◆']
+    const SYMBOLS = ['€', '+', '↑', '●', '◆']
     const isDark = document.documentElement.getAttribute('data-theme') !== 'light'
 
     for (let i = 0; i < count; i++) {

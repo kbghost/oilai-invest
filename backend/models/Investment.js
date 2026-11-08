@@ -7,8 +7,8 @@
  * ─────────────────────────────────────
  * Les plans sont définis dans investmentController.js → constante PLANS
  * Chaque plan a :
- *   - minAmount    : Dépôt minimum en USD
- *   - maxAmount    : Dépôt maximum en USD (null = illimité)
+ *   - minAmount    : Dépôt minimum en EUR
+ *   - maxAmount    : Dépôt maximum en EUR (null = illimité)
  *   - dailyROI     : % de gain PAR JOUR (ex: 1.5 = 1.5%/jour)
  *   - durationDays : Durée du plan en jours
  *

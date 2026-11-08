@@ -42,7 +42,7 @@ function SidebarContent({ mobile, setOpen }) {
       <div style={{ margin:'0.875rem',padding:'1rem',background:'linear-gradient(135deg,rgba(245,166,35,0.18),rgba(245,166,35,0.06))',border:'1px solid rgba(245,166,35,0.25)',borderRadius:16 }}>
         <p style={{ fontSize:10,color:'rgba(245,166,35,0.7)',marginBottom:3,textTransform:'uppercase',letterSpacing:'0.06em',fontWeight:700 }}>Available Balance</p>
         <p style={{ fontFamily:'"Poppins",sans-serif',fontSize:'1.35rem',fontWeight:800,color:'var(--accent)' }}>
-          ${(user?.balance||0).toLocaleString('en-US',{minimumFractionDigits:2, maximumFractionDigits:2})}
+          €{(user?.balance||0).toLocaleString('fr-FR',{minimumFractionDigits:2, maximumFractionDigits:2})}
         </p>
       </div>
 

@@ -38,18 +38,18 @@ export function TrustBadges() {
 
 // LiveTicker.jsx — Scrolling activity banner
 const TICKER_ITEMS = [
-  '🟢 Alex M. just earned +$47.50',
-  '📈 WTI Price: $81.42 ↑ +1.82%',
-  '🔵 Sarah K. deposited $500 in Bitcoin',
+  '🟢 Alex M. just earned +€47.50',
+  '📈 WTI Price (USD): $81.42 ↑ +1.82%',
+  '🔵 Sarah K. deposited €500 in Bitcoin',
   '🤖 AI Signal: STRONG BUY — Confidence 87%',
-  '🟢 David L. just earned +$112.30',
+  '🟢 David L. just earned +€112.30',
   '💰 Automated high-yield investments 24/7',
   '📊 Average daily ROI: +2.8%',
-  '✅ Carlos R. successfully withdrew $315',
+  '✅ Carlos R. successfully withdrew €315',
   '🛢️ OPEC+ maintains production cuts',
   '⚡ Elena V. just joined OilAI',
-  '💹 Total profits generated today: $48,320',
-  '🟢 Jean-Paul M. deposited $2,000 in USDT',
+  '💹 Total profits generated today: €48,320',
+  '🟢 Jean-Paul M. deposited €2,000 in USDT',
 ]
 
 export function LiveTicker() {

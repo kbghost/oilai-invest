@@ -7,7 +7,7 @@
  *   Changer REFERRAL_BONUS_PERCENT (défaut : 5%)
  *   Ce bonus est crédité au parrain lors du 1er dépôt approuvé du filleul
  *   Le calcul : bonus = montant_depot × REFERRAL_BONUS_PERCENT / 100
- *   Exemple : filleul dépose $1000 → parrain reçoit $50
+ *   Exemple : filleul dépose 1000 € → parrain reçoit 50 €
  */
 const jwt  = require('jsonwebtoken');
 const { validationResult } = require('express-validator');

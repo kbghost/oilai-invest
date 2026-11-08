@@ -94,7 +94,7 @@ export default function ClaimButton({ investment, onClaimed }) {
             <p style={{ fontSize:12, fontWeight:700, color:'var(--text-secondary)' }}>Next claim in</p>
             <p style={{ fontSize:11, color:'var(--text-muted)' }}>
               Pending profit tomorrow: <span style={{ color:'var(--accent)', fontWeight:700 }}>
-                ~${pending > 0 ? pending.toFixed(2) : (investment.amount * investment.dailyROI / 100).toFixed(2)}
+                ~€{pending > 0 ? pending.toFixed(2) : (investment.amount * investment.dailyROI / 100).toFixed(2)}
               </span>
             </p>
           </div>
@@ -155,7 +155,7 @@ export default function ClaimButton({ investment, onClaimed }) {
             {loading ? 'Processing...' : 'Claim My Profits'}
           </p>
           <p style={{ fontSize:11, color:'rgba(255,255,255,0.8)' }}>
-            {canClaim ? `+$${pending.toFixed(2)} available` : 'No profit available'}
+            {canClaim ? `+€${pending.toFixed(2)} available` : 'No profit available'}
           </p>
         </div>
       </div>
@@ -164,7 +164,7 @@ export default function ClaimButton({ investment, onClaimed }) {
           padding:'0.4rem 0.875rem', background:'rgba(255,255,255,0.2)',
           borderRadius:10, fontSize:14, fontWeight:800, color:'#fff',
         }}>
-          +${pending.toFixed(2)}
+          +€{pending.toFixed(2)}
         </div>
       )}
     </button>

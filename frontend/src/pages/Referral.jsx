@@ -14,7 +14,7 @@ import toast from 'react-hot-toast'
  *  3. Quand le filleul fait son 1er dépôt approuvé par l'admin
  *  4. Le parrain reçoit automatiquement 5% du montant de ce dépôt
  *
- * Exemple : filleul dépose $1 000 → parrain reçoit $50 directement sur son solde
+ * Exemple : filleul dépose 1 000 € → parrain reçoit 50 € directement sur son solde
  */
 
 const BONUS_PERCENT = 5 // doit correspondre à REFERRAL_BONUS_PERCENT dans le backend
@@ -62,8 +62,8 @@ export default function Referral() {
             Every Referral = {BONUS_PERCENT}% for You
           </p>
           <p style={{ fontSize:12,opacity:0.85,lineHeight:1.55 }}>
-            When your friend signs up using your code and makes a <strong>$1,000</strong> deposit,
-            you automatically receive <strong>$50</strong> directly into your account balance.
+            When your friend signs up using your code and makes a <strong>€1,000</strong> deposit,
+            you automatically receive <strong>€50</strong> directly into your account balance.
           </p>
         </div>
       </div>
@@ -72,7 +72,7 @@ export default function Referral() {
       <div style={{ display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'0.75rem' }}>
         {[
           { label:'Referrals',         val:stats?.referralCount || 0,    icon:Users,    color:'var(--blue)' },
-          { label:'Referral Earnings', val:stats?.referralEarnings || 0, icon:TrendingUp,color:'var(--green)', prefix:'$', decimals:2 },
+          { label:'Referral Earnings', val:stats?.referralEarnings || 0, icon:TrendingUp,color:'var(--green)', prefix:'€', decimals:2 },
           { label:'Bonus / Referral',  val:BONUS_PERCENT,                icon:Gift,     color:'var(--accent)', suffix:'%' },
         ].map(({ label, val, icon:Icon, color, prefix='', suffix='', decimals=0 }) => (
           <div key={label} className="float-card" style={{ textAlign:'center',padding:'1rem 0.5rem' }}>
@@ -151,7 +151,7 @@ export default function Referral() {
                 </div>
                 <div style={{ textAlign:'right',flexShrink:0 }}>
                   <p style={{ fontSize:11,color:'var(--text-muted)' }}>Invested</p>
-                  <p style={{ fontWeight:700,color:'var(--accent)',fontSize:13 }}>${(f.totalInvested||0).toLocaleString()}</p>
+                  <p style={{ fontWeight:700,color:'var(--accent)',fontSize:13 }}>€{(f.totalInvested||0).toLocaleString('fr-FR')}</p>
                 </div>
               </div>
             ))}

@@ -66,9 +66,9 @@ export default function Profile() {
       {/* Stats */}
       <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:'0.6rem' }}>
         {[
-          { label:'Balance',   value:'$'+(user?.balance||0).toFixed(2) },
-          { label:'Invested',  value:'$'+(user?.totalInvested||0).toFixed(2) },
-          { label:'Earnings',  value:'$'+(user?.totalEarnings||0).toFixed(2) },
+          { label:'Balance',   value:'€'+(user?.balance||0).toFixed(2) },
+          { label:'Invested',  value:'€'+(user?.totalInvested||0).toFixed(2) },
+          { label:'Earnings',  value:'€'+(user?.totalEarnings||0).toFixed(2) },
         ].map(({ label, value }) => (
           <div key={label} style={{ padding:'0.75rem 0.5rem', background:'var(--bg-card2)', border:'1px solid var(--border)', borderRadius:12, textAlign:'center' }}>
             <p className="dash-stat-value" style={{ color:'var(--accent)', fontSize:'0.9rem', marginBottom:2 }}>{value}</p>

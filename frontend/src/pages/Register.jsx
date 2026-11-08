@@ -158,7 +158,7 @@ export default function Register() {
             </h2>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', maxWidth: 320 }}>
               {[
-                ['$124M+', 'Assets Managed'],
+                ['€124M+', 'Assets Managed'],
                 ['12%/day', 'Max ROI'],
                 ['190+', 'Countries Supported'],
                 ['24/7', 'AI Support'],

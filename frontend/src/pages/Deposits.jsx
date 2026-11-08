@@ -16,21 +16,28 @@ export default function Deposits() {
   const [tab, setTab]           = useState('new')
   const fileRef = useRef()
 
-  useEffect(() => { depositAPI.getAll().then(r => setDeposits(r.data.deposits)).catch(()=>{}) }, [])
+  useEffect(() => {
+    depositAPI.getAll()
+      .then(r => setDeposits(current => {
+        const fetched = r.data.deposits || []
+        return [...current, ...fetched.filter(deposit => !current.some(item => item._id === deposit._id))]
+      }))
+      .catch(() => {})
+  }, [])
   const selectedMethod = getPaymentMethod(method)
 
   const submit = async e => {
     e.preventDefault()
     if (!method) return toast.error('Please select a cryptocurrency')
-    if (!amount || parseFloat(amount) < 10) return toast.error('Minimum amount: $10')
+    if (!amount || parseFloat(amount) < 10) return toast.error('Minimum amount: €10')
     const fd = new FormData()
     fd.append('amount', amount); fd.append('method', method); fd.append('reference', reference)
     if (file) fd.append('proofImage', file)
     setLoading(true)
     try {
-      await depositAPI.create(fd)
+      const { data } = await depositAPI.create(fd)
+      if (data.deposit) setDeposits(current => [data.deposit, ...current])
       toast.success('Deposit submitted! Pending approval.')
-      const r = await depositAPI.getAll(); setDeposits(r.data.deposits)
       setAmount(''); setReference(''); setFile(null); setMethod('')
       setTab('history')
     } catch (err) { toast.error(err.response?.data?.message || 'Error submitting deposit') }
@@ -85,12 +92,12 @@ export default function Deposits() {
           <div className="card">
             <p style={{ fontSize:11,fontWeight:700,color:'var(--text-secondary)',textTransform:'uppercase',letterSpacing:'0.06em',marginBottom:'0.75rem' }}>2 · Amount</p>
             <div style={{ position:'relative' }}>
-              <span style={{ position:'absolute',left:14,top:'50%',transform:'translateY(-50%)',color:'var(--text-muted)',fontWeight:700 }}>$</span>
-              <input type="number" value={amount} onChange={e=>setAmount(e.target.value)} min="10" className="input" style={{ paddingLeft:28 }} placeholder="Min. $10" />
+              <span style={{ position:'absolute',left:14,top:'50%',transform:'translateY(-50%)',color:'var(--text-muted)',fontWeight:700 }}>€</span>
+              <input type="number" value={amount} onChange={e=>setAmount(e.target.value)} min="10" className="input" style={{ paddingLeft:28 }} placeholder="Min. €10" />
             </div>
             <div style={{ display:'flex',gap:6,marginTop:8 }}>
               {[100,500,1000,5000].map(v => (
-                <button type="button" key={v} onClick={()=>setAmount(v.toString())} style={{ flex:1,padding:'0.35rem',background:'var(--bg-card2)',border:'1px solid var(--border)',borderRadius:9,fontSize:11,fontWeight:600,color:'var(--text-secondary)',cursor:'pointer',fontFamily:'inherit' }}>${v.toLocaleString()}</button>
+                <button type="button" key={v} onClick={()=>setAmount(v.toString())} style={{ flex:1,padding:'0.35rem',background:'var(--bg-card2)',border:'1px solid var(--border)',borderRadius:9,fontSize:11,fontWeight:600,color:'var(--text-secondary)',cursor:'pointer',fontFamily:'inherit' }}>€{v.toLocaleString()}</button>
               ))}
             </div>
           </div>
@@ -135,7 +142,7 @@ export default function Deposits() {
                       <p style={{ fontSize:11,color:'var(--text-muted)' }}>{new Date(d.createdAt).toLocaleDateString('en-US')}</p>
                     </div>
                     <div style={{ textAlign:'right',flexShrink:0 }}>
-                      <p style={{ fontWeight:700,color:'var(--text-primary)',fontSize:14 }}>${d.amount?.toLocaleString()}</p>
+                      <p style={{ fontWeight:700,color:'var(--text-primary)',fontSize:14 }}>€{d.amount?.toLocaleString()}</p>
                       <span className={'badge-'+d.status}>{d.status==='pending'?'Pending':d.status==='approved'?'Approved':'Rejected'}</span>
                     </div>
                   </div>

@@ -18,7 +18,7 @@ const createWithdrawal = async (req, res) => {
     }
 
     if (amount < 10) {
-      return res.status(400).json({ success: false, message: 'Minimum withdrawal is $10.' });
+      return res.status(400).json({ success: false, message: 'Minimum withdrawal is €10.' });
     }
 
     const fee = parseFloat((amount * 0.02).toFixed(2));
