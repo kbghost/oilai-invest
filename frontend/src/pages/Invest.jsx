@@ -184,7 +184,7 @@ export default function Invest() {
           Investment Plans
         </h1>
         <p style={{ color:'var(--text-secondary)', fontSize:13 }}>
-          Available Balance: <span style={{ fontWeight:700, color:'var(--accent)' }}>€{(user?.balance || 0).toFixed(2)}</span>
+          Available Balance: <span className="currency-amount" style={{ fontWeight:700, color:'var(--accent)' }}>€{(user?.balance || 0).toFixed(2)}</span>
         </p>
       </div>
 
@@ -214,7 +214,7 @@ export default function Invest() {
                   </div>
                   <div style={{ textAlign:'right' }}>
                     <p style={{ fontSize:12, color:'var(--text-muted)' }}>Capital</p>
-                    <p style={{ fontWeight:800, color:'var(--text-primary)', fontSize:14 }}>€{(inv.amount || 0).toLocaleString()}</p>
+                    <p className="currency-amount" style={{ fontWeight:800, color:'var(--text-primary)', fontSize:14 }}>€{(inv.amount || 0).toLocaleString()}</p>
                   </div>
                 </div>
 
@@ -231,7 +231,7 @@ export default function Invest() {
                     { l:'Pending',        v:`€${(inv.pendingProfit || 0).toFixed(2)}`, c:'var(--text-primary)' },
                   ].map(({ l, v, c }) => (
                     <div key={l} style={{ padding:'0.6rem 0.5rem', background:'var(--bg-card2)', borderRadius:10, textAlign:'center' }}>
-                      <p style={{ fontWeight:800, color:c, fontSize:13, marginBottom:1 }}>{v}</p>
+                      <p className={l === 'Daily ROI' ? '' : 'currency-amount'} style={{ fontWeight:800, color:c, fontSize:13, marginBottom:1 }}>{v}</p>
                       <p style={{ fontSize:9, color:'var(--text-muted)', fontWeight:600, textTransform:'uppercase', letterSpacing:'0.04em' }}>{l}</p>
                     </div>
                   ))}
@@ -255,7 +255,7 @@ export default function Invest() {
                         {inv.profitHistory.map((h, i) => (
                           <div key={i} style={{ display:'flex', justifyContent:'space-between', padding:'0.4rem', borderBottom: i === inv.profitHistory.length - 1 ? 'none' : '1px solid var(--border)' }}>
                             <span style={{ fontSize:11, color:'var(--text-muted)' }}>{new Date(h.date).toLocaleDateString()} {new Date(h.date).toLocaleTimeString()}</span>
-                            <span style={{ fontSize:12, fontWeight:700, color:'var(--green)' }}>+€{(h.profit || 0).toFixed(2)}</span>
+                            <span className="currency-amount" style={{ fontSize:12, fontWeight:700, color:'var(--green)' }}>+€{(h.profit || 0).toFixed(2)}</span>
                           </div>
                         ))}
                       </div>
@@ -299,7 +299,7 @@ export default function Invest() {
                     </div>
                     <p style={{ fontSize:22, fontWeight:900, color:col.accent, fontFamily:'"Poppins",sans-serif' }}>{plan.dailyROI}%<span style={{ fontSize:12, color:'var(--text-muted)', fontWeight:400 }}>/day</span></p>
                     <p style={{ fontSize:11, color:'var(--text-muted)', marginTop:2 }}>
-                      {plan.durationDays} days · Price: €{(plan.price || 0).toLocaleString()}
+                      {plan.durationDays} days · Price: <span className="currency-amount">€{(plan.price || 0).toLocaleString()}</span>
                     </p>
                   </div>
                   <div style={{ textAlign:'right' }}>
@@ -322,11 +322,11 @@ export default function Invest() {
                       <div style={{ padding:'0.75rem', background:col.bg, borderRadius:10, marginBottom:'0.75rem', fontSize:12 }}>
                         <div style={{ display:'flex', justifyContent:'space-between', marginBottom:3 }}>
                           <span style={{ color:'var(--text-muted)' }}>Est. daily profit</span>
-                          <span style={{ fontWeight:700, color:col.accent }}>+€{(plan.price * plan.dailyROI / 100).toFixed(2)}</span>
+                          <span className="currency-amount" style={{ fontWeight:700, color:col.accent }}>+€{(plan.price * plan.dailyROI / 100).toFixed(2)}</span>
                         </div>
                         <div style={{ display:'flex', justifyContent:'space-between', marginBottom:3 }}>
                           <span style={{ color:'var(--text-muted)' }}>Est. net total profit</span>
-                          <span style={{ fontWeight:700, color:'var(--green)' }}>+€{(plan.price * plan.dailyROI / 100 * plan.durationDays).toFixed(2)}</span>
+                          <span className="currency-amount" style={{ fontWeight:700, color:'var(--green)' }}>+€{(plan.price * plan.dailyROI / 100 * plan.durationDays).toFixed(2)}</span>
                         </div>
                         <div style={{ display:'flex', justifyContent:'space-between' }}>
                           <span style={{ color:'var(--text-muted)' }}>Threshold (€50)</span>
@@ -337,7 +337,7 @@ export default function Invest() {
                         onClick={e=>e.stopPropagation()}>
                         {loading
                           ? <div style={{ width:17, height:17, border:'2px solid rgba(255,255,255,0.3)', borderTopColor:'#fff', borderRadius:'50%', animation:'spin 0.8s linear infinite' }}/>
-                          : <><TrendingUp size={15}/> Invest €{plan.price}</>}
+                          : <><TrendingUp size={15}/> Invest <span className="currency-amount">€{plan.price}</span></>}
                       </button>
                     </form>
                   </div>
@@ -360,10 +360,10 @@ export default function Invest() {
                 </div>
                 <div style={{ flex:1, minWidth:0 }}>
                   <p style={{ fontWeight:700, color:'var(--text-primary)', fontSize:13, textTransform:'capitalize' }}>{inv.plan}</p>
-                  <p style={{ fontSize:11, color:'var(--text-muted)' }}>{inv.durationDays} days · €{(inv.amount || 0).toLocaleString()}</p>
+                  <p style={{ fontSize:11, color:'var(--text-muted)' }}>{inv.durationDays} days · <span className="currency-amount">€{(inv.amount || 0).toLocaleString()}</span></p>
                 </div>
                 <div style={{ textAlign:'right', flexShrink:0 }}>
-                  <p style={{ fontWeight:800, color:'var(--green)', fontSize:13 }}>+€{(inv.totalEarned || 0).toFixed(2)}</p>
+                  <p className="currency-amount" style={{ fontWeight:800, color:'var(--green)', fontSize:13 }}>+€{(inv.totalEarned || 0).toFixed(2)}</p>
                   <span className="badge-completed">Completed</span>
                 </div>
               </div>

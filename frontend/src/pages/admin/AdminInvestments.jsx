@@ -108,7 +108,7 @@ export default function AdminInvestments() {
             <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: 6 }}>
               Total Volume
             </p>
-            <p style={{ fontFamily: '"Poppins", sans-serif', fontSize: '1.5rem', fontWeight: 800, color: 'var(--accent)' }}>
+            <p className="currency-amount" style={{ fontFamily: '"Poppins", sans-serif', fontSize: '1.5rem', fontWeight: 800, color: 'var(--accent)' }}>
               €{stats.totalVolume?.toLocaleString('fr-FR')}
             </p>
           </div>
@@ -229,7 +229,7 @@ export default function AdminInvestments() {
                 </td>
 
                 <td style={{ textAlign: 'right', fontWeight: 700, color: 'var(--text-primary)' }}>
-                  €{inv.amount?.toLocaleString('fr-FR')}
+                  <span className="currency-amount">€{inv.amount?.toLocaleString('fr-FR')}</span>
                 </td>
 
                 <td style={{ textAlign: 'center', fontWeight: 600, color: 'var(--green)' }}>
@@ -249,7 +249,7 @@ export default function AdminInvestments() {
                 </td>
 
                 <td style={{ textAlign: 'right', fontWeight: 700, color: 'var(--accent)' }}>
-                  €{(inv.totalEarned || 0).toFixed(2)}
+                  <span className="currency-amount">€{(inv.totalEarned || 0).toFixed(2)}</span>
                 </td>
 
                 <td style={{ textAlign: 'center' }}>

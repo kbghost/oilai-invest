@@ -63,7 +63,7 @@ export default function ROICalculator() {
       <div style={{ marginBottom: '1.25rem', padding:'1rem', background:'var(--bg-card2)', borderRadius:12 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
           <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Fixed Price</span>
-          <span style={{ fontFamily: '"Poppins", sans-serif', fontWeight: 700, color: 'var(--text-primary)', fontSize: '1.1rem' }}>€{planData.price.toLocaleString()}</span>
+          <span className="currency-amount" style={{ fontFamily: '"Poppins", sans-serif', fontWeight: 700, color: 'var(--text-primary)', fontSize: '1.1rem' }}>€{planData.price.toLocaleString()}</span>
         </div>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Contract Duration</span>
@@ -75,8 +75,8 @@ export default function ROICalculator() {
       {result && (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8, marginBottom: '1.25rem' }}>
           {[
-            { label: 'Daily Gain',              value: `+€${result.dailyProfit.toFixed(2)}`, color: 'var(--green)' },
-            { label: `Net Profit (${planData.days}d)`, value: `+€${result.totalProfit.toFixed(0)}`, color: planData.color },
+            { label: 'Daily Gain',              value: <span className="currency-amount">+€{result.dailyProfit.toFixed(2)}</span>, color: 'var(--green)' },
+            { label: `Net Profit (${planData.days}d)`, value: <span className="currency-amount">+€{result.totalProfit.toFixed(0)}</span>, color: planData.color },
             { label: 'Threshold (€50)',          value: planData.threshold,                  color: 'var(--text-primary)' },
           ].map(({ label, value, color }) => (
             <div key={label} style={{ padding: '0.75rem 0.5rem', background: 'var(--bg-card2)', borderRadius: 12, textAlign: 'center' }}>

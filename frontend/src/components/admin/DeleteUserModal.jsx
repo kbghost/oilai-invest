@@ -74,7 +74,7 @@ export default function DeleteUserModal({ user, onClose, onUserDeleted }) {
             {user.email}
           </p>
           <p style={{ fontSize: 12, color: 'var(--accent)', fontWeight: 700, marginTop: 4 }}>
-            Balance: €{(user.balance || 0).toFixed(2)}
+            Balance: <span className="currency-amount">€{(user.balance || 0).toFixed(2)}</span>
           </p>
         </div>
 

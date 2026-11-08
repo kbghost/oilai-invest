@@ -97,7 +97,7 @@ export default function Deposits() {
             </div>
             <div style={{ display:'flex',gap:6,marginTop:8 }}>
               {[100,500,1000,5000].map(v => (
-                <button type="button" key={v} onClick={()=>setAmount(v.toString())} style={{ flex:1,padding:'0.35rem',background:'var(--bg-card2)',border:'1px solid var(--border)',borderRadius:9,fontSize:11,fontWeight:600,color:'var(--text-secondary)',cursor:'pointer',fontFamily:'inherit' }}>€{v.toLocaleString()}</button>
+                <button type="button" key={v} onClick={()=>setAmount(v.toString())} className="currency-amount" style={{ flex:1,padding:'0.35rem',background:'var(--bg-card2)',border:'1px solid var(--border)',borderRadius:9,fontSize:11,fontWeight:600,color:'var(--text-secondary)',cursor:'pointer',fontFamily:'inherit' }}>€{v.toLocaleString()}</button>
               ))}
             </div>
           </div>
@@ -142,7 +142,7 @@ export default function Deposits() {
                       <p style={{ fontSize:11,color:'var(--text-muted)' }}>{new Date(d.createdAt).toLocaleDateString('en-US')}</p>
                     </div>
                     <div style={{ textAlign:'right',flexShrink:0 }}>
-                      <p style={{ fontWeight:700,color:'var(--text-primary)',fontSize:14 }}>€{d.amount?.toLocaleString()}</p>
+                      <p className="currency-amount" style={{ fontWeight:700,color:'var(--text-primary)',fontSize:14 }}>€{d.amount?.toLocaleString()}</p>
                       <span className={'badge-'+d.status}>{d.status==='pending'?'Pending':d.status==='approved'?'Approved':'Rejected'}</span>
                     </div>
                   </div>

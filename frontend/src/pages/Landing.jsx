@@ -98,7 +98,7 @@ export default function Landing() {
           {STATS.map(({ val, suffix, label, decimals=0 }) => (
             <div key={label} className="reveal">
               <p style={{ fontFamily:'"Poppins",sans-serif',fontSize:'clamp(1.1rem,3vw,1.6rem)',fontWeight:700,color:'var(--accent)',lineHeight:1 }}>
-                <AnimatedCounter value={val} suffix={suffix} decimals={decimals} duration={2000} />
+                <AnimatedCounter value={val} suffix={suffix} decimals={decimals} duration={2000} className={suffix.includes('€') ? 'currency-amount' : ''} />
               </p>
               <p style={{ fontSize:10,color:'var(--text-muted)',marginTop:4,fontWeight:600 }}>{label}</p>
             </div>
@@ -132,11 +132,11 @@ export default function Landing() {
                   <span style={{ padding:'0.15rem 0.6rem',borderRadius:999,fontSize:10,fontWeight:700,background:plan.color+'18',color:plan.color,border:`1px solid ${plan.color}35`,whiteSpace:'nowrap' }}>{plan.badge}</span>
                 </div>
                 <p style={{ fontFamily:'"Poppins",sans-serif',fontSize:'2.2rem',fontWeight:800,color:plan.color,lineHeight:1,marginBottom:4 }}>{plan.roi}<span style={{ fontSize:12, fontWeight:500, color:'var(--text-muted)' }}> / day</span></p>
-                <p style={{ fontSize:13,fontWeight:700,color:'var(--text-primary)',marginBottom:'0.75rem' }}>Price: {plan.price} · {plan.duration} Days</p>
+                <p style={{ fontSize:13,fontWeight:700,color:'var(--text-primary)',marginBottom:'0.75rem' }}>Price: <span className="currency-amount">{plan.price}</span> · {plan.duration} Days</p>
 
                 <div style={{ background:'var(--bg-card2)', borderRadius:10, padding:'0.6rem 0.75rem', marginBottom:'1rem', fontSize:11, display:'flex', flexDirection:'column', gap:3 }}>
-                  <div style={{ display:'flex', justifyContent:'space-between' }}><span style={{ color:'var(--text-muted)' }}>Daily Gain:</span><strong style={{ color:'var(--green)' }}>+{plan.dailyGain}</strong></div>
-                  <div style={{ display:'flex', justifyContent:'space-between' }}><span style={{ color:'var(--text-muted)' }}>Net Total Profit:</span><strong style={{ color:plan.color }}>+{plan.totalProfit}</strong></div>
+                  <div style={{ display:'flex', justifyContent:'space-between' }}><span style={{ color:'var(--text-muted)' }}>Daily Gain:</span><strong className="currency-amount" style={{ color:'var(--green)' }}>+{plan.dailyGain}</strong></div>
+                  <div style={{ display:'flex', justifyContent:'space-between' }}><span style={{ color:'var(--text-muted)' }}>Net Total Profit:</span><strong className="currency-amount" style={{ color:plan.color }}>+{plan.totalProfit}</strong></div>
                   <div style={{ display:'flex', justifyContent:'space-between' }}><span style={{ color:'var(--text-muted)' }}>Threshold (€50):</span><strong style={{ color:'var(--text-primary)' }}>{plan.threshold}</strong></div>
                 </div>
 

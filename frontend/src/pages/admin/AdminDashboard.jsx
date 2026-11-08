@@ -51,10 +51,10 @@ export default function AdminDashboard() {
     { label: 'Active Investments',    value: stats.activeInvestments,  icon: TrendingUp,      color: 'var(--accent)',   to: '/admin/investments' },
     { label: 'Pending Deposits',      value: stats.pendingDeposits,    icon: ArrowDownCircle, color: '#FFCC00',         to: '/admin/deposits' },
     { label: 'Pending Withdrawals',   value: stats.pendingWithdrawals, icon: ArrowUpCircle,   color: 'var(--red)',      to: '/admin/withdrawals' },
-    { label: 'Total Deposited',       value: `€${(stats.totalDeposits||0).toLocaleString('fr-FR')}`,    icon: DollarSign, color: 'var(--green)' },
-    { label: 'Total Withdrawn',       value: `€${(stats.totalWithdrawals||0).toLocaleString('fr-FR')}`, icon: Activity,   color: '#a78bfa' },
-    { label: 'Platform Balances',     value: `€${(stats.totalUserBalances||0).toLocaleString('fr-FR')}`, icon: Wallet,   color: 'var(--accent)', to: '/admin/users' },
-    { label: 'Invested Capital',      value: `€${(stats.totalInvested||0).toLocaleString('fr-FR')}`,    icon: TrendingUp, color: 'var(--blue)',   to: '/admin/investments' },
+    { label: 'Total Deposited',       value: `€${(stats.totalDeposits||0).toLocaleString('fr-FR')}`,    isCurrency: true, icon: DollarSign, color: 'var(--green)' },
+    { label: 'Total Withdrawn',       value: `€${(stats.totalWithdrawals||0).toLocaleString('fr-FR')}`, isCurrency: true, icon: Activity,   color: '#a78bfa' },
+    { label: 'Platform Balances',     value: `€${(stats.totalUserBalances||0).toLocaleString('fr-FR')}`, isCurrency: true, icon: Wallet,   color: 'var(--accent)', to: '/admin/users' },
+    { label: 'Invested Capital',      value: `€${(stats.totalInvested||0).toLocaleString('fr-FR')}`,    isCurrency: true, icon: TrendingUp, color: 'var(--blue)',   to: '/admin/investments' },
   ] : []
 
   if (loading) return (
@@ -98,7 +98,7 @@ export default function AdminDashboard() {
 
       {/* Stats grid */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem' }} id="admin-stats-grid">
-        {cards.map(({ label, value, icon: Icon, color, to }) => {
+        {cards.map(({ label, value, icon: Icon, color, to, isCurrency }) => {
           const content = (
             <div key={label} className="stat-card" style={{ cursor: to ? 'pointer' : 'default', textDecoration: 'none' }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
@@ -108,7 +108,7 @@ export default function AdminDashboard() {
                 {to && <ChevronRight size={16} color="var(--text-muted)" style={{ opacity: 0.5 }} />}
               </div>
               <p style={{ fontSize: 11, color: 'var(--text-muted)', marginBottom: 4, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{label}</p>
-              <p style={{ fontFamily: '"Poppins", sans-serif', fontSize: '1.5rem', fontWeight: 700, color: 'var(--text-primary)' }}>{value}</p>
+              <p className={isCurrency ? 'currency-amount' : ''} style={{ fontFamily: '"Poppins", sans-serif', fontSize: '1.5rem', fontWeight: 700, color: 'var(--text-primary)' }}>{value}</p>
             </div>
           )
 
@@ -212,7 +212,7 @@ export default function AdminDashboard() {
                   <p style={{ fontSize: 12, color: 'var(--text-muted)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{u.email}</p>
                 </div>
                 <div style={{ textAlign: 'right', flexShrink: 0 }}>
-                  <p style={{ fontWeight: 700, color: 'var(--accent)', fontSize: 14 }}>€{(u.balance||0).toFixed(2)}</p>
+                  <p className="currency-amount" style={{ fontWeight: 700, color: 'var(--accent)', fontSize: 14 }}>€{(u.balance||0).toFixed(2)}</p>
                   <p style={{ fontSize: 11, color: 'var(--text-muted)' }}>{new Date(u.createdAt).toLocaleDateString('en-US')}</p>
                 </div>
               </div>

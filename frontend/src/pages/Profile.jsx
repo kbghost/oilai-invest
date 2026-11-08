@@ -71,7 +71,7 @@ export default function Profile() {
           { label:'Earnings',  value:'€'+(user?.totalEarnings||0).toFixed(2) },
         ].map(({ label, value }) => (
           <div key={label} style={{ padding:'0.75rem 0.5rem', background:'var(--bg-card2)', border:'1px solid var(--border)', borderRadius:12, textAlign:'center' }}>
-            <p className="dash-stat-value" style={{ color:'var(--accent)', fontSize:'0.9rem', marginBottom:2 }}>{value}</p>
+            <p className="dash-stat-value currency-amount" style={{ color:'var(--accent)', fontSize:'0.9rem', marginBottom:2 }}>{value}</p>
             <p style={{ fontSize:10, color:'var(--text-muted)' }}>{label}</p>
           </div>
         ))}

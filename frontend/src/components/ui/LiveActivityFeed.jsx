@@ -149,7 +149,7 @@ export default function LiveActivityFeed() {
                 </p>
               </div>
               <p style={{ fontWeight:800,fontSize:13,color: tx.type==='withdraw' ? 'var(--red)' : color,flexShrink:0 }}>
-                {getSign(tx.type)}€{tx.amount.toLocaleString('fr-FR',{minimumFractionDigits:0,maximumFractionDigits:2})}
+                <span className="currency-amount">{getSign(tx.type)}€{tx.amount.toLocaleString('fr-FR',{minimumFractionDigits:0,maximumFractionDigits:2})}</span>
               </p>
             </div>
           )

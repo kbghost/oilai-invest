@@ -84,7 +84,7 @@ export default function AdjustBalanceModal({ user, onClose, onBalanceAdjusted })
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.875rem 1rem', background: 'var(--bg-card2)', borderRadius: 14, marginBottom: '1rem', border: '1px solid var(--border)' }}>
           <div>
             <p style={{ fontSize: 11, color: 'var(--text-muted)', fontWeight: 600 }}>CURRENT BALANCE</p>
-            <p style={{ fontFamily: '"Poppins", sans-serif', fontSize: '1.25rem', fontWeight: 700, color: 'var(--text-primary)' }}>
+            <p className="currency-amount" style={{ fontFamily: '"Poppins", sans-serif', fontSize: '1.25rem', fontWeight: 700, color: 'var(--text-primary)' }}>
               €{currentBalance.toFixed(2)}
             </p>
           </div>
@@ -93,7 +93,7 @@ export default function AdjustBalanceModal({ user, onClose, onBalanceAdjusted })
 
           <div style={{ textAlign: 'right' }}>
             <p style={{ fontSize: 11, color: 'var(--text-muted)', fontWeight: 600 }}>AFTER ADJUSTMENT</p>
-            <p style={{ fontFamily: '"Poppins", sans-serif', fontSize: '1.25rem', fontWeight: 700, color: form.type === 'credit' ? 'var(--green)' : 'var(--red)' }}>
+            <p className="currency-amount" style={{ fontFamily: '"Poppins", sans-serif', fontSize: '1.25rem', fontWeight: 700, color: form.type === 'credit' ? 'var(--green)' : 'var(--red)' }}>
               €{newBalance.toFixed(2)}
             </p>
           </div>
@@ -135,6 +135,7 @@ export default function AdjustBalanceModal({ user, onClose, onBalanceAdjusted })
                   key={amt}
                   type="button"
                   onClick={() => setForm(p => ({ ...p, amount: String(amt) }))}
+                  className="currency-amount"
                   style={{
                     padding: '4px 10px',
                     borderRadius: 8,

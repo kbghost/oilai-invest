@@ -759,6 +759,13 @@
     display: inline-block;
 }
 
+.currency-amount {
+    font-family: 'Poppins', sans-serif;
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: 'tnum' 1;
+    letter-spacing: -0.02em;
+}
+
 
 /* Particle */
 

@@ -225,7 +225,7 @@ export default function AdminUsers() {
               <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Total Balances</span>
               <Wallet size={16} color="var(--accent)" />
             </div>
-            <p style={{ fontFamily: '"Poppins", sans-serif', fontSize: '1.5rem', fontWeight: 800, color: 'var(--accent)' }}>
+            <p className="currency-amount" style={{ fontFamily: '"Poppins", sans-serif', fontSize: '1.5rem', fontWeight: 800, color: 'var(--accent)' }}>
               €{(stats.totalBalances || 0).toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </p>
           </div>
@@ -235,7 +235,7 @@ export default function AdminUsers() {
               <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Total Capital Invested</span>
               <TrendingUp size={16} color="#a78bfa" />
             </div>
-            <p style={{ fontFamily: '"Poppins", sans-serif', fontSize: '1.5rem', fontWeight: 800, color: '#a78bfa' }}>
+            <p className="currency-amount" style={{ fontFamily: '"Poppins", sans-serif', fontSize: '1.5rem', fontWeight: 800, color: '#a78bfa' }}>
               €{(stats.totalInvested || 0).toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </p>
           </div>
@@ -438,12 +438,12 @@ export default function AdminUsers() {
                 </td>
 
                 {/* Balance */}
-                <td style={{ textAlign: 'right', fontWeight: 700, color: 'var(--accent)', fontSize: 14 }}>
+                <td className="currency-amount" style={{ textAlign: 'right', fontWeight: 700, color: 'var(--accent)', fontSize: 14 }}>
                   €{(u.balance || 0).toFixed(2)}
                 </td>
 
                 {/* Total Invested */}
-                <td style={{ textAlign: 'right', fontWeight: 600, color: 'var(--text-secondary)', fontSize: 13 }}>
+                <td className="currency-amount" style={{ textAlign: 'right', fontWeight: 600, color: 'var(--text-secondary)', fontSize: 13 }}>
                   €{(u.totalInvested || 0).toLocaleString('fr-FR')}
                 </td>
 

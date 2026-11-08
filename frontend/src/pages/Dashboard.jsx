@@ -24,7 +24,7 @@ const ChartTip = ({ active, payload, label }) => {
   return (
     <div style={{ background:'var(--bg-card)',border:'1px solid var(--border)',borderRadius:10,padding:'8px 12px',fontSize:12,boxShadow:'0 4px 16px rgba(0,0,0,0.12)' }}>
       <p style={{ color:'var(--text-muted)',marginBottom:2 }}>{label}</p>
-      <p style={{ fontWeight:700,color:'var(--accent)' }}>€{payload[0]?.value?.toFixed(2)}</p>
+      <p className="currency-amount" style={{ fontWeight:700,color:'var(--accent)' }}>€{payload[0]?.value?.toFixed(2)}</p>
     </div>
   )
 }
@@ -40,7 +40,7 @@ function StatCard({ label, numValue, value, prefix='', suffix='', icon: Icon, co
       <p style={{ fontSize:10,color:'var(--text-muted)',marginBottom:3,fontWeight:700,textTransform:'uppercase',letterSpacing:'0.05em' }}>{label}</p>
       <p className="dash-stat-value" style={{ color:'var(--text-primary)' }}>
         {numValue != null
-          ? <><span style={{ fontSize:'0.78em',color:'var(--text-muted)',fontWeight:700 }}>{prefix}</span><AnimatedCounter value={numValue} duration={1500} decimals={2} />{suffix && <span style={{ fontSize:'0.78em',color:'var(--text-muted)',fontWeight:700 }}>{suffix}</span>}</>
+          ? <><span className="currency-amount" style={{ fontSize:'0.78em',color:'var(--text-muted)',fontWeight:700 }}>{prefix}</span><AnimatedCounter value={numValue} duration={1500} decimals={2} className="currency-amount" />{suffix && <span style={{ fontSize:'0.78em',color:'var(--text-muted)',fontWeight:700 }}>{suffix}</span>}</>
           : value}
       </p>
     </div>
@@ -123,7 +123,7 @@ export default function Dashboard() {
             </div>
             <p style={{ fontSize:12,opacity:0.75,marginBottom:'0.875rem' }}>Available wallet balance</p>
             <p className="dash-balance-amount" style={{ marginBottom:'1.1rem' }}>
-              <AnimatedCounter value={user?.balance || 0} prefix="€" duration={1500} decimals={2} />
+              <AnimatedCounter value={user?.balance || 0} prefix="€" duration={1500} decimals={2} className="currency-amount" />
             </p>
             <div style={{ display:'flex',gap:8 }}>
               {[
@@ -266,13 +266,13 @@ export default function Dashboard() {
                     <div style={{ flex:1,minWidth:0 }}>
                       <div style={{ display:'flex',justifyContent:'space-between',marginBottom:3 }}>
                         <span style={{ fontWeight:700,color:'var(--text-primary)',fontSize:13,textTransform:'capitalize' }}>{inv.plan}</span>
-                        <span style={{ fontWeight:700,color:'var(--green)',fontSize:12 }}>+€{inv.totalEarned.toFixed(2)}</span>
+                        <span className="currency-amount" style={{ fontWeight:700,color:'var(--green)',fontSize:12 }}>+€{inv.totalEarned.toFixed(2)}</span>
                       </div>
                       <div style={{ display:'flex',justifyContent:'space-between',marginBottom:4 }}>
                         <span style={{ fontSize:10,color:'var(--text-muted)',display:'flex',alignItems:'center',gap:3 }}>
                           <Clock size={10} /> {inv.daysCompleted}/{inv.durationDays} days
                         </span>
-                        <span style={{ fontSize:10,color:'var(--text-primary)',fontWeight:600 }}>€{inv.amount.toLocaleString()}</span>
+                        <span className="currency-amount" style={{ fontSize:10,color:'var(--text-primary)',fontWeight:600 }}>€{inv.amount.toLocaleString()}</span>
                       </div>
                       <div className="progress-bar">
                         <div className="progress-fill" style={{ width:pct+'%' }} />

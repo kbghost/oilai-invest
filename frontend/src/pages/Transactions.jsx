@@ -83,7 +83,7 @@ export default function Transactions() {
                     <p style={{ fontSize:10,color:'var(--text-muted)' }}>{new Date(t.createdAt).toLocaleDateString('en-US',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'})}</p>
                   </div>
                   <div style={{ textAlign:'right',flexShrink:0 }}>
-                    <p style={{ fontWeight:700,color:t._type==='deposit'?'var(--green)':'var(--red)',fontSize:13 }}>{cfg.sign}€{t.amount?.toLocaleString('fr-FR')}</p>
+                    <p className="currency-amount" style={{ fontWeight:700,color:t._type==='deposit'?'var(--green)':'var(--red)',fontSize:13 }}>{cfg.sign}€{t.amount?.toLocaleString('fr-FR')}</p>
                     {t.status && <span className={'badge-'+t.status} style={{ fontSize:9 }}>{
                       t.status==='pending'   ? 'Pending'   :
                       t.status==='approved'  ? 'Approved'  :

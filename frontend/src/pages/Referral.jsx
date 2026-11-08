@@ -80,8 +80,8 @@ export default function Referral() {
               <Icon size={17} color={color} />
             </div>
             <p className="dash-stat-value" style={{ color:'var(--text-primary)',fontSize:'1.1rem',marginBottom:2 }}>
-              <span style={{ fontSize:'0.75em',color:'var(--text-muted)' }}>{prefix}</span>
-              <AnimatedCounter value={val} duration={1200} decimals={decimals} />
+              <span className={prefix ? 'currency-amount' : ''} style={{ fontSize:'0.75em',color:'var(--text-muted)' }}>{prefix}</span>
+              <AnimatedCounter value={val} duration={1200} decimals={decimals} className={prefix ? 'currency-amount' : ''} />
               <span style={{ fontSize:'0.75em',color:'var(--text-muted)' }}>{suffix}</span>
             </p>
             <p style={{ fontSize:10,color:'var(--text-muted)',fontWeight:600,textTransform:'uppercase',letterSpacing:'0.04em' }}>{label}</p>
@@ -151,7 +151,7 @@ export default function Referral() {
                 </div>
                 <div style={{ textAlign:'right',flexShrink:0 }}>
                   <p style={{ fontSize:11,color:'var(--text-muted)' }}>Invested</p>
-                  <p style={{ fontWeight:700,color:'var(--accent)',fontSize:13 }}>€{(f.totalInvested||0).toLocaleString('fr-FR')}</p>
+                  <p className="currency-amount" style={{ fontWeight:700,color:'var(--accent)',fontSize:13 }}>€{(f.totalInvested||0).toLocaleString('fr-FR')}</p>
                 </div>
               </div>
             ))}
